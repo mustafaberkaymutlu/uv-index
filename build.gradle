@@ -1,14 +1,96 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
-
 buildscript {
-    ext.kotlin_version = '1.1.4-3'
+    // Manifest version information!
+    def versionMajor = 1
+    def versionMinor = 0
+    def versionPatch = 0
+    def versionBuild = 0 // bump for dogfood builds, public betas, etc.
+
+    ext.versions = [
+            'compileSdk': 26,
+            'buildTools': '26.0.1',
+            'minSdk': 23,
+            'targetSdk': 26,
+            'kotlin': '1.1.4-3',
+
+            'versionCode' : versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild,
+            'versionName' : "${versionMajor}.${versionMinor}.${versionPatch}",
+
+            'supportLibrary': '26.1.0',
+            'constraintLayout': '1.0.2',
+            'firebase': '11.0.2',
+            'dagger': '2.11',
+            'leakCanary': '1.5.1',
+            'mosby': '3.0.4',
+            'persmissionsDispatcher': '2.3.2',
+            'icePick': '3.2.0'
+    ]
+
+    ext.deps = [
+            'kotlin': [
+                    'stdlib': "org.jetbrains.kotlin:kotlin-stdlib-jre7:$versions.kotlin",
+                    'gradlePlugin': "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin"
+            ],
+            'support': [
+                    'v4': "com.android.support:support-v4:${versions.supportLibrary}",
+                    'v13': "com.android.support:support-v13:${versions.supportLibrary}",
+                    'appCompat': "com.android.support:appcompat-v7:${versions.supportLibrary}",
+                    'annotations': "com.android.support:support-annotations:${versions.supportLibrary}",
+                    'design': "com.android.support:design:${versions.supportLibrary}",
+                    'recyclerView': "com.android.support:recyclerview-v7:${versions.supportLibrary}",
+                    'cardView': "com.android.support:cardview-v7:${versions.supportLibrary}",
+                    'palette': "com.android.support:palette-v7:${versions.supportLibrary}",
+                    'constraintLayout': "com.android.support.constraint:constraint-layout:${versions.constraintLayout}",
+            ],
+            'firebase': [
+                    'core': "com.google.firebase:firebase-core:${versions.firebase}",
+                    'messaging': "com.google.firebase:firebase-messaging:${versions.firebase}",
+                    'auth': "com.google.firebase:firebase-auth:${versions.firebase}",
+                    'storage': "com.google.firebase:firebase-storage:${versions.firebase}",
+                    'database': "com.google.firebase:firebase-database:${versions.firebase}",
+                    'invites': "com.google.firebase:firebase-invites:${versions.firebase}",
+                    'crash': "com.google.firebase:firebase-crash:${versions.firebase}",
+            ],
+            'dagger': [
+                    'runtime': "com.google.dagger:dagger:${versions.dagger}",
+                    'compiler': "com.google.dagger:dagger-compiler:${versions.dagger}",
+            ],
+            'daggerAndroid': [
+                    'runtime': "com.google.dagger:dagger-android-support:${versions.dagger}",
+                    'compiler':"com.google.dagger:dagger-android-processor:${versions.dagger}"
+            ],
+            'leakCanary': [
+                    'real': "com.squareup.leakcanary:leakcanary-android:${versions.leakCanary}",
+                    'noOp': "com.squareup.leakcanary:leakcanary-android-no-op:${versions.leakCanary}",
+            ],
+            'mosby': [
+                    'core': "com.hannesdorfmann.mosby3:mvp:${versions.mosby}",
+                    'viewState': "com.hannesdorfmann.mosby3:viewstate:${versions.mosby}",
+            ],
+            'persmissionsDispatcher': [
+                    'runtime': "com.github.hotchemi:permissionsdispatcher:${versions.persmissionsDispatcher}",
+                    'compiler': "com.github.hotchemi:permissionsdispatcher-processor:${versions.persmissionsDispatcher}",
+            ],
+            'icePick': [
+                    'runtime': "frankiesardo:icepick:${versions.icePick}",
+                    'compiler': "frankiesardo:icepick-processor:${versions.icePick}",
+            ],
+            'instantApps': "com.google.android.instantapps:instantapps:1.0.0",
+            'junit': "junit:junit:4.12",
+            'timber': 'com.jakewharton.timber:timber:4.5.1',
+            'glide': 'com.github.bumptech.glide:glide:3.7.0',
+            'preferenceFix': 'com.takisoft.fix:preference-v7:25.4.0.3',
+            'aboutLibraries': 'com.mikepenz:aboutlibraries:5.9.4@aar',
+            'crashlytics': 'com.crashlytics.sdk.android:crashlytics:2.6.8@aar',
+    ]
+
     repositories {
         google()
         jcenter()
     }
+
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.0-beta5'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'com.android.tools.build:gradle:3.0.0-beta6'
+        classpath deps.kotlin.gradlePlugin
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files

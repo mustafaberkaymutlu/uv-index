@@ -1,15 +1,18 @@
 apply plugin: 'com.android.feature'
+apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion "26.0.1"
+    compileSdkVersion versions.compileSdk
+    buildToolsVersion versions.buildTools
     baseFeature true
+
     defaultConfig {
-        minSdkVersion 23
-        targetSdkVersion 26
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion versions.minSdk
+        targetSdkVersion versions.targetSdk
+        versionCode versions.versionCode
+        versionName versions.versionName
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -19,8 +22,16 @@ android {
 }
 
 dependencies {
-    api 'com.android.support:appcompat-v7:26.1.0'
-    api 'com.android.support.constraint:constraint-layout:1.0.2'
-    application project(':app')
     feature project(':query')
+    application project(':app')
+
+    compile deps.kotlin.stdlib
+
+    api deps.support.appCompat
+    api deps.support.constraintLayout
+
+    api deps.instantApps
+
+    // Others
+    api deps.timber
 }
