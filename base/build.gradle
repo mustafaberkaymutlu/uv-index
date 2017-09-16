@@ -1,5 +1,6 @@
 apply plugin: 'com.android.feature'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion versions.compileSdk
@@ -27,10 +28,26 @@ dependencies {
 
     compile deps.kotlin.stdlib
 
-    api deps.support.appCompat
-    api deps.support.constraintLayout
-
     api deps.instantApps
+
+    // Support
+    api deps.support.appCompat
+
+    // Dagger 2
+    api deps.dagger.runtime
+    kapt deps.dagger.compiler
+
+    // Dagger.Android
+    api deps.daggerAndroid.runtime
+    kapt deps.daggerAndroid.compiler
+
+    // Mosby
+    api deps.mosby.core
+    api deps.mosby.viewState
+
+    // Retrofit
+    api deps.retrofit.base
+    api deps.retrofit.gson
 
     // Others
     api deps.timber

@@ -1,9 +1,9 @@
 package net.epictimes.uvindex.query
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import net.epictimes.uvindex.ui.BaseActivity
 
-class QueryActivity : AppCompatActivity() {
+class QueryActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

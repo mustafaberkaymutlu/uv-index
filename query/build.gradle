@@ -1,6 +1,5 @@
 apply plugin: 'com.android.feature'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 
 android {
@@ -28,17 +27,7 @@ dependencies {
 
     implementation project(':base')
 
-    // Mosby
-    implementation deps.mosby.core
-    implementation deps.mosby.viewState
-
-    // Dagger 2
-    implementation deps.dagger.runtime
-    kapt deps.dagger.compiler
-
-    // Dagger.Android
-    implementation deps.daggerAndroid.runtime
-    kapt deps.daggerAndroid.compiler
+    implementation deps.support.constraintLayout
 
     testImplementation deps.junit
 }
