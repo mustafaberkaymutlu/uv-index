@@ -1,7 +1,9 @@
 package net.epictimes.uvindex.data
 
+import com.facebook.stetho.okhttp3.StethoInterceptor
 import dagger.Module
 import dagger.Provides
+import net.epictimes.uvindex.BuildConfig
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -24,8 +26,19 @@ class ApiModule {
     }
 
     @Provides
-    internal fun provideOkHttpClient(): OkHttpClient {
-        return OkHttpClient.Builder().build()
+    fun provideOkHttpClient(stethoInterceptor: StethoInterceptor?): OkHttpClient {
+        val okHttpClientBuilder = OkHttpClient.Builder()
+
+        if (BuildConfig.DEBUG) {
+            okHttpClientBuilder.addNetworkInterceptor(stethoInterceptor)
+        }
+
+        return okHttpClientBuilder.build()
+    }
+
+    @Provides
+    fun provideStethoInterceptor(): StethoInterceptor? {
+        return if (BuildConfig.DEBUG) StethoInterceptor() else null
     }
 
 }

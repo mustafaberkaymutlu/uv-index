@@ -51,4 +51,5 @@ dependencies {
 
     // Others
     api deps.timber
+    implementation deps.stetho
 }
