@@ -26,14 +26,22 @@ class ApiModule {
     }
 
     @Provides
-    fun provideOkHttpClient(stethoInterceptor: StethoInterceptor?): OkHttpClient {
+    fun provideOkHttpClient(defaultInterceptor: DefaultInterceptor,
+                            stethoInterceptor: StethoInterceptor?): OkHttpClient {
         val okHttpClientBuilder = OkHttpClient.Builder()
 
         if (BuildConfig.DEBUG) {
             okHttpClientBuilder.addNetworkInterceptor(stethoInterceptor)
         }
 
+        okHttpClientBuilder.addNetworkInterceptor(defaultInterceptor)
+
         return okHttpClientBuilder.build()
+    }
+
+    @Provides
+    fun provideDefaultInterceptor(): DefaultInterceptor {
+        return DefaultInterceptor()
     }
 
     @Provides
