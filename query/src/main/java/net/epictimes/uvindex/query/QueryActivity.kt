@@ -3,6 +3,10 @@ package net.epictimes.uvindex.query
 import android.Manifest
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.os.Handler
+import android.os.ResultReceiver
+import android.support.annotation.ColorInt
+import android.support.v4.content.ContextCompat
 import android.widget.Toast
 import com.google.android.gms.location.*
 import kotlinx.android.synthetic.main.activity_query.*
@@ -99,6 +103,28 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
             locationResult?.locations?.last()?.let {
                 fusedLocationClient.removeLocationUpdates(this)
                 viewState.location = it
+                FetchAddressIntentService.startIntentService(this@QueryActivity, AddressResultReceiver(), it)
+            }
+        }
+    }
+
+    inner class AddressResultReceiver : ResultReceiver(Handler()) {
+        override fun onReceiveResult(resultCode: Int, resultData: Bundle) {
+            super.onReceiveResult(resultCode, resultData)
+
+            // Display the address string or an error message sent from the intent service.
+            val result: String = resultData.getString(FetchAddressIntentService.KEY_RESULT)
+
+            @ColorInt
+            val textColor: Int = when (resultCode) {
+                FetchAddressIntentService.RESULT_SUCCESS -> R.color.colorPrimary
+                FetchAddressIntentService.RESULT_FAILURE -> R.color.colorPrimaryDark
+                else -> android.R.color.black
+            }
+
+            with(textViewLocation) {
+                text = result
+                setTextColor(ContextCompat.getColor(this@QueryActivity, textColor))
             }
         }
     }

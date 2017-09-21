@@ -4,7 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="net.epictimes.uvindex.query.QueryActivity">
+    tools:context="net.epictimes.uvindex.query.QueryActivity"
+    tools:layout_editor_absoluteX="0dp"
+    tools:layout_editor_absoluteY="81dp">
+
+    <TextView
+        android:id="@+id/textViewLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        app:layout_constraintBottom_toTopOf="@+id/buttonGetStarted"
+        app:layout_constraintEnd_toEndOf="@+id/buttonGetStarted"
+        app:layout_constraintHorizontal_bias="0.47"
+        app:layout_constraintStart_toStartOf="@+id/buttonGetStarted"
+        tools:text="Kadikoy, Turkey" />
 
     <Button
         android:id="@+id/buttonGetStarted"
