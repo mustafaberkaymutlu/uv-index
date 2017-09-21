@@ -2,26 +2,29 @@ package net.epictimes.uvindex.query
 
 
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter
-import net.epictimes.uvindex.data.Services
-import net.epictimes.uvindex.data.response.GetObservationResponse
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import net.epictimes.uvindex.data.interactor.CurrentInteractor
+import net.epictimes.uvindex.data.model.Weather
 
-class QueryPresenter constructor(private val services: Services) : MvpBasePresenter<QueryView>() {
+class QueryPresenter constructor(private val currentInteractor: CurrentInteractor) : MvpBasePresenter<QueryView>(), CurrentInteractor.OnFinishedListener {
 
-    fun getUvIndex(latitude: Double, longitude: Double, language: String?, units: String?){
-        services.getObservationByLatLon(latitude, longitude, language, units)
-                .enqueue(object : Callback<GetObservationResponse>{
-                    override fun onResponse(call: Call<GetObservationResponse>?, response: Response<GetObservationResponse>?) {
-                        val asd: Int? = response?.body()?.weatherList?.get(0)?.uvIndex
-                    }
+    fun getUvIndex(latitude: Double, longitude: Double, language: String?, units: String?) {
+        currentInteractor.getCurrent(latitude, longitude, language, units, this)
+    }
 
-                    override fun onFailure(call: Call<GetObservationResponse>?, t: Throwable?) {
+    override fun onSuccessGetCurrent(weather: Weather) {
+        if (isViewAttached) {
+            weather.uvIndex?.let {
+                view.displayUvIndex(it)
+            } ?: run {
+                view.displayGetUvIndexError()
+            }
+        }
+    }
 
-                    }
-
-                })
+    override fun onFailGetCurrent() {
+        if (isViewAttached) {
+            view.displayGetUvIndexError()
+        }
     }
 
 }

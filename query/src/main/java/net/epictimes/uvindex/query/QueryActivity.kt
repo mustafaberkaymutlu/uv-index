@@ -19,7 +19,7 @@ import javax.inject.Inject
 
 
 @RuntimePermissions
-class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryViewState>() {
+class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryViewState>(), QueryView {
 
     private val LOCATION_INTERVAL: Long = 10000
 
@@ -94,6 +94,14 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
     @OnPermissionDenied(Manifest.permission.ACCESS_COARSE_LOCATION)
     fun onLocationPermissionDenied() {
         Toast.makeText(this, "Location permission required to get location", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun displayUvIndex(uvIndex: Int) {
+        textViewUvIndex.text = uvIndex.toString()
+    }
+
+    override fun displayGetUvIndexError() {
+        Toast.makeText(this, "Getting UV index failed", Toast.LENGTH_SHORT).show()
     }
 
     inner class CustomLocationCallback : LocationCallback() {
