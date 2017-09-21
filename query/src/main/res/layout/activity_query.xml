@@ -7,13 +7,16 @@
     tools:context="net.epictimes.uvindex.query.QueryActivity">
 
     <Button
-        android:id="@+id/buttonGetObservationsByLocation"
+        android:id="@+id/buttonGetStarted"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Get observations by My Location"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:text="@string/get_started"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

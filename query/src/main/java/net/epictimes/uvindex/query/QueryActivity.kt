@@ -54,9 +54,15 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_query)
 
-        buttonGetObservationsByLocation.setOnClickListener { requestLocationUpdatesWithPermissionCheck() }
+        buttonGetStarted.setOnClickListener {
+            viewState.location?.let {
+                presenter.getUvIndex(it.latitude, it.longitude, null, null)
+            } ?: run {
+                requestLocationUpdatesWithPermissionCheck()
+            }
+        }
 
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        requestLocationUpdatesWithPermissionCheck()
     }
 
     @SuppressLint("NeedOnRequestPermissionsResult")
@@ -77,6 +83,7 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
             fastestInterval = LOCATION_INTERVAL
         }
 
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         fusedLocationClient.requestLocationUpdates(locationRequest, CustomLocationCallback(), null)
     }
 
@@ -86,12 +93,12 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
     }
 
     inner class CustomLocationCallback : LocationCallback() {
-        override fun onLocationResult(p0: LocationResult?) {
-            super.onLocationResult(p0)
+        override fun onLocationResult(locationResult: LocationResult?) {
+            super.onLocationResult(locationResult)
 
-            p0?.locations?.last()?.let {
+            locationResult?.locations?.last()?.let {
                 fusedLocationClient.removeLocationUpdates(this)
-                presenter.getUvIndex(it.latitude, it.longitude, null, null)
+                viewState.location = it
             }
         }
     }
