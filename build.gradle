@@ -22,8 +22,7 @@ buildscript {
             'leakCanary': '1.5.1',
             'mosby': '3.0.4',
             'retrofit': '2.3.0',
-            'persmissionsDispatcher': '2.3.2',
-            'icePick': '3.2.0'
+            'persmissionsDispatcher': '3.0.1'
     ]
 
     ext.deps = [
@@ -71,15 +70,12 @@ buildscript {
                     'base': "com.squareup.retrofit2:retrofit:${versions.retrofit}",
                     'gson': "com.squareup.retrofit2:converter-gson:${versions.retrofit}"
             ],
-            'persmissionsDispatcher': [
+            'permissionsDispatcher': [
                     'runtime': "com.github.hotchemi:permissionsdispatcher:${versions.persmissionsDispatcher}",
                     'compiler': "com.github.hotchemi:permissionsdispatcher-processor:${versions.persmissionsDispatcher}",
             ],
-            'icePick': [
-                    'runtime': "frankiesardo:icepick:${versions.icePick}",
-                    'compiler': "frankiesardo:icepick-processor:${versions.icePick}",
-            ],
             'instantApps': "com.google.android.instantapps:instantapps:1.0.0",
+            'googlePlayLocation': "com.google.android.gms:play-services-location:11.4.0",
             'junit': "junit:junit:4.12",
             'timber': 'com.jakewharton.timber:timber:4.5.1',
             'glide': 'com.github.bumptech.glide:glide:3.7.0',

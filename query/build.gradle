@@ -38,5 +38,12 @@ dependencies {
     api deps.daggerAndroid.runtime
     kapt deps.daggerAndroid.compiler
 
+    // Permissions Dispatcher
+    implementation(deps.permissionsDispatcher.runtime) {
+        // if you don't use android.app.Fragment you can exclude support for them
+        exclude module: "support-v13"
+    }
+    kapt deps.permissionsDispatcher.compiler
+
     testImplementation deps.junit
 }
