@@ -33,6 +33,9 @@ dependencies {
     // Support
     api deps.support.appCompat
 
+    // Play Services
+    api deps.googlePlayLocation
+
     // Dagger 2
     api deps.dagger.runtime
     kapt deps.dagger.compiler
