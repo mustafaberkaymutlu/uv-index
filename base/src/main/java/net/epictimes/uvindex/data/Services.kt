@@ -12,8 +12,8 @@ interface Services {
     }
 
     @GET("/v2.0/current")
-    fun getObservationByLatLon(@Query("lat") latitude: String,
-                               @Query("lon") longitude: String,
+    fun getObservationByLatLon(@Query("lat") latitude: Double,
+                               @Query("lon") longitude: Double,
                                @Query("lang") language: String?,
                                @Query("units") units: String?): Call<GetObservationResponse>
 

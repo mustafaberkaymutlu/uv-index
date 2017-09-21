@@ -10,7 +10,7 @@ import retrofit2.Response
 
 class QueryPresenter constructor(private val services: Services) : MvpBasePresenter<QueryView>() {
 
-    fun getUvIndex(latitude: String, longitude: String, language: String?, units: String?){
+    fun getUvIndex(latitude: Double, longitude: Double, language: String?, units: String?){
         services.getObservationByLatLon(latitude, longitude, language, units)
                 .enqueue(object : Callback<GetObservationResponse>{
                     override fun onResponse(call: Call<GetObservationResponse>?, response: Response<GetObservationResponse>?) {
