@@ -93,7 +93,7 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
 
     @OnPermissionDenied(Manifest.permission.ACCESS_COARSE_LOCATION)
     fun onLocationPermissionDenied() {
-        Toast.makeText(this, "Location permission required to get location", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, R.string.error_required_location_permission_, Toast.LENGTH_SHORT).show()
     }
 
     override fun displayUvIndex(uvIndex: Int) {
@@ -101,7 +101,7 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
     }
 
     override fun displayGetUvIndexError() {
-        Toast.makeText(this, "Getting UV index failed", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, R.string.error_getting_uv_index, Toast.LENGTH_SHORT).show()
     }
 
     inner class CustomLocationCallback : LocationCallback() {
