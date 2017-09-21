@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="net.epictimes.uvindex.query.QueryActivity"
-    tools:layout_editor_absoluteX="0dp"
-    tools:layout_editor_absoluteY="81dp">
+    android:background="@color/primary"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context="net.epictimes.uvindex.query.QueryActivity">
 
     <TextView
         android:id="@+id/textViewUvIndex"
@@ -14,22 +14,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
-        app:layout_constraintBottom_toTopOf="@+id/textViewLocation"
-        app:layout_constraintEnd_toEndOf="@+id/textViewLocation"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="@+id/textViewLocation"
-        tools:text="5" />
+        android:textColor="@android:color/white"
+        android:visibility="invisible"
+        tools:text="5"
+        tools:visibility="visible" />
 
     <TextView
         android:id="@+id/textViewLocation"
+        style="@style/TextAppearance.AppCompat.Body1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
-        app:layout_constraintBottom_toTopOf="@+id/buttonGetStarted"
-        app:layout_constraintEnd_toEndOf="@+id/buttonGetStarted"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="@+id/buttonGetStarted"
-        tools:text="Kadikoy, Turkey" />
+        android:layout_marginBottom="16dp"
+        android:drawablePadding="4dp"
+        android:drawableStart="@drawable/ic_my_location_white_18dp"
+        android:textColor="@android:color/white"
+        android:visibility="invisible"
+        tools:text="Kadikoy, Turkey"
+        tools:visibility="visible" />
 
     <Button
         android:id="@+id/buttonGetStarted"
@@ -37,11 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:text="@string/query_get_started"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:backgroundTint="@color/accent"
+        android:text="@string/query_get_started" />
 
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>

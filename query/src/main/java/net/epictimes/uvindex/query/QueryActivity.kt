@@ -7,6 +7,7 @@ import android.os.Handler
 import android.os.ResultReceiver
 import android.support.annotation.ColorInt
 import android.support.v4.content.ContextCompat
+import android.view.View
 import android.widget.Toast
 import com.google.android.gms.location.*
 import kotlinx.android.synthetic.main.activity_query.*
@@ -93,11 +94,14 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
 
     @OnPermissionDenied(Manifest.permission.ACCESS_COARSE_LOCATION)
     fun onLocationPermissionDenied() {
-        Toast.makeText(this, R.string.error_required_location_permission_, Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, R.string.error_required_location_permission, Toast.LENGTH_SHORT).show()
     }
 
     override fun displayUvIndex(uvIndex: Int) {
-        textViewUvIndex.text = uvIndex.toString()
+        with(textViewUvIndex) {
+            text = uvIndex.toString()
+            visibility = View.VISIBLE
+        }
     }
 
     override fun displayGetUvIndexError() {
@@ -125,13 +129,14 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
 
             @ColorInt
             val textColor: Int = when (resultCode) {
-                FetchAddressIntentService.RESULT_SUCCESS -> R.color.colorPrimary
-                FetchAddressIntentService.RESULT_FAILURE -> R.color.colorPrimaryDark
-                else -> android.R.color.black
+                FetchAddressIntentService.RESULT_SUCCESS -> android.R.color.white
+                FetchAddressIntentService.RESULT_FAILURE -> R.color.accent
+                else -> R.color.accent
             }
 
             with(textViewLocation) {
                 text = result
+                visibility = View.VISIBLE
                 setTextColor(ContextCompat.getColor(this@QueryActivity, textColor))
             }
         }
