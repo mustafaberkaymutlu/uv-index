@@ -1,6 +1,7 @@
 # References: 
 # https://github.com/github/gitignore/blob/master/Android.gitignore
 
+.DS_Store
 
 # Built application files
 *.apk
