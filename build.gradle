@@ -74,7 +74,7 @@ buildscript {
                     'runtime': "com.github.hotchemi:permissionsdispatcher:${versions.persmissionsDispatcher}",
                     'compiler': "com.github.hotchemi:permissionsdispatcher-processor:${versions.persmissionsDispatcher}",
             ],
-            'instantApps': "com.google.android.instantapps:instantapps:1.0.0",
+            'instantApps': "com.google.android.instantapps:instantapps:1.1.0",
             'googlePlayLocation': "com.google.android.gms:play-services-location:11.4.0",
             'junit': "junit:junit:4.12",
             'timber': 'com.jakewharton.timber:timber:4.5.1',
