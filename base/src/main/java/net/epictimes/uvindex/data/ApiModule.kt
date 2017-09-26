@@ -30,9 +30,7 @@ class ApiModule {
                             stethoInterceptor: StethoInterceptor?): OkHttpClient {
         val okHttpClientBuilder = OkHttpClient.Builder()
 
-        if (BuildConfig.DEBUG) {
-            okHttpClientBuilder.addNetworkInterceptor(stethoInterceptor)
-        }
+        stethoInterceptor?.let { okHttpClientBuilder.addNetworkInterceptor(it) }
 
         okHttpClientBuilder.addNetworkInterceptor(defaultInterceptor)
 
