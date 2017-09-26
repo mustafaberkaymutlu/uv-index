@@ -26,7 +26,7 @@ dependencies {
     feature project(':query')
     application project(':app')
 
-    compile deps.kotlin.stdlib
+    api deps.kotlin.stdlib
 
     api deps.instantApps
 
