@@ -1,37 +1,49 @@
-# UV Index
+<p align="center"><img width="200" src="https://github.com/mustafaberkaymutlu/uv-index/raw/master/base/src/main/res/mipmap-xxxhdpi/ic_launcher.png"></p>
 
-A simple ultraviolet index viewer app for demonstrating Instant Apps + Kotlin + Dagger 2 + MVP
+<h1 align="center">UV Index</h1>
+
+<p align="center">A simple ultraviolet index viewer app for demonstrating:<br><i>Instant Apps + Kotlin + Dagger + MVP</i></p>
+
+<p align="center">
+  <a href="https://travis-ci.org/mustafaberkaymutlu/uv-index"><img src="https://travis-ci.org/mustafaberkaymutlu/uv-index.svg?branch=master" alt="Build Status"></a>
+  <a href="https://github.com/mustafaberkaymutlu/uv-index/blob/master/LICENSE"><img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="License"></a>
+</p>
+
+
+## Built With
+* [Weatherbit](https://www.weatherbit.io/)  as weather API
+* [Android Instant Apps](https://developer.android.com/topic/instant-apps/index.html)
+* [Kotlin](https://kotlinlang.org/)
+* [Mosby](https://github.com/sockeqwe/mosby) for MVP
+* [Dagger 2](https://google.github.io/dagger/) for Dependency Injection
+* [Retrofit](https://github.com/square/retrofit) for HTTP client
+* [PermissionsDispatcher](https://github.com/permissions-dispatcher/PermissionsDispatcher) for Runtime Permissions
+* [Timber](https://github.com/JakeWharton/timber) for logging
+* [Stetho](https://github.com/facebook/stetho) for network inspection
 
 ## Getting Started
 
 ### Prerequisites
-
 - Android Studio 3.0 Beta 6
+- Android SDK 26
+- Build Tools 26.0.1
 
-### Running the App
+### Getting Started with Development
+- Install prerequisites
+- Clone the repo
+- Start coding!
 
-A step by step series of examples that tell you have to get a development env running
-
+### To Update the Weatherbit API Key
 - Sign up to [Weatherbit](https://www.weatherbit.io/) (they also have a free plan)
 - Get your API key
-- Put your API key to the `data.Services.API_KEY` constant inside the `base` module
+- Put your API key to the `data.Services.API_KEY` constant inside the `:base` module
 
-That's it. You should be able to run the project. 
-
-# TODO
-
-* Get `AndroidInjection` in Dagger 2 working
+## TODO
+* Get `AndroidInjection` for Dagger working inside `:query` module
 * Referencing `:base` module's colors inside `:query` module fails after rebuilding
-
-## Built With
-
-* [Android Instant Apps](https://developer.android.com/topic/instant-apps/index.html)
-* Kotlin
-* [Mosby](https://github.com/sockeqwe/mosby) for MVP
-* [Dagger 2](https://google.github.io/dagger/) for Dependency Injection
+* Add Crashlytics and enable `CrashReportingTree`
 
 ## License
-
     Copyright 2017 Mustafa Berkay Mutlu.
 
     Licensed under the Apache License, Version 2.0 (the "License");
