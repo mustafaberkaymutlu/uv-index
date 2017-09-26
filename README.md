@@ -21,6 +21,7 @@ That's it. You should be able to run the project.
 # TODO
 
 * Get `AndroidInjection` in Dagger 2 working
+* Referencing `:base` module's colors inside `:query` module fails after rebuilding
 
 ## Built With
 

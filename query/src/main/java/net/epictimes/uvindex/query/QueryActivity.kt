@@ -129,9 +129,9 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
 
             @ColorInt
             val textColor: Int = when (resultCode) {
-                FetchAddressIntentService.RESULT_SUCCESS -> android.R.color.white
-                FetchAddressIntentService.RESULT_FAILURE -> R.color.accent
-                else -> R.color.accent
+                FetchAddressIntentService.RESULT_SUCCESS -> R.color.query_location_success_text
+                FetchAddressIntentService.RESULT_FAILURE -> R.color.query_location_fail_text
+                else -> R.color.query_location_fail_text
             }
 
             with(textViewLocation) {
