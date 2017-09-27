@@ -6,6 +6,7 @@
 
 <p align="center">
   <a href="https://travis-ci.org/mustafaberkaymutlu/uv-index"><img src="https://travis-ci.org/mustafaberkaymutlu/uv-index.svg?branch=master" alt="Build Status"></a>
+  <a href="https://github.com/KotlinBy/awesome-kotlin"><img src="https://kotlin.link/awesome-kotlin.svg" alt="Awesome Kotlin Badge"></a>
   <a href="https://github.com/mustafaberkaymutlu/uv-index/blob/master/LICENSE"><img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="License"></a>
 </p>
 
