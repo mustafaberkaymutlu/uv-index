@@ -5,61 +5,7 @@
     android:viewportWidth="108.0">
 
     <path
-        android:fillColor="#ffccbc"
+        android:fillColor="@color/primary"
         android:pathData="M-1,0h110v120h-110z" />
 
-    <path
-        android:fillColor="@color/primary"
-        android:pathData="M40,40l40,-40l-20,0l-20,20z" />
-    <path
-        android:fillColor="@color/primary"
-        android:pathData="M80,40l0,-20l-20,20z" />
-    <path
-        android:fillColor="@color/primary"
-        android:pathData="M0,40l40,-40l-20,0l-20,20z" />
-    <path
-        android:fillColor="@color/primary"
-        android:pathData="M40,40l0,-20l-20,20z" />
-    <path
-        android:fillColor="@color/primary"
-        android:pathData="M80,40l40,-40l-20,0l-20,20z" />
-    <path
-        android:fillColor="@color/primary"
-        android:pathData="M120,40l0,-20l-20,20z" />
-    <path
-        android:fillColor="@color/primary"
-        android:pathData="M0,80l40,-40l-20,0l-20,20z" />
-    <path
-        android:fillColor="@color/primary"
-        android:pathData="M40,80l0,-20l-20,20z" />
-    <path
-        android:fillColor="@color/primary"
-        android:pathData="M40,80l40,-40l-20,0l-20,20z" />
-    <path
-        android:fillColor="@color/primary"
-        android:pathData="M80,80l0,-20l-20,20z" />
-    <path
-        android:fillColor="@color/primary"
-        android:pathData="M80,80l40,-40l-20,0l-20,20z" />
-    <path
-        android:fillColor="@color/primary"
-        android:pathData="M120,80l0,-20l-20,20z" />
-    <path
-        android:fillColor="@color/primary"
-        android:pathData="M0,120l40,-40l-20,0l-20,20z" />
-    <path
-        android:fillColor="@color/primary"
-        android:pathData="M40,120l0,-20l-20,20z" />
-    <path
-        android:fillColor="@color/primary"
-        android:pathData="M40,120l40,-40l-20,0l-20,20z" />
-    <path
-        android:fillColor="@color/primary"
-        android:pathData="M80,120l0,-20l-20,20z" />
-    <path
-        android:fillColor="@color/primary"
-        android:pathData="M80,120l40,-40l-20,0l-20,20z" />
-    <path
-        android:fillColor="@color/primary"
-        android:pathData="M120,120l0,-20l-20,20z" />
 </vector>
