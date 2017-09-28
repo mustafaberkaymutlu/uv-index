@@ -11,6 +11,10 @@ class QueryPresenter constructor(private val currentInteractor: CurrentInteracto
         currentInteractor.getCurrent(latitude, longitude, language, units, this)
     }
 
+    fun getPlaceAutoCompleteFailed() {
+        view.displayGetAutoCompletePlaceError()
+    }
+
     override fun onSuccessGetCurrent(weather: Weather) {
         if (isViewAttached) {
             weather.uvIndex?.let {

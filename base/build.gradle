@@ -60,8 +60,10 @@ dependencies {
     // Support
     api deps.support.appCompat
 
-    // Play Services
-    api deps.googlePlayLocation
+    // TODO Move Google Play Services out of base
+    // investigate "resource integer/google_play_services_version not found" error
+    api deps.googlePlayServices.location
+    api deps.googlePlayServices.places
 
     // Dagger 2
     api deps.dagger.runtime

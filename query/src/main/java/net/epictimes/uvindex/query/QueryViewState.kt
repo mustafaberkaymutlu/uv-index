@@ -1,15 +1,15 @@
 package net.epictimes.uvindex.query
 
-import android.location.Location
 import android.os.Bundle
 import com.hannesdorfmann.mosby3.mvp.viewstate.RestorableViewState
+import net.epictimes.uvindex.data.model.LatLng
 
 class QueryViewState : RestorableViewState<QueryView> {
     companion object {
         val KEY_LOCATION = "location"
     }
 
-    var location: Location? = null
+    var location: LatLng? = null
 
     override fun saveInstanceState(out: Bundle) {
         out.putParcelable(KEY_LOCATION, location)

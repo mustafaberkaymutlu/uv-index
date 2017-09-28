@@ -8,4 +8,6 @@ interface QueryView : MvpView {
 
     fun displayGetUvIndexError()
 
+    fun displayGetAutoCompletePlaceError()
+
 }

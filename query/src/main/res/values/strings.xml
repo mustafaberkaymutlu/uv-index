@@ -1,12 +1,15 @@
 <resources>
     <string name="query_get_started">Get Started</string>
 
+    <string name="location_unknown">Location unknown</string>
+
     <string name="address_service_not_available">Service not available</string>
     <string name="address_service_invalid_coordinates">Invalid coordinates</string>
     <string name="address_service_no_address_found">No address found</string>
     <string name="address_service_address_found">Address found</string>
 
     <string name="error_getting_uv_index">Getting UV index failed</string>
+    <string name="error_getting_autocomplete_place">Getting location failed</string>
     <string name="error_required_location_permission">Location permission required to get location</string>
 
 </resources>
