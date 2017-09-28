@@ -41,7 +41,6 @@
 
 ## TODO
 * Get `AndroidInjection` for Dagger working inside `:query` module
-* Referencing `:base` module's colors inside `:query` module fails after rebuilding
 * Add Crashlytics and enable `CrashReportingTree`
 
 ## License
