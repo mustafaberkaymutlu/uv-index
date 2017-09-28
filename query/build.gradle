@@ -45,6 +45,18 @@ android {
             signingConfig signingConfigs.debugKey
         }
     }
+
+    productFlavors {
+        flavorDimensions 'environment'
+
+        develop {
+            dimension 'environment'
+        }
+
+        production {
+            dimension 'environment'
+        }
+    }
 }
 
 dependencies {

@@ -1,5 +1,19 @@
 apply plugin: 'com.android.instantapp'
 
+android {
+    productFlavors {
+        flavorDimensions 'environment'
+
+        develop {
+            dimension 'environment'
+        }
+
+        production {
+            dimension 'environment'
+        }
+    }
+}
+
 dependencies {
     implementation project(':query')
     implementation project(':base')
