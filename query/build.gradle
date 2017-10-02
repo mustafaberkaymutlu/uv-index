@@ -65,11 +65,9 @@ dependencies {
     implementation project(':base')
 
     // Dagger 2
-    api deps.dagger.runtime
     kapt deps.dagger.compiler
 
     // Dagger.Android
-    api deps.daggerAndroid.runtime
     kapt deps.daggerAndroid.compiler
 
     // Permissions Dispatcher
