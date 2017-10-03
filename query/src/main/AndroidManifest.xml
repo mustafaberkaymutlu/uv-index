@@ -4,7 +4,7 @@
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
-    <application>
+    <application android:name=".QueryApplication">
         <activity android:name=".QueryActivity">
             <intent-filter android:order="1">
                 <action android:name="android.intent.action.VIEW" />

@@ -15,8 +15,8 @@ import com.google.android.gms.common.GooglePlayServicesNotAvailableException
 import com.google.android.gms.common.GooglePlayServicesRepairableException
 import com.google.android.gms.location.*
 import com.google.android.gms.location.places.ui.PlaceAutocomplete
+import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_query.*
-import net.epictimes.uvindex.BaseApplication
 import net.epictimes.uvindex.data.model.LatLng
 import net.epictimes.uvindex.ui.BaseViewStateActivity
 import permissions.dispatcher.NeedsPermission
@@ -40,30 +40,16 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
     @Inject
     lateinit var queryViewState: QueryViewState
 
-    override fun createViewState(): QueryViewState {
-        return queryViewState
-    }
+    override fun createViewState(): QueryViewState = queryViewState
 
-    override fun createPresenter(): QueryPresenter {
-        return queryPresenter
-    }
+    override fun createPresenter(): QueryPresenter = queryPresenter
 
     override fun onNewViewStateInstance() {
         // no-op
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-//        AndroidInjection.inject(this)
-
-        // TODO use AndroidInjection
-
-        DaggerQueryComponent.builder()
-                .application(application as BaseApplication)
-                .singletonComponent((application as BaseApplication).singletonComponent)
-                .queryActivityModule(QueryActivityModule())
-                .build()
-                .inject(this)
-
+        AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_query)
 

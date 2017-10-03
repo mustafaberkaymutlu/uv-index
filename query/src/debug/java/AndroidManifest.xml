@@ -4,7 +4,7 @@
     package="net.epictimes.uvindex">
 
     <application
-        android:name=".BaseDebugApplication"
+        android:name=".QueryDebugApplication"
         tools:replace="name" />
 
 </manifest>
