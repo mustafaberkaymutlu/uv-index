@@ -27,8 +27,8 @@
         android:layout_marginBottom="16dp"
         android:drawablePadding="4dp"
         android:drawableStart="@drawable/ic_my_location_white_18dp"
+        android:text="@string/location_unknown"
         android:textColor="@android:color/white"
-        android:visibility="invisible"
         tools:text="Kadikoy, Turkey"
         tools:visibility="visible" />
 

@@ -21,6 +21,8 @@
 * [PermissionsDispatcher](https://github.com/permissions-dispatcher/PermissionsDispatcher) for Runtime Permissions
 * [Timber](https://github.com/JakeWharton/timber) for logging
 * [Stetho](https://github.com/facebook/stetho) for network inspection
+* [Google Places API](https://developers.google.com/places/android-api/autocomplete) for keyboard location input
+* Google Location API for receiving user's location
 
 ## Getting Started
 
@@ -42,6 +44,7 @@
 ## TODO
 * Get `AndroidInjection` for Dagger working inside `:query` module
 * Add Crashlytics and enable `CrashReportingTree`
+* Move Google Play APIs from `:base` module to `:query` module
 
 ## License
     Copyright 2017 Mustafa Berkay Mutlu.

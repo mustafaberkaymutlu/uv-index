@@ -2,6 +2,8 @@ package net.epictimes.uvindex.query
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.ActivityNotFoundException
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.ResultReceiver
@@ -9,13 +11,18 @@ import android.support.annotation.ColorInt
 import android.support.v4.content.ContextCompat
 import android.view.View
 import android.widget.Toast
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException
+import com.google.android.gms.common.GooglePlayServicesRepairableException
 import com.google.android.gms.location.*
+import com.google.android.gms.location.places.ui.PlaceAutocomplete
 import kotlinx.android.synthetic.main.activity_query.*
 import net.epictimes.uvindex.BaseApplication
+import net.epictimes.uvindex.data.model.LatLng
 import net.epictimes.uvindex.ui.BaseViewStateActivity
 import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.OnPermissionDenied
 import permissions.dispatcher.RuntimePermissions
+import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -23,6 +30,7 @@ import javax.inject.Inject
 class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryViewState>(), QueryView {
 
     private val LOCATION_INTERVAL: Long = 10000
+    private val PLACE_AUTOCOMPLETE_REQUEST_CODE = 1
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
@@ -67,7 +75,33 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
             }
         }
 
+        textViewLocation.setOnClickListener { startPlacesAutoCompleteActivity() }
+
         requestLocationUpdatesWithPermissionCheck()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
+            when (resultCode) {
+                RESULT_OK -> {
+                    val place = PlaceAutocomplete.getPlace(this, data)
+                    viewState.location = LatLng(place.latLng.latitude, place.latLng.longitude)
+                    textViewLocation.text = place.address
+                    presenter.getUvIndex(place.latLng.latitude, place.latLng.longitude, null, null)
+                    Timber.i("Place search operation succeed with place: " + place.name)
+                }
+                PlaceAutocomplete.RESULT_ERROR -> {
+                    val status = PlaceAutocomplete.getStatus(this, data)
+                    presenter.getPlaceAutoCompleteFailed()
+                    Timber.i("Place search operation failed with message: ${status.statusMessage}")
+                }
+                RESULT_CANCELED -> {
+                    Timber.i("The user canceled the place search operation.")
+                }
+            }
+        }
     }
 
     @SuppressLint("NeedOnRequestPermissionsResult")
@@ -108,13 +142,33 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
         Toast.makeText(this, R.string.error_getting_uv_index, Toast.LENGTH_SHORT).show()
     }
 
+    override fun displayGetAutoCompletePlaceError() {
+        Toast.makeText(this, R.string.error_getting_autocomplete_place, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun startPlacesAutoCompleteActivity() {
+        try {
+            val intent = PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN).build(this)
+            startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE)
+        } catch (e: ActivityNotFoundException) {
+            Timber.e(e)
+            presenter.getPlaceAutoCompleteFailed()
+        } catch (e: GooglePlayServicesRepairableException) {
+            Timber.e(e)
+            presenter.getPlaceAutoCompleteFailed()
+        } catch (e: GooglePlayServicesNotAvailableException) {
+            Timber.e(e)
+            presenter.getPlaceAutoCompleteFailed()
+        }
+    }
+
     inner class CustomLocationCallback : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult?) {
             super.onLocationResult(locationResult)
 
             locationResult?.locations?.last()?.let {
                 fusedLocationClient.removeLocationUpdates(this)
-                viewState.location = it
+                viewState.location = LatLng(it.latitude, it.longitude)
                 FetchAddressIntentService.startIntentService(this@QueryActivity, AddressResultReceiver(), it)
             }
         }
@@ -136,7 +190,6 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
 
             with(textViewLocation) {
                 text = result
-                visibility = View.VISIBLE
                 setTextColor(ContextCompat.getColor(this@QueryActivity, textColor))
             }
         }

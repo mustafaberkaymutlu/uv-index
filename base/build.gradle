@@ -15,9 +15,36 @@ android {
     }
 
     buildTypes {
-        release {
+        debug {
+            debuggable true
+            zipAlignEnabled false
             minifyEnabled false
+            useProguard true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        release {
+            debuggable false
+            zipAlignEnabled true
+            minifyEnabled true
+            useProguard true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    productFlavors {
+        flavorDimensions 'environment'
+
+        develop {
+            dimension 'environment'
+
+            resValue 'string', 'google_places_api_key', "AIzaSyBe4QxDGWtZ-1SQ2hU1PArg26gM0LElNXE"
+        }
+
+        production {
+            dimension 'environment'
+
+            resValue 'string', 'google_places_api_key', "AIzaSyBo2HYsR9n8PYO2xrRYrrlqyE3S3VfZjd0"
         }
     }
 }
@@ -33,8 +60,10 @@ dependencies {
     // Support
     api deps.support.appCompat
 
-    // Play Services
-    api deps.googlePlayLocation
+    // TODO Move Google Play Services out of base
+    // investigate "resource integer/google_play_services_version not found" error
+    api deps.googlePlayServices.location
+    api deps.googlePlayServices.places
 
     // Dagger 2
     api deps.dagger.runtime
