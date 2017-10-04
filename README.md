@@ -42,7 +42,6 @@
 - Put your API key to the `data.Services.API_KEY` constant inside the `:base` module
 
 ## TODO
-* Get `AndroidInjection` for Dagger working inside `:query` module
 * Add Crashlytics and enable `CrashReportingTree`
 * Move Google Play APIs from `:base` module to `:query` module
 
