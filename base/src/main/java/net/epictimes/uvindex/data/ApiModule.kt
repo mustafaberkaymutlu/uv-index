@@ -7,15 +7,17 @@ import net.epictimes.uvindex.BuildConfig
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Singleton
 
 @Module
 class ApiModule {
 
+    @Singleton
     @Provides
-    internal fun provideServices(retrofit: Retrofit): Services {
-        return retrofit.create(Services::class.java)
-    }
+    internal fun provideServices(retrofit: Retrofit): Services =
+            retrofit.create(Services::class.java)
 
+    @Singleton
     @Provides
     internal fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
@@ -25,6 +27,7 @@ class ApiModule {
                 .build()
     }
 
+    @Singleton
     @Provides
     fun provideOkHttpClient(defaultInterceptor: DefaultInterceptor,
                             stethoInterceptor: StethoInterceptor?): OkHttpClient {
@@ -37,14 +40,13 @@ class ApiModule {
         return okHttpClientBuilder.build()
     }
 
+    @Singleton
     @Provides
-    fun provideDefaultInterceptor(): DefaultInterceptor {
-        return DefaultInterceptor()
-    }
+    fun provideDefaultInterceptor(): DefaultInterceptor = DefaultInterceptor()
 
+    @Singleton
     @Provides
-    fun provideStethoInterceptor(): StethoInterceptor? {
-        return if (BuildConfig.DEBUG) StethoInterceptor() else null
-    }
+    fun provideStethoInterceptor(): StethoInterceptor? =
+            if (BuildConfig.DEBUG) StethoInterceptor() else null
 
 }

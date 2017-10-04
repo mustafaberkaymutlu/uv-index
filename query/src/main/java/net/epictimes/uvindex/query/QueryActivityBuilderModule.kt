@@ -2,11 +2,13 @@ package net.epictimes.uvindex.query
 
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
+import net.epictimes.uvindex.di.ActivityScoped
 
 @Module
 abstract class QueryActivityBuilderModule {
 
+    @ActivityScoped
     @ContributesAndroidInjector(modules = arrayOf(QueryActivityModule::class))
-    internal abstract fun contributeQueryActivityInjector(): QueryActivity
+    abstract fun contributeQueryActivityInjector(): QueryActivity
 
 }

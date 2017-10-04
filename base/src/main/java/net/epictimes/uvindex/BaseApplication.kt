@@ -1,22 +1,14 @@
 package net.epictimes.uvindex
 
-import android.app.Activity
 import android.app.Application
 import com.facebook.stetho.Stetho
-import dagger.android.AndroidInjector
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasActivityInjector
 import net.epictimes.uvindex.data.ApiModule
 import net.epictimes.uvindex.di.DaggerSingletonComponent
 import net.epictimes.uvindex.di.SingletonComponent
 import net.epictimes.uvindex.di.SingletonModule
 import timber.log.Timber
-import javax.inject.Inject
 
-open class BaseApplication : Application(), HasActivityInjector {
-
-    @Inject
-    lateinit var activityDispatchingAndroidInjector: DispatchingAndroidInjector<Activity>
+abstract class BaseApplication : Application() {
 
     lateinit var singletonComponent: SingletonComponent
 
@@ -34,7 +26,7 @@ open class BaseApplication : Application(), HasActivityInjector {
         Timber.plant(CrashReportingTree())
     }
 
-    private fun initDagger() {
+    open fun initDagger() {
         singletonComponent = DaggerSingletonComponent.builder()
                 .application(this)
                 .singletonModule(SingletonModule())
@@ -42,9 +34,5 @@ open class BaseApplication : Application(), HasActivityInjector {
                 .build()
 
         singletonComponent.inject(this)
-    }
-
-    override fun activityInjector(): AndroidInjector<Activity> {
-        return activityDispatchingAndroidInjector
     }
 }
