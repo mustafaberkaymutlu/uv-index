@@ -3,20 +3,24 @@ package net.epictimes.uvindex.query
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.ResultReceiver
-import android.support.annotation.ColorInt
 import android.support.v4.content.ContextCompat
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException
 import com.google.android.gms.common.GooglePlayServicesRepairableException
 import com.google.android.gms.location.*
 import com.google.android.gms.location.places.ui.PlaceAutocomplete
+import com.google.android.instantapps.InstantApps
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_query.*
+import net.epictimes.uvindex.Constants
 import net.epictimes.uvindex.data.model.LatLng
 import net.epictimes.uvindex.ui.BaseViewStateActivity
 import permissions.dispatcher.NeedsPermission
@@ -29,8 +33,11 @@ import javax.inject.Inject
 @RuntimePermissions
 class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryViewState>(), QueryView {
 
+    companion object {
+        fun newIntent(context: Context): Intent = Intent(context, QueryActivity::class.java)
+    }
+
     private val LOCATION_INTERVAL: Long = 10000
-    private val PLACE_AUTOCOMPLETE_REQUEST_CODE = 1
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
@@ -45,13 +52,15 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
     override fun createPresenter(): QueryPresenter = queryPresenter
 
     override fun onNewViewStateInstance() {
-        // no-op
+        requestLocationUpdatesWithPermissionCheck()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_query)
+
+        setSupportActionBar(toolbar)
 
         buttonGetStarted.setOnClickListener {
             viewState.location?.let {
@@ -61,15 +70,18 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
             }
         }
 
-        textViewLocation.setOnClickListener { startPlacesAutoCompleteActivity() }
+        textViewLocation.setOnClickListener { presenter.userClickedTextInputButton() }
+    }
 
-        requestLocationUpdatesWithPermissionCheck()
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.query, menu)
+        return true
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
+        if (requestCode == Constants.RequestCodes.PLACE_AUTO_COMPLETE) {
             when (resultCode) {
                 RESULT_OK -> {
                     val place = PlaceAutocomplete.getPlace(this, data)
@@ -88,6 +100,18 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
                 }
             }
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
+        R.id.action_install -> {
+            presenter.userClickedInstallButton()
+            true
+        }
+        R.id.action_about -> {
+            presenter.userClickedAboutButton()
+            true
+        }
+        else -> super.onOptionsItemSelected(item)
     }
 
     @SuppressLint("NeedOnRequestPermissionsResult")
@@ -124,28 +148,63 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
         }
     }
 
+    override fun displayInstallPrompt(requestCode: Int, referrerCode: String) {
+        val isDisplayed = InstantApps.showInstallPrompt(this,
+                newIntent(this),
+                requestCode,
+                referrerCode)
+
+        if (!isDisplayed) {
+            Timber.e("InstantApps#displayInstallPrompt failed.")
+        }
+    }
+
+    override fun displayUserAddress(address: String) {
+        val textColor = ContextCompat.getColor(this, android.R.color.white)
+
+        with(textViewLocation) {
+            text = address
+            setTextColor(textColor)
+        }
+    }
+
+    override fun displayAboutUi() {
+        Toast.makeText(this, "Not implemented", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun startPlacesAutoCompleteUi(requestCode: Int) {
+        try {
+            val intent = PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN).build(this)
+            startActivityForResult(intent, Constants.RequestCodes.PLACE_AUTO_COMPLETE)
+        } catch (e: Exception) {
+            // Kotlin does not support multi-catch yet.
+            when (e) {
+                is ActivityNotFoundException,
+                is GooglePlayServicesRepairableException,
+                is GooglePlayServicesNotAvailableException -> {
+                    Timber.e(e)
+                    presenter.getPlaceAutoCompleteFailed()
+                }
+                else -> throw e
+            }
+        }
+    }
+
+    override fun displayUserAddressFetchError(errorMessage: String) {
+        val textColor = ContextCompat.getColor(this, net.epictimes.uvindex.R.color.accent)
+
+        with(textViewLocation) {
+            text = errorMessage
+            setTextColor(textColor)
+        }
+    }
+
     override fun displayGetUvIndexError() {
         Toast.makeText(this, R.string.error_getting_uv_index, Toast.LENGTH_SHORT).show()
     }
 
     override fun displayGetAutoCompletePlaceError() {
         Toast.makeText(this, R.string.error_getting_autocomplete_place, Toast.LENGTH_SHORT).show()
-    }
-
-    private fun startPlacesAutoCompleteActivity() {
-        try {
-            val intent = PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN).build(this)
-            startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE)
-        } catch (e: ActivityNotFoundException) {
-            Timber.e(e)
-            presenter.getPlaceAutoCompleteFailed()
-        } catch (e: GooglePlayServicesRepairableException) {
-            Timber.e(e)
-            presenter.getPlaceAutoCompleteFailed()
-        } catch (e: GooglePlayServicesNotAvailableException) {
-            Timber.e(e)
-            presenter.getPlaceAutoCompleteFailed()
-        }
     }
 
     inner class CustomLocationCallback : LocationCallback() {
@@ -167,17 +226,7 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
             // Display the address string or an error message sent from the intent service.
             val result: String = resultData.getString(FetchAddressIntentService.KEY_RESULT)
 
-            @ColorInt
-            val textColor: Int = when (resultCode) {
-                FetchAddressIntentService.RESULT_SUCCESS -> android.R.color.white
-                FetchAddressIntentService.RESULT_FAILURE -> net.epictimes.uvindex.R.color.accent
-                else -> net.epictimes.uvindex.R.color.accent
-            }
-
-            with(textViewLocation) {
-                text = result
-                setTextColor(ContextCompat.getColor(this@QueryActivity, textColor))
-            }
+            presenter.userAddressReceived(resultCode, result)
         }
     }
 

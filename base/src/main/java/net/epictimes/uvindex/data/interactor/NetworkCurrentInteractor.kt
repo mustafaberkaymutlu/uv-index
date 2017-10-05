@@ -9,19 +9,19 @@ import retrofit2.Response
 class NetworkCurrentInteractor constructor(private val services: Services) : CurrentInteractor {
 
     override fun getCurrent(latitude: Double, longitude: Double, language: String?, units: String?,
-                            onFinishedListener: CurrentInteractor.OnFinishedListener) {
+                            getCurrentCallback: CurrentInteractor.GetCurrentCallback) {
         services.getObservationByLatLon(latitude, longitude, language, units)
                 .enqueue(object : Callback<GetObservationResponse> {
                     override fun onResponse(call: Call<GetObservationResponse>?, response: Response<GetObservationResponse>?) {
                         response?.body()?.weatherList?.get(0)?.let {
-                            onFinishedListener.onSuccessGetCurrent(it)
+                            getCurrentCallback.onSuccessGetCurrent(it)
                         } ?: run {
-                            onFinishedListener.onFailGetCurrent()
+                            getCurrentCallback.onFailGetCurrent()
                         }
                     }
 
                     override fun onFailure(call: Call<GetObservationResponse>?, t: Throwable?) {
-                        onFinishedListener.onFailGetCurrent()
+                        getCurrentCallback.onFailGetCurrent()
                     }
                 })
     }

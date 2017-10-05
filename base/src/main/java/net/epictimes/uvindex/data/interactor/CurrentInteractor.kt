@@ -4,9 +4,10 @@ import net.epictimes.uvindex.data.model.Weather
 
 interface CurrentInteractor {
 
-    fun getCurrent(latitude: Double, longitude: Double, language: String?, units: String?, onFinishedListener: OnFinishedListener)
+    fun getCurrent(latitude: Double, longitude: Double, language: String?, units: String?,
+                   getCurrentCallback: GetCurrentCallback)
 
-    interface OnFinishedListener {
+    interface GetCurrentCallback {
 
         fun onSuccessGetCurrent(weather: Weather)
 
