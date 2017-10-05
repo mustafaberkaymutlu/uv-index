@@ -25,7 +25,7 @@ class Weather {
 
     // percent
     @SerializedName("rh")
-    var relativeHumidity: Int? = null
+    var relativeHumidity: Double? = null
 
     @SerializedName("dewpt")
     var dewPoint: Double? = null
