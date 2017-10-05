@@ -8,11 +8,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.ResultReceiver
+import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException
 import com.google.android.gms.common.GooglePlayServicesRepairableException
 import com.google.android.gms.location.*
@@ -142,7 +142,7 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
 
     @OnPermissionDenied(Manifest.permission.ACCESS_COARSE_LOCATION)
     fun onLocationPermissionDenied() {
-        Toast.makeText(this, R.string.error_required_location_permission, Toast.LENGTH_SHORT).show()
+        Snackbar.make(coordinatorLayout, R.string.error_required_location_permission, Snackbar.LENGTH_LONG).show()
     }
 
     override fun displayUvIndex(uvIndex: Int) {
@@ -173,7 +173,7 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
     }
 
     override fun displayAboutUi() {
-        Toast.makeText(this, "Not implemented", Toast.LENGTH_SHORT).show()
+        Snackbar.make(coordinatorLayout, "Not implemented", Snackbar.LENGTH_LONG).show()
     }
 
     override fun startPlacesAutoCompleteUi(requestCode: Int) {
@@ -204,11 +204,11 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
     }
 
     override fun displayGetUvIndexError() {
-        Toast.makeText(this, R.string.error_getting_uv_index, Toast.LENGTH_SHORT).show()
+        Snackbar.make(coordinatorLayout, R.string.error_getting_uv_index, Snackbar.LENGTH_LONG).show()
     }
 
     override fun displayGetAutoCompletePlaceError() {
-        Toast.makeText(this, R.string.error_getting_autocomplete_place, Toast.LENGTH_SHORT).show()
+        Snackbar.make(coordinatorLayout, R.string.error_getting_autocomplete_place, Snackbar.LENGTH_LONG).show()
     }
 
     inner class CustomLocationCallback : LocationCallback() {
