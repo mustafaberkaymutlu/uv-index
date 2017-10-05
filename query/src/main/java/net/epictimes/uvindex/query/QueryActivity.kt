@@ -75,6 +75,10 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.query, menu)
+
+        val menuItemInstall = menu.findItem(R.id.action_install)
+        menuItemInstall.isVisible = InstantApps.isInstantApp(this)
+
         return true
     }
 
