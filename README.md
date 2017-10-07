@@ -27,9 +27,9 @@
 ## Getting Started
 
 ### Prerequisites
-- Android Studio 3.0 Beta 6
+- Android Studio 3.0 Beta 7
 - Android SDK 26
-- Build Tools 26.0.1
+- Build Tools 26.0.2
 
 ### Getting Started with Development
 - Install prerequisites
