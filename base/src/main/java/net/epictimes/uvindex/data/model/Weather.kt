@@ -1,6 +1,7 @@
 package net.epictimes.uvindex.data.model
 
 import com.google.gson.annotations.SerializedName
+import java.util.*
 
 
 class Weather {
@@ -84,11 +85,11 @@ class Weather {
 
     // format: YYYY-MM-DD:HH
     @SerializedName("datetime")
-    var datetime: String? = null
+    var datetime: Date? = null
 
     // default to mm
     @SerializedName("precip")
-    var precipitation: Int? = null
+    var precipitation: Double? = null
 
     // format: HH:MM
     @SerializedName("sunset")
