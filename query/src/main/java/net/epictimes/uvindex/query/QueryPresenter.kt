@@ -30,7 +30,7 @@ class QueryPresenter constructor(private val currentInteractor: CurrentInteracto
     }
 
     fun userClickedInstallButton() {
-        view.displayInstallPrompt(Constants.RequestCodes.FROM_QUERY_FEATURE,
+        view.displayInstallPrompt(Constants.RequestCodes.INSTALL_FROM_QUERY_FEATURE,
                 Constants.ReferrerCodes.FROM_QUERY_FEATURE)
     }
 
