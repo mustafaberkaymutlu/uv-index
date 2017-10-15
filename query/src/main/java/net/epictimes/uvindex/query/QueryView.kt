@@ -20,5 +20,8 @@ interface QueryView : MvpView {
     fun displayUserAddress(address: String)
 
     fun displayUserAddressFetchError(errorMessage: String)
+
+    fun displayCantDetectLocationError()
+
     fun startPlacesAutoCompleteUi(requestCode: Int)
 }

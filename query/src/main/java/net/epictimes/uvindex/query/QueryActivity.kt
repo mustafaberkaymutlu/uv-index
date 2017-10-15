@@ -7,14 +7,18 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
 import android.graphics.Color
+import android.graphics.Typeface
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.os.ResultReceiver
 import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
+import android.text.SpannableString
+import android.text.style.StyleSpan
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import com.github.mikephil.charting.components.Description
 import com.github.mikephil.charting.data.Entry
@@ -88,16 +92,6 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
         setSupportActionBar(toolbar)
 
         styleLineChart()
-
-        buttonGetStarted.setOnClickListener {
-            viewState.location?.let {
-                presenter.getForecastUvIndex(it.latitude, it.longitude, null, null)
-            } ?: run {
-                requestLocationUpdatesWithPermissionCheck()
-            }
-        }
-
-        textViewLocation.setOnClickListener { presenter.userClickedTextInputButton() }
     }
 
     override fun onResume() {
@@ -135,14 +129,17 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
                         locationSearchState = QueryViewState.LocationSearchState.Idle
                     }
 
-                    textViewLocation.text = place.address
+                    presenter.userAddressReceived(FetchAddressIntentService.RESULT_SUCCESS, place.address.toString())
                     presenter.getForecastUvIndex(place.latLng.latitude, place.latLng.longitude, null, null)
+
                     Timber.i("Place search operation succeed with place: " + place.name)
                 }
                 PlaceAutocomplete.RESULT_ERROR -> {
                     viewState.locationSearchState = QueryViewState.LocationSearchState.Idle
                     val status = PlaceAutocomplete.getStatus(this, data)
                     presenter.getPlaceAutoCompleteFailed()
+                    presenter.userAddressReceived(FetchAddressIntentService.RESULT_FAILURE,
+                            status.statusMessage ?: getString(R.string.location_unknown))
                     Timber.i("Place search operation failed with message: ${status.statusMessage}")
                 }
                 RESULT_CANCELED -> {
@@ -159,12 +156,21 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
                 RESULT_CANCELED -> {
                     Timber.i("User chose not to make required location settings changes.")
                     viewState.locationSearchState = QueryViewState.LocationSearchState.Idle
+                    presenter.userDidNotWantToChangeLocationSettings()
                 }
             }
         }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
+        R.id.action_use_location -> {
+            requestLocationUpdatesWithPermissionCheck()
+            true
+        }
+        R.id.action_type_address -> {
+            presenter.userClickedTextInputButton()
+            true
+        }
         R.id.action_install -> {
             presenter.userClickedInstallButton()
             true
@@ -289,6 +295,9 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
 
         textViewRecommendedProtection.setText(recommendedProtection)
         textViewInfo.setText(info)
+
+        Arrays.asList(cardViewForecast, cardViewProtection, cardViewNotes)
+                .forEach { it.visibility = View.VISIBLE }
     }
 
     override fun displayUvIndexForecast(uvIndexForecast: List<Weather>) {
@@ -327,6 +336,7 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
         with(textViewLocation) {
             text = address
             setTextColor(textColor)
+            setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_my_location_grey_18dp, 0, 0, 0)
         }
     }
 
@@ -355,10 +365,18 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
     override fun displayUserAddressFetchError(errorMessage: String) {
         val textColor = ContextCompat.getColor(this, net.epictimes.uvindex.R.color.accent)
 
+        val spannedMessage = SpannableString(errorMessage)
+        spannedMessage.setSpan(StyleSpan(Typeface.ITALIC), 0, errorMessage.length, 0)
+
         with(textViewLocation) {
-            text = errorMessage
+            text = spannedMessage
             setTextColor(textColor)
+            setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
         }
+    }
+
+    override fun displayCantDetectLocationError() {
+        Snackbar.make(coordinatorLayout, R.string.error_can_not_detect_location, Snackbar.LENGTH_LONG).show()
     }
 
     override fun displayGetUvIndexError() {

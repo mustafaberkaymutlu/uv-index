@@ -1,6 +1,5 @@
 <resources>
-    <string name="query_get_started">Get Started</string>
-
+    <string name="forecast">Forecast</string>
     <string name="location_unknown">Location unknown</string>
     <string name="recommended_protection">Recommended Protection</string>
     <string name="cautionary_notes_title">Cautionary Notes</string>
@@ -12,9 +11,13 @@
     <string name="address_service_address_found">Address found</string>
 
     <string name="error_getting_uv_index">Getting UV index failed</string>
+    <string name="error_can_not_detect_location">Can\'t detect location</string>
     <string name="error_getting_autocomplete_place">Getting location failed</string>
     <string name="error_required_location_permission">Location permission is required to get location</string>
 
+    <string name="action_change_location">Change Location</string>
+    <string name="action_type_address">Type Address</string>
+    <string name="action_use_location">Use Location</string>
     <string name="action_about">About</string>
     <string name="action_install">Install</string>
 

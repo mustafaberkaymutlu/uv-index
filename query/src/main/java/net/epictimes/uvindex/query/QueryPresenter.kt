@@ -48,6 +48,10 @@ class QueryPresenter constructor(private val weatherInteractor: WeatherInteracto
         view.startPlacesAutoCompleteUi(Constants.RequestCodes.PLACE_AUTO_COMPLETE)
     }
 
+    fun userDidNotWantToChangeLocationSettings(){
+        view.displayCantDetectLocationError()
+    }
+
     fun userAddressReceived(resultCode: Int, result: String) {
         if (resultCode == FetchAddressIntentService.RESULT_SUCCESS) view.displayUserAddress(result)
         else view.displayUserAddressFetchError(result)
