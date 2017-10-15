@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_change_location"
+        android:enabled="true"
+        android:title="@string/action_change_location"
+        android:visible="true"
+        app:showAsAction="ifRoom|withText">
+
+        <menu>
+            <item
+                android:id="@+id/action_use_location"
+                android:enabled="true"
+                android:title="@string/action_use_location"
+                android:visible="true"
+                app:showAsAction="ifRoom|withText" />
+
+            <item
+                android:id="@+id/action_type_address"
+                android:enabled="true"
+                android:title="@string/action_type_address"
+                android:visible="true"
+                app:showAsAction="ifRoom|withText" />
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/action_install"
+        android:enabled="true"
+        android:title="@string/action_install"
+        android:visible="true"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_about"
+        android:enabled="true"
+        android:title="@string/action_about"
+        android:visible="true"
+        app:showAsAction="never" />
+
+</menu>

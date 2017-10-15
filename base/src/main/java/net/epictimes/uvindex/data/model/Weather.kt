@@ -1,108 +1,163 @@
 package net.epictimes.uvindex.data.model
 
+import android.os.Parcel
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import java.util.*
 
+data class Weather(
 
-class Weather {
+        @SerializedName("wind_spd")
+        val windSpeed: Double,
 
-    @SerializedName("lat")
-    var latitude: String? = null
+        @SerializedName("wind_dir")
+        val windDirection: Int,
 
-    @SerializedName("lon")
-    var longitude: String? = null
+        @SerializedName("wind_cdir")
+        val windDirectionAbbreviated: String,
 
-    @SerializedName("wind_spd")
-    var windSpeed: Double? = null
+        @SerializedName("wind_cdir_full")
+        val windDirFull: String,
 
-    @SerializedName("wind_dir")
-    var windDirection: Int? = null
+        // percent
+        @SerializedName("rh")
+        val relativeHumidity: Double,
 
-    @SerializedName("wind_cdir")
-    var windDirectionAbbreviated: String? = null
+        @SerializedName("dewpt")
+        val dewPoint: Double,
 
-    @SerializedName("wind_cdir_full")
-    var windDirFull: String? = null
+        // percent
+        @SerializedName("clouds")
+        val cloudCoverage: Int,
 
-    // percent
-    @SerializedName("rh")
-    var relativeHumidity: Int? = null
+        // d = day / n = night
+        @SerializedName("pod")
+        val partOfDay: String,
 
-    @SerializedName("dewpt")
-    var dewPoint: Double? = null
+        // mb
+        @SerializedName("pres")
+        val pressure: Double,
 
-    // percent
-    @SerializedName("clouds")
-    var cloudCoverage: Int? = null
+        @SerializedName("slp")
+        val seaLevelPressure: Double,
 
-    // d = day / n = night
-    @SerializedName("pod")
-    var partOfDay: String? = null
+        @SerializedName("timezone")
+        val timezone: String,
 
-    // mb
-    @SerializedName("pres")
-    var pressure: Double? = null
+        @SerializedName("ts")
+        val lastObservationTimestamp: Int,
 
-    @SerializedName("slp")
-    var seaLevelPressure: Double? = null
+        @SerializedName("country_code")
+        val countryCode: String,
 
-    @SerializedName("timezone")
-    var timezone: String? = null
+        @SerializedName("state_code")
+        val stateCode: String,
 
-    // format: YYYY-MM-DD HH:MM
-    @SerializedName("ob_time")
-    var lastObservationTime: String? = null
+        @SerializedName("city_name")
+        val cityName: String,
 
-    @SerializedName("ts")
-    var lastObservationTimestamp: Int? = null
+        // default to km
+        @SerializedName("vis")
+        val visibility: Double,
 
-    @SerializedName("country_code")
-    var countryCode: String? = null
+        @SerializedName("uv")
+        val uvIndex: Int,
 
-    @SerializedName("state_code")
-    var stateCode: String? = null
+        // degrees
+        @SerializedName("elev_angle")
+        val solarElevationAngle: Int,
 
-    @SerializedName("city_name")
-    var cityName: String? = null
+        // degrees
+        @SerializedName("h_angle")
+        val solarHourAngle: Int,
 
-    // default to km
-    @SerializedName("vis")
-    var visibility: Int? = null
+        // format: YYYY-MM-DD:HH
+        @SerializedName("datetime")
+        val datetime: Date,
 
-    @SerializedName("uv")
-    var uvIndex: Int? = null
+        // default to mm
+        @SerializedName("precip")
+        val precipitation: Double,
 
-    @SerializedName("station")
-    var sourceStationId: String? = null
+        // format: HH:MM
+        @SerializedName("sunset")
+        val sunsetTime: String,
 
-    // degrees
-    @SerializedName("elev_angle")
-    var solarElevationAngle: Int? = null
+        // format: HH:MM
+        @SerializedName("sunrise")
+        val sunriseTime: String,
 
-    // degrees
-    @SerializedName("h_angle")
-    var solarHourAngle: Int? = null
+        @SerializedName("temp")
+        val temperature: Double,
 
-    // format: YYYY-MM-DD:HH
-    @SerializedName("datetime")
-    var datetime: String? = null
+        // default to Celcius
+        @SerializedName("app_temp")
+        val apparentTemp: Double
 
-    // default to mm
-    @SerializedName("precip")
-    var precipitation: Int? = null
+) : Parcelable {
+    constructor(source: Parcel) : this(
+            source.readDouble(),
+            source.readInt(),
+            source.readString(),
+            source.readString(),
+            source.readDouble(),
+            source.readDouble(),
+            source.readInt(),
+            source.readString(),
+            source.readDouble(),
+            source.readDouble(),
+            source.readString(),
+            source.readInt(),
+            source.readString(),
+            source.readString(),
+            source.readString(),
+            source.readDouble(),
+            source.readInt(),
+            source.readInt(),
+            source.readInt(),
+            source.readSerializable() as Date,
+            source.readDouble(),
+            source.readString(),
+            source.readString(),
+            source.readDouble(),
+            source.readDouble()
+    )
 
-    // format: HH:MM
-    @SerializedName("sunset")
-    var sunsetTime: String? = null
+    override fun describeContents() = 0
 
-    // format: HH:MM
-    @SerializedName("sunrise")
-    var sunriseTime: String? = null
+    override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
+        writeDouble(windSpeed)
+        writeInt(windDirection)
+        writeString(windDirectionAbbreviated)
+        writeString(windDirFull)
+        writeDouble(relativeHumidity)
+        writeDouble(dewPoint)
+        writeInt(cloudCoverage)
+        writeString(partOfDay)
+        writeDouble(pressure)
+        writeDouble(seaLevelPressure)
+        writeString(timezone)
+        writeInt(lastObservationTimestamp)
+        writeString(countryCode)
+        writeString(stateCode)
+        writeString(cityName)
+        writeDouble(visibility)
+        writeInt(uvIndex)
+        writeInt(solarElevationAngle)
+        writeInt(solarHourAngle)
+        writeSerializable(datetime)
+        writeDouble(precipitation)
+        writeString(sunsetTime)
+        writeString(sunriseTime)
+        writeDouble(temperature)
+        writeDouble(apparentTemp)
+    }
 
-    @SerializedName("temp")
-    var temperature: Double? = null
-
-    // default to Celcius
-    @SerializedName("app_temp")
-    var apparentTemp: Double? = null
-
+    companion object {
+        @JvmField
+        val CREATOR: Parcelable.Creator<Weather> = object : Parcelable.Creator<Weather> {
+            override fun createFromParcel(source: Parcel): Weather = Weather(source)
+            override fun newArray(size: Int): Array<Weather?> = arrayOfNulls(size)
+        }
+    }
 }

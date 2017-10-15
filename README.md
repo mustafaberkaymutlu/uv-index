@@ -1,4 +1,4 @@
-<p align="center"><img width="200" src="https://github.com/mustafaberkaymutlu/uv-index/raw/master/base/src/main/res/mipmap-xxxhdpi/ic_launcher.png"></p>
+<p align="center"><img width="160" height="160" src="./art/icon.png"></p>
 
 <h1 align="center">UV Index</h1>
 
@@ -10,7 +10,6 @@
   <a href="https://github.com/mustafaberkaymutlu/uv-index/blob/master/LICENSE"><img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="License"></a>
 </p>
 
-
 ## Built With
 * [Weatherbit](https://www.weatherbit.io/)  as weather API
 * [Android Instant Apps](https://developer.android.com/topic/instant-apps/index.html)
@@ -21,8 +20,11 @@
 * [PermissionsDispatcher](https://github.com/permissions-dispatcher/PermissionsDispatcher) for Runtime Permissions
 * [Timber](https://github.com/JakeWharton/timber) for logging
 * [Stetho](https://github.com/facebook/stetho) for network inspection
+* [MPAndroidChart](https://github.com/PhilJay/MPAndroidChart) for line chart
 * [Google Places API](https://developers.google.com/places/android-api/autocomplete) for keyboard location input
 * Google Location API for receiving user's location
+
+<p><img width="400" height="712" src="./art/demo.gif"></p>
 
 ## Getting Started
 

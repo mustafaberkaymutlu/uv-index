@@ -23,7 +23,8 @@ abstract class BaseApplication : Application() {
     }
 
     open fun initTimber() {
-        Timber.plant(CrashReportingTree())
+        val timberTree = if (BuildConfig.DEBUG) Timber.DebugTree() else CrashReportingTree()
+        Timber.plant(timberTree)
     }
 
     open fun initDagger() {
