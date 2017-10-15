@@ -2,6 +2,9 @@
     <string name="query_get_started">Get Started</string>
 
     <string name="location_unknown">Location unknown</string>
+    <string name="recommended_protection">Recommended Protection</string>
+    <string name="cautionary_notes_title">Cautionary Notes</string>
+    <string name="right_now">Right Now</string>
 
     <string name="address_service_not_available">Service not available</string>
     <string name="address_service_invalid_coordinates">Invalid coordinates</string>
@@ -17,5 +20,50 @@
 
     <string name="chart_no_data">No forecast data available</string>
     <string name="chart_desc">UV Index Forecast</string>
+
+    <string name="info_0_3">
+        A UV Index reading of 0 to 2 means low danger from the sun\'s UV rays for the average person.
+    </string>
+    <string name="info_3_6">
+        A UV Index reading of 3 to 5 means moderate risk of harm from unprotected sun exposure.
+    </string>
+    <string name="info_6_8">
+        A UV Index reading of 6 to 7 means high risk of harm from unprotected sun exposure. Protection against skin and eye damage is needed.
+    </string>
+    <string name="info_8_11">
+        A UV Index reading of 8 to 10 means very high risk of harm from unprotected sun exposure. Take extra precautions because unprotected skin and eyes will be damaged and can burn quickly.
+    </string>
+    <string name="info_extreme">
+        A UV Index reading of 11 or more means extreme risk of harm from unprotected sun exposure. Take all precautions because unprotected skin and eyes can burn in minutes.
+    </string>
+
+    <string name="recommended_prot_0_3">
+        Wear sunglasses on bright days. If you burn easily, cover up and use broad spectrum SPF 30+ sunscreen. Bright surfaces, such as sand, water and snow, will increase UV exposure.
+    </string>
+
+    <string name="recommended_prot_3_6">
+        Stay in shade near midday when the sun is strongest. If outdoors, wear sun protective clothing, a wide-brimmed hat, and UV-blocking sunglasses. Generously apply broad spectrum SPF 30+ sunscreen every 2 hours, even on cloudy days, and after swimming or sweating. Bright surfaces, such as sand, water and snow, will increase UV exposure.
+    </string>
+
+    <string name="recommended_prot_6_8">
+        Reduce time in the sun between 10 a.m. and 4 p.m. If outdoors, seek shade and wear sun protective clothing, a wide-brimmed hat, and UV-blocking sunglasses. Generously apply broad spectrum SPF 30+ sunscreen every 2 hours, even on cloudy days, and after swimming or sweating. Bright surfaces, such sand, water and snow, will increase UV exposure.
+    </string>
+
+    <string name="recommended_prot_8_11">
+        Minimize sun exposure between 10 a.m. and 4 p.m. If outdoors, seek shade and wear sun protective clothing, a wide-brimmed hat, and UV-blocking sunglasses. Generously apply broad spectrum SPF 30+ sunscreen every 2 hours, even on cloudy days, and after swimming or sweating. Bright surfaces, such as sand, water and snow, will increase UV exposure.
+    </string>
+
+    <string name="recommended_prot_extreme">
+        Try to avoid sun exposure between 10 a.m. and 4 p.m. If outdoors, seek shade and wear sun protective clothing, a wide-brimmed hat, and UV-blocking sunglasses. Generously apply broad spectrum SPF 30+ sunscreen every 2 hours, even on cloudy days, and after swimming or sweating. Bright surfaces, such as sand, water and snow, will increase UV exposure.
+    </string>
+
+    <string name="cautionary_notes">
+        When interpreting the UV Index and recommendations, be aware that:\n\n
+&#8226; The intensity of UV radiation reaching the surface of the earth depends on the angle of the sun in the sky. Each day, the sun achieves its highest angle (highest intensity, shortest shadows) at solar noon, which only approximately corresponds to 12:00 on clocks or 13:00 during daylight saving time. This is because of the differences between solar time and local time in a given time zone. UV risk is high when the sun is directly enough overhead that people\'s shadows are shorter than their height.\n\n
+&#8226; Likewise, UV intensity can be higher or lower for surfaces at different angles to the horizontal. For example, if people are walking or standing outdoors, UV exposure to the eyes and vertical surfaces of skin, such as the face, can actually be more severe when the sun is lower (though UVB:UVA ratio can also differ), such as the end of a summer\'s day, or winter afternoons on a ski trail. This is partly a consequence of the fact that the measurement equipment upon which the index is based is a flat horizontal surface.\n\n
+&#8226; UV intensity can nearly double with reflection from snow or other bright surfaces like water, sand, or concrete.\n\n
+&#8226; The recommendations given are for average adults with lightly tanned skin. Those with darker skin are more likely to withstand greater sun exposure, while extra precautions are needed for children, seniors, particularly fair-skinned adults, and those who have greater sun sensitivity for medical reasons or from UV exposure in previous days. (The skin\'s recovery from UV radiation generally takes two days or more to run its course.)\n\n
+&#8226; Because of the way the UV Index is calculated, it technically expresses the risk of developing sunburn, which is caused mostly by UVB radiation. However, UVA radiation also causes damage (photoaging, melanoma). Under some conditions, including most tanning beds which generate even higher UV intensities., the UVA level may be disproportionately higher than described by the UV Index. The use of broad-spectrum (UVA/UVB) sunscreen can help address this concern.
+    </string>
 
 </resources>

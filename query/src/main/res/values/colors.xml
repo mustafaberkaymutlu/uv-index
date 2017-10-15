@@ -1,30 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <color name="green_200">#A5D6A7</color>
+    <color name="light_green_200">#C5E1A5</color>
+    <color name="lime_200">#E6EE9C</color>
+    <color name="yellow_200">#FFF59D</color>
+    <color name="amber_200">#FFE082</color>
+    <color name="orange_200">#FFCC80</color>
+    <color name="deep_orange_200">#FFAB91</color>
+    <color name="red_200">#EF9A9A</color>
+    <color name="purple_200">#CE93D8</color>
+
     <array name="uv_indexes">
         <!-- 0 -->
-        <item>#A5D6A7</item>
+        <item>@color/green_200</item>
 
         <!-- 1-2 -->
-        <item>#A5D6A7</item>
-        <item>#C5E1A5</item>
+        <item>@color/green_200</item>
+        <item>@color/light_green_200</item>
 
         <!-- 3-5 -->
-        <item>#E6EE9C</item>
-        <item>#FFF59D</item>
-        <item>#FFE082</item>
+        <item>@color/lime_200</item>
+        <item>@color/yellow_200</item>
+        <item>@color/amber_200</item>
 
         <!-- 6-7 -->
-        <item>#FFCC80</item>
-        <item>#FFAB91</item>
+        <item>@color/orange_200</item>
+        <item>@color/deep_orange_200</item>
 
         <!-- 8-10 -->
-        <item>#EF9A9A</item>
-        <item>#EF9A9A</item>
-        <item>#EF9A9A</item>
+        <item>@color/red_200</item>
+        <item>@color/red_200</item>
+        <item>@color/red_200</item>
 
         <!-- 11+ -->
-        <item>#CE93D8</item>
+        <item>@color/purple_200</item>
 
     </array>
 

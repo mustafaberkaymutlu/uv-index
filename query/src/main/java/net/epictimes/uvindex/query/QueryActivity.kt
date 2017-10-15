@@ -15,7 +15,6 @@ import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.Toast
 import com.github.mikephil.charting.components.Description
 import com.github.mikephil.charting.data.Entry
@@ -253,8 +252,43 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
     override fun displayUvIndex(weather: Weather) {
         with(textViewUvIndex) {
             text = weather.uvIndex.toString()
-            visibility = View.VISIBLE
         }
+
+        val cardBackgroundColor = chartColors[weather.uvIndex]
+        cardViewCurrent.setCardBackgroundColor(cardBackgroundColor)
+
+        val recommendedProtection: Int
+        val info: Int
+
+        when (weather.uvIndex) {
+            in 0 until 3 -> {
+                recommendedProtection = R.string.recommended_prot_0_3
+                info = R.string.info_0_3
+            }
+            in 3 until 6 -> {
+                recommendedProtection = R.string.recommended_prot_3_6
+                info = R.string.info_3_6
+            }
+            in 6 until 8 -> {
+                recommendedProtection = R.string.recommended_prot_6_8
+                info = R.string.info_6_8
+            }
+            in 8 until 11 -> {
+                recommendedProtection = R.string.recommended_prot_8_11
+                info = R.string.info_8_11
+            }
+            11 -> {
+                recommendedProtection = R.string.recommended_prot_extreme
+                info = R.string.info_extreme
+            }
+            else -> {
+                recommendedProtection = R.string.recommended_prot_0_3
+                info = R.string.info_0_3
+            }
+        }
+
+        textViewRecommendedProtection.setText(recommendedProtection)
+        textViewInfo.setText(info)
     }
 
     override fun displayUvIndexForecast(uvIndexForecast: List<Weather>) {
@@ -351,7 +385,7 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
         val chartDesc = Description()
         with(chartDesc) {
             text = getString(R.string.chart_desc)
-            textColor = ContextCompat.getColor(this@QueryActivity, R.color.primary)
+            textColor = ContextCompat.getColor(this@QueryActivity, net.epictimes.uvindex.R.color.primary)
         }
 
         with(lineChart) {

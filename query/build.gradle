@@ -64,6 +64,8 @@ dependencies {
 
     implementation project(':base')
 
+    implementation deps.support.constraintLayout
+    implementation deps.support.cardView
     implementation deps.support.design
     implementation deps.mpAndroidChart
 
