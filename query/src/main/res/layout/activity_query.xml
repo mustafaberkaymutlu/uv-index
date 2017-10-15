@@ -5,37 +5,44 @@
     android:id="@+id/coordinatorLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/background_dark"
+    android:background="@android:color/background_light"
     android:fitsSystemWindows="true"
     tools:context="net.epictimes.uvindex.query.QueryActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/main.appbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        android:layout_height="wrap_content">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:elevation="4dp"
-            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+            app:titleTextColor="@android:color/white"
+            android:theme="@style/Toolbar"/>
 
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fillViewport="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
+            android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:gravity="center">
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/lineChart"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="16dp"/>
 
             <TextView
                 android:id="@+id/textViewUvIndex"
@@ -43,7 +50,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="32dp"
-                android:textColor="@android:color/white"
+                android:layout_marginTop="32dp"
+                android:textColor="@android:color/black"
                 android:visibility="visible"
                 tools:text="5"
                 tools:visibility="visible" />
@@ -55,9 +63,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:drawablePadding="4dp"
-                android:drawableStart="@drawable/ic_my_location_white_18dp"
+                android:drawableStart="@drawable/ic_my_location_black_18dp"
                 android:text="@string/location_unknown"
-                android:textColor="@android:color/white"
+                android:textColor="@android:color/black"
                 tools:text="Kadikoy, Turkey"
                 tools:visibility="visible" />
 

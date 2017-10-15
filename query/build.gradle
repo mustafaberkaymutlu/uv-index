@@ -65,6 +65,7 @@ dependencies {
     implementation project(':base')
 
     implementation deps.support.design
+    implementation deps.mpAndroidChart
 
     // Dagger 2
     kapt deps.dagger.compiler

@@ -4,10 +4,13 @@
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
-    <application android:name=".QueryApplication">
+    <application
+        android:name=".QueryApplication"
+        android:theme="@style/AppTheme">
+
         <activity
-            android:name=".QueryActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:name=".QueryActivity">
+
             <intent-filter android:order="1">
                 <action android:name="android.intent.action.VIEW" />
 
@@ -19,11 +22,13 @@
                     android:path="/query"
                     android:scheme="https" />
             </intent-filter>
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
 
         <service
@@ -33,6 +38,7 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_places_api_key" />
+
     </application>
 
 </manifest>

@@ -15,4 +15,7 @@
     <string name="action_about">About</string>
     <string name="action_install">Install</string>
 
+    <string name="chart_no_data">No forecast data available</string>
+    <string name="chart_desc">UV Index Forecast</string>
+
 </resources>

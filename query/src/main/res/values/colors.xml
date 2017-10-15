@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <array name="uv_indexes">
+        <!-- 0 -->
+        <item>#A5D6A7</item>
+
+        <!-- 1-2 -->
+        <item>#A5D6A7</item>
+        <item>#C5E1A5</item>
+
+        <!-- 3-5 -->
+        <item>#E6EE9C</item>
+        <item>#FFF59D</item>
+        <item>#FFE082</item>
+
+        <!-- 6-7 -->
+        <item>#FFCC80</item>
+        <item>#FFAB91</item>
+
+        <!-- 8-10 -->
+        <item>#EF9A9A</item>
+        <item>#EF9A9A</item>
+        <item>#EF9A9A</item>
+
+        <!-- 11+ -->
+        <item>#CE93D8</item>
+
+    </array>
+
+</resources>

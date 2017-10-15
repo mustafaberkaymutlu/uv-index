@@ -3,25 +3,31 @@ package net.epictimes.uvindex.query
 
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter
 import net.epictimes.uvindex.Constants
-import net.epictimes.uvindex.data.interactor.CurrentInteractor
+import net.epictimes.uvindex.data.interactor.WeatherInteractor
 import net.epictimes.uvindex.data.model.Weather
 
-class QueryPresenter constructor(private val currentInteractor: CurrentInteractor) : MvpBasePresenter<QueryView>() {
+class QueryPresenter constructor(private val weatherInteractor: WeatherInteractor) : MvpBasePresenter<QueryView>() {
 
-    fun getUvIndex(latitude: Double, longitude: Double, language: String?, units: String?) {
-        currentInteractor.getCurrent(latitude, longitude, language, units,
-                object : CurrentInteractor.GetCurrentCallback {
-                    override fun onSuccessGetCurrent(weather: Weather) {
+    companion object {
+        val FORECAST_HOUR = 24
+    }
+
+    fun getForecastUvIndex(latitude: Double, longitude: Double, language: String?, units: String?) {
+        weatherInteractor.getForecast(latitude, longitude, language, units, FORECAST_HOUR,
+                object : WeatherInteractor.GetForecastCallback {
+                    override fun onSuccessGetForecast(weatherForecast: List<Weather>) {
                         if (isViewAttached) {
-                            weather.uvIndex?.let {
-                                view.displayUvIndex(it)
-                            } ?: run {
+                            if (weatherForecast.isEmpty()) {
                                 view.displayGetUvIndexError()
+                            } else {
+                                val sortedForecast = weatherForecast.sortedBy { it.datetime.time }
+                                view.displayUvIndex(sortedForecast.first())
+                                view.displayUvIndexForecast(sortedForecast)
                             }
                         }
                     }
 
-                    override fun onFailGetCurrent() {
+                    override fun onFailGetForecast() {
                         if (isViewAttached) {
                             view.displayGetUvIndexError()
                         }

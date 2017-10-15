@@ -6,6 +6,7 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
+import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -16,6 +17,11 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import com.github.mikephil.charting.components.Description
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.formatter.IValueFormatter
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException
 import com.google.android.gms.common.GooglePlayServicesRepairableException
 import com.google.android.gms.common.api.ApiException
@@ -27,13 +33,15 @@ import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_query.*
 import net.epictimes.uvindex.Constants
 import net.epictimes.uvindex.data.model.LatLng
+import net.epictimes.uvindex.data.model.Weather
 import net.epictimes.uvindex.ui.BaseViewStateActivity
+import net.epictimes.uvindex.util.getReadableHour
 import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.OnPermissionDenied
 import permissions.dispatcher.RuntimePermissions
 import timber.log.Timber
+import java.util.*
 import javax.inject.Inject
-
 
 @RuntimePermissions
 class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryViewState>(), QueryView {
@@ -41,6 +49,11 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
     companion object {
         private val LOCATION_INTERVAL: Long = 10000 // update interval in milliseconds
         private val LOCATION_INTERVAL_FASTEST: Long = LOCATION_INTERVAL / 2
+
+        private val LINE_CHART_ANIM_DURATION = 1500
+
+        private val UV_INDEX_MIN = 0
+        private val UV_INDEX_MAX = 11
 
         fun newIntent(context: Context): Intent = Intent(context, QueryActivity::class.java)
     }
@@ -51,12 +64,14 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
     @Inject
     lateinit var queryViewState: QueryViewState
 
-    private lateinit var settingsClient: SettingsClient
-    private lateinit var locationSettingsRequest: LocationSettingsRequest
+    private val settingsClient: SettingsClient by lazy { LocationServices.getSettingsClient(this) }
+    private val locationSettingsRequest: LocationSettingsRequest by lazy { createLocationSettingsRequest() }
 
-    private lateinit var locationRequest: LocationRequest
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
-    private lateinit var locationCallback: QueryLocationCallback
+    private val locationRequest: LocationRequest by lazy { createLocationRequest() }
+    private val fusedLocationClient: FusedLocationProviderClient by lazy { LocationServices.getFusedLocationProviderClient(this) }
+    private val locationCallback: QueryLocationCallback by lazy { QueryLocationCallback() }
+
+    private val chartColors by lazy { createChartColors() }
 
     override fun createViewState(): QueryViewState = queryViewState
 
@@ -73,18 +88,11 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
 
         setSupportActionBar(toolbar)
 
-        locationCallback = QueryLocationCallback()
-
-        createLocationRequest()
-
-        createLocationSettingsRequest()
-
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-        settingsClient = LocationServices.getSettingsClient(this)
+        styleLineChart()
 
         buttonGetStarted.setOnClickListener {
             viewState.location?.let {
-                presenter.getUvIndex(it.latitude, it.longitude, null, null)
+                presenter.getForecastUvIndex(it.latitude, it.longitude, null, null)
             } ?: run {
                 requestLocationUpdatesWithPermissionCheck()
             }
@@ -129,7 +137,7 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
                     }
 
                     textViewLocation.text = place.address
-                    presenter.getUvIndex(place.latLng.latitude, place.latLng.longitude, null, null)
+                    presenter.getForecastUvIndex(place.latLng.latitude, place.latLng.longitude, null, null)
                     Timber.i("Place search operation succeed with place: " + place.name)
                 }
                 PlaceAutocomplete.RESULT_ERROR -> {
@@ -209,31 +217,62 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
                 }
     }
 
-    private fun createLocationRequest() {
-        locationRequest = LocationRequest.create()
+    @OnPermissionDenied(Manifest.permission.ACCESS_COARSE_LOCATION)
+    fun onLocationPermissionDenied() {
+        Snackbar.make(coordinatorLayout, R.string.error_required_location_permission, Snackbar.LENGTH_LONG).show()
+    }
+
+    private fun createLocationRequest(): LocationRequest {
+        val locationRequest = LocationRequest.create()
 
         with(locationRequest) {
             interval = LOCATION_INTERVAL
             fastestInterval = LOCATION_INTERVAL_FASTEST
             priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
         }
+
+        return locationRequest
     }
 
-    private fun createLocationSettingsRequest() {
+    private fun createLocationSettingsRequest(): LocationSettingsRequest {
         val builder = LocationSettingsRequest.Builder()
         builder.addLocationRequest(locationRequest)
-        locationSettingsRequest = builder.build()
+        return builder.build()
     }
 
-    @OnPermissionDenied(Manifest.permission.ACCESS_COARSE_LOCATION)
-    fun onLocationPermissionDenied() {
-        Snackbar.make(coordinatorLayout, R.string.error_required_location_permission, Snackbar.LENGTH_LONG).show()
+    private fun createChartColors(): List<Int> {
+        val typedArray = resources.obtainTypedArray(net.epictimes.uvindex.query.R.array.uv_indexes)
+        val colors = ArrayList<Int>()
+
+        (0 until typedArray.length()).mapTo(colors) { typedArray.getColor(it, Color.BLACK) }
+
+        typedArray.recycle()
+        return colors
     }
 
-    override fun displayUvIndex(uvIndex: Int) {
+    override fun displayUvIndex(weather: Weather) {
         with(textViewUvIndex) {
-            text = uvIndex.toString()
+            text = weather.uvIndex.toString()
             visibility = View.VISIBLE
+        }
+    }
+
+    override fun displayUvIndexForecast(uvIndexForecast: List<Weather>) {
+        Timber.d("Displaying uv index forecast:")
+        uvIndexForecast.forEach { Timber.d(it.toString()) }
+
+        with(viewState.uvIndexForecast) {
+            clear()
+            addAll(uvIndexForecast)
+        }
+
+        val sliderColors = arrayListOf<Int>()
+
+        uvIndexForecast.mapTo(sliderColors) { chartColors[it.uvIndex] }
+
+        with(lineChart) {
+            data = getForecastLineData(uvIndexForecast)
+            animateX(LINE_CHART_ANIM_DURATION)
         }
     }
 
@@ -249,7 +288,7 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
     }
 
     override fun displayUserAddress(address: String) {
-        val textColor = ContextCompat.getColor(this, android.R.color.white)
+        val textColor = ContextCompat.getColor(this, android.R.color.black)
 
         with(textViewLocation) {
             text = address
@@ -308,6 +347,81 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
                 }
     }
 
+    private fun styleLineChart() {
+        val chartDesc = Description()
+        with(chartDesc) {
+            text = getString(R.string.chart_desc)
+            textColor = ContextCompat.getColor(this@QueryActivity, R.color.primary)
+        }
+
+        with(lineChart) {
+            description = chartDesc
+            isDragEnabled = false
+            setPinchZoom(false)
+            setDrawGridBackground(false) // the background rectangle behind the chart drawing-area
+            setDrawBorders(true) // lines surrounding the chart
+            setNoDataText(getString(R.string.chart_no_data))
+            setNoDataTextColor(ContextCompat.getColor(this@QueryActivity, android.R.color.black))
+            setScaleEnabled(false)
+            legend.isEnabled = false
+
+            with(xAxis) {
+                isEnabled = true
+                setAvoidFirstLastClipping(true)
+                setDrawLabels(true)
+                setValueFormatter { value, _ ->
+                    viewState.uvIndexForecast[value.toInt()].datetime.getReadableHour()
+                }
+            }
+
+            with(axisLeft) {
+                isEnabled = true
+                axisMinimum = UV_INDEX_MIN.toFloat()
+                axisMaximum = UV_INDEX_MAX.toFloat()
+                setDrawLabels(true)
+                setDrawGridLines(true)
+                setValueFormatter { value, _ -> String.format("%.0f", value) }
+            }
+
+            axisRight.isEnabled = false
+
+            invalidate()
+        }
+    }
+
+    private fun getForecastLineData(weatherForecast: List<Weather>): LineData {
+        val yValues = ArrayList<Entry>()
+
+        weatherForecast
+                .forEachIndexed { index, weather ->
+                    val entry = Entry(index.toFloat(), weather.uvIndex.toFloat())
+                    yValues.add(entry)
+                }
+
+        val lineDataSet = UvIndexDataSet(yValues, "All UV Indexes")
+
+        with(lineDataSet) {
+            mode = LineDataSet.Mode.LINEAR
+            lineWidth = 4f
+            setDrawFilled(true)
+            circleRadius = 1f
+            colors = chartColors
+            isHighlightEnabled = false
+            valueTextSize = 12f
+            setDrawValues(true)
+            setDrawHighlightIndicators(false) // disable the drawing of highlight indicator (lines)
+            valueFormatter = IValueFormatter { value, _, _, _ ->
+                if (value == 0f) {
+                    ""
+                } else {
+                    String.format("%.0f", value)
+                }
+            }
+        }
+
+        return LineData(lineDataSet)
+    }
+
     inner class QueryLocationCallback : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult?) {
             super.onLocationResult(locationResult)
@@ -315,7 +429,7 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
             locationResult?.lastLocation?.let {
                 stopLocationUpdates(QueryViewState.LocationSearchState.Idle)
                 viewState.location = LatLng(it.latitude, it.longitude)
-                presenter.getUvIndex(it.latitude, it.longitude, null, null)
+                presenter.getForecastUvIndex(it.latitude, it.longitude, null, null)
                 FetchAddressIntentService.startIntentService(this@QueryActivity, AddressResultReceiver(), it)
             }
         }

@@ -85,6 +85,7 @@ buildscript {
             'glide': 'com.github.bumptech.glide:glide:3.7.0',
             'preferenceFix': 'com.takisoft.fix:preference-v7:25.4.0.3',
             'aboutLibraries': 'com.mikepenz:aboutlibraries:5.9.4@aar',
+            'mpAndroidChart': "com.github.PhilJay:MPAndroidChart:v3.0.2",
             'crashlytics': 'com.crashlytics.sdk.android:crashlytics:2.6.8@aar',
             'stetho': 'com.facebook.stetho:stetho-okhttp3:1.5.0'
     ]
@@ -107,6 +108,7 @@ allprojects {
     repositories {
         google()
         jcenter()
+        maven { url "https://jitpack.io" } // for MpAndroidChart
     }
 }
 
