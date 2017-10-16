@@ -57,6 +57,16 @@ android {
             dimension 'environment'
         }
     }
+
+    testOptions {
+        unitTests.all {
+            testLogging {
+                events "passed", "skipped", "failed", "standardOut", "standardError"
+                outputs.upToDateWhen { false }
+                showStandardStreams = true
+            }
+        }
+    }
 }
 
 dependencies {
@@ -82,5 +92,8 @@ dependencies {
     }
     kapt deps.permissionsDispatcher.compiler
 
-    testImplementation deps.junit
+    // Tests
+    testImplementation deps.test.junit
+    testImplementation deps.test.mockito
+    testImplementation deps.test.mockitoKotlin
 }
