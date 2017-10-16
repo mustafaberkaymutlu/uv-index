@@ -17,13 +17,12 @@ buildscript {
 
             'supportLibrary': '26.1.0',
             'constraintLayout': '1.0.2',
-            'firebase': '11.0.2',
             'googlePlayServices': '11.4.0',
             'dagger': '2.11',
             'leakCanary': '1.5.1',
             'mosby': '3.0.4',
             'retrofit': '2.3.0',
-            'persmissionsDispatcher': '3.0.1'
+            'permissionsDispatcher': '3.0.1'
     ]
 
     ext.deps = [
@@ -41,15 +40,6 @@ buildscript {
                     'cardView': "com.android.support:cardview-v7:${versions.supportLibrary}",
                     'palette': "com.android.support:palette-v7:${versions.supportLibrary}",
                     'constraintLayout': "com.android.support.constraint:constraint-layout:${versions.constraintLayout}",
-            ],
-            'firebase': [
-                    'core': "com.google.firebase:firebase-core:${versions.firebase}",
-                    'messaging': "com.google.firebase:firebase-messaging:${versions.firebase}",
-                    'auth': "com.google.firebase:firebase-auth:${versions.firebase}",
-                    'storage': "com.google.firebase:firebase-storage:${versions.firebase}",
-                    'database': "com.google.firebase:firebase-database:${versions.firebase}",
-                    'invites': "com.google.firebase:firebase-invites:${versions.firebase}",
-                    'crash': "com.google.firebase:firebase-crash:${versions.firebase}",
             ],
             'dagger': [
                     'runtime': "com.google.dagger:dagger:${versions.dagger}",
@@ -72,22 +62,19 @@ buildscript {
                     'gson': "com.squareup.retrofit2:converter-gson:${versions.retrofit}"
             ],
             'permissionsDispatcher': [
-                    'runtime': "com.github.hotchemi:permissionsdispatcher:${versions.persmissionsDispatcher}",
-                    'compiler': "com.github.hotchemi:permissionsdispatcher-processor:${versions.persmissionsDispatcher}",
+                    'runtime': "com.github.hotchemi:permissionsdispatcher:${versions.permissionsDispatcher}",
+                    'compiler': "com.github.hotchemi:permissionsdispatcher-processor:${versions.permissionsDispatcher}",
             ],
             'googlePlayServices': [
                     'location': "com.google.android.gms:play-services-location:${versions.googlePlayServices}",
                     'places': "com.google.android.gms:play-services-places:${versions.googlePlayServices}",
             ],
             'instantApps': "com.google.android.instantapps:instantapps:1.1.0",
-            'junit': "junit:junit:4.12",
             'timber': 'com.jakewharton.timber:timber:4.5.1',
-            'glide': 'com.github.bumptech.glide:glide:3.7.0',
-            'preferenceFix': 'com.takisoft.fix:preference-v7:25.4.0.3',
-            'aboutLibraries': 'com.mikepenz:aboutlibraries:5.9.4@aar',
             'mpAndroidChart': "com.github.PhilJay:MPAndroidChart:v3.0.2",
             'crashlytics': 'com.crashlytics.sdk.android:crashlytics:2.6.8@aar',
-            'stetho': 'com.facebook.stetho:stetho-okhttp3:1.5.0'
+            'stetho': 'com.facebook.stetho:stetho-okhttp3:1.5.0',
+            'junit': "junit:junit:4.12"
     ]
 
     repositories {
@@ -96,7 +83,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.0-beta7'
+        classpath 'com.android.tools.build:gradle:3.0.0-rc1'
         classpath deps.kotlin.gradlePlugin
 
         // NOTE: Do not place your application dependencies here; they belong
