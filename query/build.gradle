@@ -82,5 +82,8 @@ dependencies {
     }
     kapt deps.permissionsDispatcher.compiler
 
-    testImplementation deps.junit
+    // Tests
+    testImplementation deps.test.junit
+    testImplementation deps.test.mockito
+    testImplementation deps.test.mockitoKotlin
 }
