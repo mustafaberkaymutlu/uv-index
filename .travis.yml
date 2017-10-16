@@ -42,4 +42,4 @@ before_script:
     - echo "Travis branch is $TRAVIS_BRANCH"
 
 script:
-    - "./gradlew clean build connectedCheck --stacktrace"
+    - "./gradlew clean build test"
