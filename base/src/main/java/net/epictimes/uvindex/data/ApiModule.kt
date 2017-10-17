@@ -7,6 +7,7 @@ import dagger.Module
 import dagger.Provides
 import net.epictimes.uvindex.BuildConfig
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -41,10 +42,15 @@ class ApiModule {
     @Singleton
     @Provides
     fun provideOkHttpClient(defaultInterceptor: DefaultInterceptor,
+                            httpLoggingInterceptor: HttpLoggingInterceptor?,
                             stethoInterceptor: StethoInterceptor?): OkHttpClient {
         val okHttpClientBuilder = OkHttpClient.Builder()
 
         stethoInterceptor?.let { okHttpClientBuilder.addNetworkInterceptor(it) }
+        httpLoggingInterceptor?.let {
+            okHttpClientBuilder.addInterceptor(it)
+            it.setLevel(HttpLoggingInterceptor.Level.BODY)
+        }
 
         okHttpClientBuilder.addNetworkInterceptor(defaultInterceptor)
 
@@ -60,4 +66,8 @@ class ApiModule {
     fun provideStethoInterceptor(): StethoInterceptor? =
             if (BuildConfig.DEBUG) StethoInterceptor() else null
 
+    @Singleton
+    @Provides
+    fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor? =
+            if (BuildConfig.DEBUG) HttpLoggingInterceptor() else null
 }
