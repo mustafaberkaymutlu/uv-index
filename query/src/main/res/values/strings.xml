@@ -4,6 +4,7 @@
     <string name="recommended_protection">Recommended Protection</string>
     <string name="cautionary_notes_title">Cautionary Notes</string>
     <string name="right_now">Right Now</string>
+    <string name="uv_index_denominator">/11</string>
 
     <string name="address_service_not_available">Service not available</string>
     <string name="address_service_invalid_coordinates">Invalid coordinates</string>
