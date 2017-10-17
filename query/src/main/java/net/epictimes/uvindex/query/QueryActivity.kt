@@ -14,6 +14,7 @@ import android.os.Looper
 import android.os.ResultReceiver
 import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
+import android.support.v7.app.AlertDialog
 import android.text.SpannableString
 import android.text.style.StyleSpan
 import android.view.Menu
@@ -87,6 +88,14 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_query)
         setSupportActionBar(toolbar)
+
+        imageButtonForecastInfo.setOnClickListener {
+            AlertDialog.Builder(this)
+                    .setMessage(R.string.forecast_info_message)
+                    .setPositiveButton(android.R.string.ok, null)
+                    .create()
+                    .show()
+        }
     }
 
     override fun onResume() {
