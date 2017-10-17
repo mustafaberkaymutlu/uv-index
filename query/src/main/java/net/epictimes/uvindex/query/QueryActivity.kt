@@ -86,10 +86,7 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_query)
-
         setSupportActionBar(toolbar)
-
-        styleLineChart()
     }
 
     override fun onResume() {
@@ -297,7 +294,8 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
                 .forEach { it.visibility = View.VISIBLE }
     }
 
-    override fun setToViewState(currentUvIndex: Weather, uvIndexForecast: List<Weather>) {
+    override fun setToViewState(currentUvIndex: Weather, uvIndexForecast: List<Weather>, timezone: String) {
+        viewState.timezone = timezone
         viewState.currentUvIndex = currentUvIndex
 
         with(viewState.uvIndexForecast) {
@@ -307,6 +305,8 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
     }
 
     override fun displayUvIndexForecast(uvIndexForecast: List<Weather>) {
+        styleLineChart()
+
         val sliderColors = arrayListOf<Int>()
 
         uvIndexForecast.mapTo(sliderColors) { chartColors[it.uvIndex] }
@@ -416,7 +416,7 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
                 setAvoidFirstLastClipping(true)
                 setDrawLabels(true)
                 setValueFormatter { value, _ ->
-                    viewState.uvIndexForecast[value.toInt()].datetime.getReadableHour()
+                    viewState.uvIndexForecast[value.toInt()].datetime.getReadableHour(viewState.timezone)
                 }
             }
 
