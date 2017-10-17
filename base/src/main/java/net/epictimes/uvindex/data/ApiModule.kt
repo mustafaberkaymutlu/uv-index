@@ -22,18 +22,15 @@ class ApiModule {
 
     @Singleton
     @Provides
-    fun provideServices(retrofit: Retrofit): Services =
-            retrofit.create(Services::class.java)
+    fun provideServices(retrofit: Retrofit): Services = retrofit.create(Services::class.java)
 
     @Singleton
     @Provides
-    fun provideRetrofit(okHttpClient: OkHttpClient, gson: Gson): Retrofit {
-        return Retrofit.Builder()
-                .baseUrl(Services.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .client(okHttpClient)
-                .build()
-    }
+    fun provideRetrofit(okHttpClient: OkHttpClient, gson: Gson): Retrofit = Retrofit.Builder()
+            .baseUrl(Services.BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .client(okHttpClient)
+            .build()
 
     @Singleton
     @Provides
@@ -63,11 +60,9 @@ class ApiModule {
 
     @Singleton
     @Provides
-    fun provideStethoInterceptor(): StethoInterceptor? =
-            if (BuildConfig.DEBUG) StethoInterceptor() else null
+    fun provideStethoInterceptor(): StethoInterceptor? = if (BuildConfig.DEBUG) StethoInterceptor() else null
 
     @Singleton
     @Provides
-    fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor? =
-            if (BuildConfig.DEBUG) HttpLoggingInterceptor() else null
+    fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor? = if (BuildConfig.DEBUG) HttpLoggingInterceptor() else null
 }

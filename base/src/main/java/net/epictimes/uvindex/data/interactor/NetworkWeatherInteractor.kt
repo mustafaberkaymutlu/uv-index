@@ -22,9 +22,8 @@ class NetworkWeatherInteractor constructor(private val services: Services) : Wea
                         }
                     }
 
-                    override fun onFailure(call: Call<GetForecastResponse>?, t: Throwable?) {
-                        getForecastCallback.onFailGetForecast()
-                    }
+                    override fun onFailure(call: Call<GetForecastResponse>?, t: Throwable?) =
+                            getForecastCallback.onFailGetForecast()
                 })
 
     }

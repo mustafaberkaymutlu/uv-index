@@ -80,9 +80,7 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
 
     override fun createPresenter(): QueryPresenter = queryPresenter
 
-    override fun onNewViewStateInstance() {
-        requestLocationUpdatesWithPermissionCheck()
-    }
+    override fun onNewViewStateInstance() = requestLocationUpdatesWithPermissionCheck()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
@@ -223,9 +221,8 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
     }
 
     @OnPermissionDenied(Manifest.permission.ACCESS_COARSE_LOCATION)
-    fun onLocationPermissionDenied() {
-        Snackbar.make(coordinatorLayout, R.string.error_required_location_permission, Snackbar.LENGTH_LONG).show()
-    }
+    fun onLocationPermissionDenied() =
+            Snackbar.make(coordinatorLayout, R.string.error_required_location_permission, Snackbar.LENGTH_LONG).show()
 
     private fun createLocationRequest(): LocationRequest {
         val locationRequest = LocationRequest.create()
@@ -268,27 +265,27 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
 
         when (weather.uvIndex) {
             in 0 until 3 -> {
-                recommendedProtection = R.string.recommended_prot_0_3
+                recommendedProtection = R.string.recommended_protection_0_3
                 info = R.string.info_0_3
             }
             in 3 until 6 -> {
-                recommendedProtection = R.string.recommended_prot_3_6
+                recommendedProtection = R.string.recommended_protection_3_6
                 info = R.string.info_3_6
             }
             in 6 until 8 -> {
-                recommendedProtection = R.string.recommended_prot_6_8
+                recommendedProtection = R.string.recommended_protection_6_8
                 info = R.string.info_6_8
             }
             in 8 until 11 -> {
-                recommendedProtection = R.string.recommended_prot_8_11
+                recommendedProtection = R.string.recommended_protection_8_11
                 info = R.string.info_8_11
             }
             11 -> {
-                recommendedProtection = R.string.recommended_prot_extreme
+                recommendedProtection = R.string.recommended_protection_extreme
                 info = R.string.info_extreme
             }
             else -> {
-                recommendedProtection = R.string.recommended_prot_0_3
+                recommendedProtection = R.string.recommended_protection_0_3
                 info = R.string.info_0_3
             }
         }
@@ -341,9 +338,8 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
         }
     }
 
-    override fun displayAboutUi() {
-        Snackbar.make(coordinatorLayout, "Not implemented", Snackbar.LENGTH_LONG).show()
-    }
+    override fun displayAboutUi() =
+            Snackbar.make(coordinatorLayout, "Not implemented", Snackbar.LENGTH_LONG).show()
 
     override fun startPlacesAutoCompleteUi(requestCode: Int) {
         try {
@@ -376,17 +372,14 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
         }
     }
 
-    override fun displayCantDetectLocationError() {
-        Snackbar.make(coordinatorLayout, R.string.error_can_not_detect_location, Snackbar.LENGTH_LONG).show()
-    }
+    override fun displayCantDetectLocationError() =
+            Snackbar.make(coordinatorLayout, R.string.error_can_not_detect_location, Snackbar.LENGTH_LONG).show()
 
-    override fun displayGetUvIndexError() {
-        Snackbar.make(coordinatorLayout, R.string.error_getting_uv_index, Snackbar.LENGTH_LONG).show()
-    }
+    override fun displayGetUvIndexError() =
+            Snackbar.make(coordinatorLayout, R.string.error_getting_uv_index, Snackbar.LENGTH_LONG).show()
 
-    override fun displayGetAutoCompletePlaceError() {
-        Snackbar.make(coordinatorLayout, R.string.error_getting_autocomplete_place, Snackbar.LENGTH_LONG).show()
-    }
+    override fun displayGetAutoCompletePlaceError() =
+            Snackbar.make(coordinatorLayout, R.string.error_getting_autocomplete_place, Snackbar.LENGTH_LONG).show()
 
     private fun stopLocationUpdates(newState: QueryViewState.LocationSearchState) {
         if (viewState.locationSearchState != QueryViewState.LocationSearchState.SearchingLocation) {
