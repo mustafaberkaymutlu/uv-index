@@ -21,7 +21,10 @@ class QueryPresenter constructor(private val weatherInteractor: WeatherInteracto
                                 view.displayGetUvIndexError()
                             } else {
                                 val sortedForecast = weatherForecast.sortedBy { it.datetime.time }
-                                view.displayUvIndex(sortedForecast.first())
+                                val currentUvIndex = sortedForecast.first()
+
+                                view.setToViewState(currentUvIndex, sortedForecast)
+                                view.displayUvIndex(currentUvIndex)
                                 view.displayUvIndexForecast(sortedForecast)
                             }
                         }
@@ -35,30 +38,20 @@ class QueryPresenter constructor(private val weatherInteractor: WeatherInteracto
                 })
     }
 
-    fun userClickedInstallButton() {
-        view.displayInstallPrompt(Constants.RequestCodes.INSTALL_FROM_QUERY_FEATURE,
-                Constants.ReferrerCodes.FROM_QUERY_FEATURE)
-    }
+    fun userClickedInstallButton() =
+            view.displayInstallPrompt(Constants.RequestCodes.INSTALL_FROM_QUERY_FEATURE,
+                    Constants.ReferrerCodes.FROM_QUERY_FEATURE)
 
-    fun userClickedAboutButton() {
-        view.displayAboutUi()
-    }
+    fun userClickedAboutButton() = view.displayAboutUi()
 
-    fun userClickedTextInputButton() {
-        view.startPlacesAutoCompleteUi(Constants.RequestCodes.PLACE_AUTO_COMPLETE)
-    }
+    fun userClickedTextInputButton() = view.startPlacesAutoCompleteUi(Constants.RequestCodes.PLACE_AUTO_COMPLETE)
 
-    fun userDidNotWantToChangeLocationSettings(){
-        view.displayCantDetectLocationError()
-    }
+    fun userDidNotWantToChangeLocationSettings() = view.displayCantDetectLocationError()
 
-    fun userAddressReceived(resultCode: Int, result: String) {
-        if (resultCode == FetchAddressIntentService.RESULT_SUCCESS) view.displayUserAddress(result)
-        else view.displayUserAddressFetchError(result)
-    }
+    fun userAddressReceived(resultCode: Int, result: String) =
+            if (resultCode == FetchAddressIntentService.RESULT_SUCCESS) view.displayUserAddress(result)
+            else view.displayUserAddressFetchError(result)
 
-    fun getPlaceAutoCompleteFailed() {
-        view.displayGetAutoCompletePlaceError()
-    }
+    fun getPlaceAutoCompleteFailed() = view.displayGetAutoCompletePlaceError()
 
 }

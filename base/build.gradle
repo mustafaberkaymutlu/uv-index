@@ -80,6 +80,7 @@ dependencies {
     // Retrofit
     api deps.retrofit.base
     api deps.retrofit.gson
+    api deps.okHttpLogginInterceptor
 
     // Others
     api deps.timber

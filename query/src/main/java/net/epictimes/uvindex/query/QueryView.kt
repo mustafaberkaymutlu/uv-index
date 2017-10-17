@@ -9,6 +9,8 @@ interface QueryView : MvpView {
 
     fun displayUvIndexForecast(uvIndexForecast: List<Weather>)
 
+    fun setToViewState(currentUvIndex: Weather, uvIndexForecast: List<Weather>)
+
     fun displayInstallPrompt(requestCode: Int, referrerCode: String)
 
     fun displayAboutUi()

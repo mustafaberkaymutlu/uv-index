@@ -83,7 +83,9 @@ class QueryPresenterTest {
             firstValue.onSuccessGetForecast(weatherForecast)
         }
 
-        verify(queryView, times(1)).displayUvIndex(weatherForecast.first())
+        val currentUvIndex = weatherForecast.first()
+        verify(queryView, times(1)).setToViewState(currentUvIndex, weatherForecast)
+        verify(queryView, times(1)).displayUvIndex(currentUvIndex)
         verify(queryView, times(1)).displayUvIndexForecast(weatherForecast)
     }
 
