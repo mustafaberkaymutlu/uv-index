@@ -104,7 +104,7 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
 
     override fun onPause() {
         super.onPause()
-        stopLocationUpdates(QueryViewState.LocationSearchState.Paused)
+        stopLocationUpdates(viewState.locationSearchState)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -300,15 +300,16 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
                 .forEach { it.visibility = View.VISIBLE }
     }
 
-    override fun displayUvIndexForecast(uvIndexForecast: List<Weather>) {
-        Timber.d("Displaying uv index forecast:")
-        uvIndexForecast.forEach { Timber.d(it.toString()) }
+    override fun setToViewState(currentUvIndex: Weather, uvIndexForecast: List<Weather>) {
+        viewState.currentUvIndex = currentUvIndex
 
         with(viewState.uvIndexForecast) {
             clear()
             addAll(uvIndexForecast)
         }
+    }
 
+    override fun displayUvIndexForecast(uvIndexForecast: List<Weather>) {
         val sliderColors = arrayListOf<Int>()
 
         uvIndexForecast.mapTo(sliderColors) { chartColors[it.uvIndex] }
@@ -493,6 +494,11 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
 
             // Display the address string or an error message sent from the intent service.
             val result: String = resultData.getString(FetchAddressIntentService.KEY_RESULT)
+
+            with(viewState) {
+                address = result
+                addressState = resultCode
+            }
 
             presenter.userAddressReceived(resultCode, result)
         }

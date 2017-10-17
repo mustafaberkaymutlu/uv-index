@@ -21,7 +21,10 @@ class QueryPresenter constructor(private val weatherInteractor: WeatherInteracto
                                 view.displayGetUvIndexError()
                             } else {
                                 val sortedForecast = weatherForecast.sortedBy { it.datetime.time }
-                                view.displayUvIndex(sortedForecast.first())
+                                val currentUvIndex = sortedForecast.first()
+
+                                view.setToViewState(currentUvIndex, sortedForecast)
+                                view.displayUvIndex(currentUvIndex)
                                 view.displayUvIndexForecast(sortedForecast)
                             }
                         }
