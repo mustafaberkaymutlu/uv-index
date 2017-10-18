@@ -261,7 +261,10 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
     override fun displayUvIndex(weather: Weather) {
         with(textViewUvIndex) {
             text = weather.uvIndex.toString()
+            visibility = View.VISIBLE
         }
+
+        textViewUvIndexDenominator.visibility = View.VISIBLE
 
         val cardBackgroundColor = chartColors[weather.uvIndex]
         cardViewCurrent.setCardBackgroundColor(cardBackgroundColor)

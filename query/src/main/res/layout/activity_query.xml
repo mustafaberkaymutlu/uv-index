@@ -69,7 +69,8 @@
                         android:textAppearance="@style/TextAppearance.AppCompat.Display2"
                         app:layout_constraintBaseline_toBaselineOf="@+id/textViewLocation"
                         app:layout_constraintEnd_toStartOf="@+id/textViewUvIndexDenominator"
-                        tools:text="5" />
+                        tools:text="5"
+                        android:visibility="gone"/>
 
                     <TextView
                         android:id="@+id/textViewUvIndexDenominator"
@@ -80,7 +81,8 @@
                         android:textAppearance="@style/TextAppearance.AppCompat.Caption"
                         android:textSize="18sp"
                         app:layout_constraintBaseline_toBaselineOf="@+id/textViewUvIndex"
-                        app:layout_constraintEnd_toEndOf="parent" />
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:visibility="gone"/>
 
                     <TextView
                         android:id="@+id/textViewLocation"
