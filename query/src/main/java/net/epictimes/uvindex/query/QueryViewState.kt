@@ -32,7 +32,7 @@ class QueryViewState : RestorableViewState<QueryView> {
     var currentUvIndex: Weather? = null
     val uvIndexForecast = ArrayList<Weather>()
 
-    lateinit var timezone: String
+    var timezone: String? = null
 
     override fun saveInstanceState(out: Bundle) {
         out.putParcelable(KEY_LOCATION, location)
