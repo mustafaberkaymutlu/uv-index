@@ -242,11 +242,9 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
         return locationRequest
     }
 
-    private fun createLocationSettingsRequest(): LocationSettingsRequest {
-        val builder = LocationSettingsRequest.Builder()
-        builder.addLocationRequest(locationRequest)
-        return builder.build()
-    }
+    private fun createLocationSettingsRequest() = LocationSettingsRequest.Builder()
+            .addLocationRequest(locationRequest)
+            .build()
 
     private fun createChartColors(): List<Int> {
         val typedArray = resources.obtainTypedArray(net.epictimes.uvindex.query.R.array.uv_indexes)
@@ -393,7 +391,7 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
     override fun displayGetAutoCompletePlaceError() =
             Snackbar.make(coordinatorLayout, R.string.error_getting_autocomplete_place, Snackbar.LENGTH_LONG).show()
 
-    private fun stopLocationUpdates(newState: QueryViewState.LocationSearchState) {
+    override fun stopLocationUpdates(newState: QueryViewState.LocationSearchState) {
         if (viewState.locationSearchState != QueryViewState.LocationSearchState.SearchingLocation) {
             Timber.d("stopLocationUpdates: updates never requested, no-op.")
             return
@@ -403,6 +401,10 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
                 .addOnCompleteListener {
                     viewState.locationSearchState = newState
                 }
+    }
+
+    override fun startFetchingAddress(latLng: LatLng) {
+        FetchAddressIntentService.startIntentService(this, AddressResultReceiver(), latLng)
     }
 
     private fun styleLineChart() {
@@ -469,10 +471,9 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
             setDrawValues(true)
             setDrawHighlightIndicators(false) // disable the drawing of highlight indicator (lines)
             valueFormatter = IValueFormatter { value, _, _, _ ->
-                if (value == 0f) {
-                    ""
-                } else {
-                    String.format("%.0f", value)
+                when (value) {
+                    0f -> ""
+                    else -> String.format("%.0f", value)
                 }
             }
         }
@@ -485,10 +486,9 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
             super.onLocationResult(locationResult)
 
             locationResult?.lastLocation?.let {
-                stopLocationUpdates(QueryViewState.LocationSearchState.Idle)
-                viewState.location = LatLng(it.latitude, it.longitude)
-                presenter.getForecastUvIndex(it.latitude, it.longitude, null, null)
-                FetchAddressIntentService.startIntentService(this@QueryActivity, AddressResultReceiver(), it)
+                val latLng = LatLng(it.latitude, it.longitude)
+                viewState.location = latLng
+                presenter.onLocationReceived(latLng)
             }
         }
     }

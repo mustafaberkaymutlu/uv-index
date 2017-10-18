@@ -1,6 +1,7 @@
 package net.epictimes.uvindex.query
 
 import com.hannesdorfmann.mosby3.mvp.MvpView
+import net.epictimes.uvindex.data.model.LatLng
 import net.epictimes.uvindex.data.model.Weather
 
 interface QueryView : MvpView {
@@ -14,6 +15,10 @@ interface QueryView : MvpView {
     fun displayInstallPrompt(requestCode: Int, referrerCode: String)
 
     fun displayAboutUi()
+
+    fun stopLocationUpdates(newState: QueryViewState.LocationSearchState)
+
+    fun startFetchingAddress(latLng: LatLng)
 
     fun displayGetUvIndexError()
 

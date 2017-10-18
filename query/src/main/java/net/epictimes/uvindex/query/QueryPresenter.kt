@@ -4,6 +4,7 @@ package net.epictimes.uvindex.query
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter
 import net.epictimes.uvindex.Constants
 import net.epictimes.uvindex.data.interactor.WeatherInteractor
+import net.epictimes.uvindex.data.model.LatLng
 import net.epictimes.uvindex.data.model.Weather
 import java.util.*
 
@@ -40,6 +41,12 @@ class QueryPresenter constructor(private val weatherInteractor: WeatherInteracto
                 })
     }
 
+    fun onLocationReceived(latLng: LatLng) {
+        view.stopLocationUpdates(QueryViewState.LocationSearchState.Idle)
+        view.startFetchingAddress(latLng)
+        getForecastUvIndex(latLng.latitude, latLng.longitude, null, null)
+    }
+
     fun userClickedInstallButton() =
             view.displayInstallPrompt(Constants.RequestCodes.INSTALL_FROM_QUERY_FEATURE,
                     Constants.ReferrerCodes.FROM_QUERY_FEATURE)
@@ -50,9 +57,10 @@ class QueryPresenter constructor(private val weatherInteractor: WeatherInteracto
 
     fun userDidNotWantToChangeLocationSettings() = view.displayCantDetectLocationError()
 
-    fun userAddressReceived(resultCode: Int, result: String) =
-            if (resultCode == FetchAddressIntentService.RESULT_SUCCESS) view.displayUserAddress(result)
-            else view.displayUserAddressFetchError(result)
+    fun userAddressReceived(resultCode: Int, result: String) {
+        if (resultCode == FetchAddressIntentService.RESULT_SUCCESS) view.displayUserAddress(result)
+        else view.displayUserAddressFetchError(result)
+    }
 
     fun getPlaceAutoCompleteFailed() = view.displayGetAutoCompletePlaceError()
 

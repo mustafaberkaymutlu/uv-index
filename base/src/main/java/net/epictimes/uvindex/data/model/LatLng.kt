@@ -3,7 +3,7 @@ package net.epictimes.uvindex.data.model
 import android.os.Parcel
 import android.os.Parcelable
 
-data class LatLng(private val latitude: Double, private val longitude: Double) : Parcelable {
+data class LatLng(val latitude: Double, val longitude: Double) : Parcelable {
 
     constructor(parcel: Parcel) : this(parcel.readDouble(), parcel.readDouble())
 

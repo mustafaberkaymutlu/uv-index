@@ -5,9 +5,9 @@ import android.content.Context
 import android.content.Intent
 import android.location.Address
 import android.location.Geocoder
-import android.location.Location
 import android.os.Bundle
 import android.os.ResultReceiver
+import net.epictimes.uvindex.data.model.LatLng
 import timber.log.Timber
 import java.io.IOException
 import java.util.*
@@ -26,17 +26,17 @@ class FetchAddressIntentService : IntentService("FetchAddressIntentService") {
 
         fun startIntentService(context: Context,
                                resultReceiver: ResultReceiver,
-                               lastLocation: Location) {
+                               latLng: LatLng) {
             val intent = Intent(context, FetchAddressIntentService::class.java)
             intent.putExtra(KEY_RESULT_RECEIVER, resultReceiver)
-            intent.putExtra(KEY_LOCATION, lastLocation)
+            intent.putExtra(KEY_LOCATION, latLng)
             context.startService(intent)
         }
     }
 
     override fun onHandleIntent(intent: Intent) {
         val resultReceiver = intent.getParcelableExtra<ResultReceiver>(KEY_RESULT_RECEIVER)
-        val location = intent.getParcelableExtra<Location>(KEY_LOCATION)
+        val latLng = intent.getParcelableExtra<LatLng>(KEY_LOCATION)
 
         val geocoder = Geocoder(this, Locale.getDefault())
 
@@ -44,7 +44,7 @@ class FetchAddressIntentService : IntentService("FetchAddressIntentService") {
         var addresses: List<Address>? = null
 
         try {
-            addresses = geocoder.getFromLocation(location.latitude, location.longitude, 1)
+            addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1)
         } catch (ioException: IOException) {
             // Catch network or other I/O problems.
             errorMessage = getString(R.string.address_service_not_available)
@@ -52,9 +52,7 @@ class FetchAddressIntentService : IntentService("FetchAddressIntentService") {
         } catch (illegalArgumentException: IllegalArgumentException) {
             // Catch invalid latitude or longitude values.
             errorMessage = getString(R.string.address_service_invalid_coordinates)
-            Timber.e(errorMessage + ". " +
-                    "Latitude = " + location.latitude +
-                    ", Longitude = " + location.longitude,
+            Timber.e("$errorMessage. Latitude = ${latLng.latitude}, Longitude = ${latLng.longitude}",
                     illegalArgumentException)
         }
 
