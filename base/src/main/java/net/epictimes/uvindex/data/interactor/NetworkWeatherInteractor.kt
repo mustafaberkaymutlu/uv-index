@@ -15,8 +15,9 @@ class NetworkWeatherInteractor constructor(private val services: Services) : Wea
                 .enqueue(object : Callback<GetForecastResponse> {
                     override fun onResponse(call: Call<GetForecastResponse>?,
                                             response: Response<GetForecastResponse>?) {
-                        response?.body()?.weatherList?.let {
-                            getForecastCallback.onSuccessGetForecast(it)
+                        val body = response?.body()
+                        body?.weatherList?.let {
+                            getForecastCallback.onSuccessGetForecast(it, body.timezone)
                         } ?: run {
                             getForecastCallback.onFailGetForecast()
                         }

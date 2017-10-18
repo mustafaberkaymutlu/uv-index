@@ -20,6 +20,7 @@ class QueryViewState : RestorableViewState<QueryView> {
         val KEY_STATE = "locationSearchState"
         val KEY_CURRENT_UV_INDEX = "currentUvIndex"
         val KEY_UV_INDEX_FORECAST = "uvIndexForecast"
+        val KEY_TIMEZONE = "timezone"
     }
 
     var location: LatLng? = null
@@ -31,6 +32,8 @@ class QueryViewState : RestorableViewState<QueryView> {
     var currentUvIndex: Weather? = null
     val uvIndexForecast = ArrayList<Weather>()
 
+    var timezone: String? = null
+
     override fun saveInstanceState(out: Bundle) {
         out.putParcelable(KEY_LOCATION, location)
         out.putString(KEY_ADDRESS, address)
@@ -38,6 +41,7 @@ class QueryViewState : RestorableViewState<QueryView> {
         out.putSerializable(KEY_STATE, locationSearchState)
         out.putParcelable(KEY_CURRENT_UV_INDEX, currentUvIndex)
         out.putSerializable(KEY_UV_INDEX_FORECAST, uvIndexForecast)
+        out.putString(KEY_TIMEZONE, timezone)
     }
 
     override fun restoreInstanceState(`in`: Bundle?): RestorableViewState<QueryView> {
@@ -48,6 +52,7 @@ class QueryViewState : RestorableViewState<QueryView> {
             locationSearchState = it.getSerializable(KEY_STATE) as LocationSearchState
             currentUvIndex = it.getParcelable(KEY_CURRENT_UV_INDEX)
             uvIndexForecast.addAll(it.getSerializable(KEY_UV_INDEX_FORECAST) as ArrayList<Weather>)
+            timezone = it.getString(KEY_TIMEZONE)
         }
 
         return this

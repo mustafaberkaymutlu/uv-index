@@ -9,7 +9,7 @@ interface WeatherInteractor {
 
     interface GetForecastCallback {
 
-        fun onSuccessGetForecast(weatherForecast: List<Weather>)
+        fun onSuccessGetForecast(weatherForecast: List<Weather>, timezone: String)
 
         fun onFailGetForecast()
 

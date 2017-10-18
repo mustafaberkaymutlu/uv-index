@@ -14,6 +14,7 @@ import android.os.Looper
 import android.os.ResultReceiver
 import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
+import android.support.v7.app.AlertDialog
 import android.text.SpannableString
 import android.text.style.StyleSpan
 import android.view.Menu
@@ -86,10 +87,15 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_query)
-
         setSupportActionBar(toolbar)
 
-        styleLineChart()
+        imageButtonForecastInfo.setOnClickListener {
+            AlertDialog.Builder(this)
+                    .setMessage(R.string.forecast_info_message)
+                    .setPositiveButton(android.R.string.ok, null)
+                    .create()
+                    .show()
+        }
     }
 
     override fun onResume() {
@@ -255,7 +261,10 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
     override fun displayUvIndex(weather: Weather) {
         with(textViewUvIndex) {
             text = weather.uvIndex.toString()
+            visibility = View.VISIBLE
         }
+
+        textViewUvIndexDenominator.visibility = View.VISIBLE
 
         val cardBackgroundColor = chartColors[weather.uvIndex]
         cardViewCurrent.setCardBackgroundColor(cardBackgroundColor)
@@ -297,7 +306,8 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
                 .forEach { it.visibility = View.VISIBLE }
     }
 
-    override fun setToViewState(currentUvIndex: Weather, uvIndexForecast: List<Weather>) {
+    override fun setToViewState(currentUvIndex: Weather, uvIndexForecast: List<Weather>, timezone: String) {
+        viewState.timezone = timezone
         viewState.currentUvIndex = currentUvIndex
 
         with(viewState.uvIndexForecast) {
@@ -307,6 +317,8 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
     }
 
     override fun displayUvIndexForecast(uvIndexForecast: List<Weather>) {
+        styleLineChart()
+
         val sliderColors = arrayListOf<Int>()
 
         uvIndexForecast.mapTo(sliderColors) { chartColors[it.uvIndex] }
@@ -416,7 +428,7 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
                 setAvoidFirstLastClipping(true)
                 setDrawLabels(true)
                 setValueFormatter { value, _ ->
-                    viewState.uvIndexForecast[value.toInt()].datetime.getReadableHour()
+                    viewState.uvIndexForecast[value.toInt()].datetime.getReadableHour(viewState.timezone)
                 }
             }
 

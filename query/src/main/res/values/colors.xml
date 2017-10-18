@@ -11,6 +11,8 @@
     <color name="red_200">#EF9A9A</color>
     <color name="purple_200">#CE93D8</color>
 
+    <color name="grey_500">#9E9E9E</color>
+
     <array name="uv_indexes">
         <!-- 0 -->
         <item>@color/green_200</item>

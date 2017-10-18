@@ -5,6 +5,8 @@ import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter
 import net.epictimes.uvindex.Constants
 import net.epictimes.uvindex.data.interactor.WeatherInteractor
 import net.epictimes.uvindex.data.model.Weather
+import java.util.*
+
 
 class QueryPresenter constructor(private val weatherInteractor: WeatherInteractor) : MvpBasePresenter<QueryView>() {
 
@@ -15,15 +17,15 @@ class QueryPresenter constructor(private val weatherInteractor: WeatherInteracto
     fun getForecastUvIndex(latitude: Double, longitude: Double, language: String?, units: String?) {
         weatherInteractor.getForecast(latitude, longitude, language, units, FORECAST_HOUR,
                 object : WeatherInteractor.GetForecastCallback {
-                    override fun onSuccessGetForecast(weatherForecast: List<Weather>) {
+                    override fun onSuccessGetForecast(weatherForecast: List<Weather>, timezone: String) {
                         if (isViewAttached) {
                             if (weatherForecast.isEmpty()) {
                                 view.displayGetUvIndexError()
                             } else {
                                 val sortedForecast = weatherForecast.sortedBy { it.datetime.time }
-                                val currentUvIndex = sortedForecast.first()
+                                val currentUvIndex = getClosestWeather(weatherForecast)
 
-                                view.setToViewState(currentUvIndex, sortedForecast)
+                                view.setToViewState(currentUvIndex, sortedForecast, timezone)
                                 view.displayUvIndex(currentUvIndex)
                                 view.displayUvIndexForecast(sortedForecast)
                             }
@@ -53,5 +55,15 @@ class QueryPresenter constructor(private val weatherInteractor: WeatherInteracto
             else view.displayUserAddressFetchError(result)
 
     fun getPlaceAutoCompleteFailed() = view.displayGetAutoCompletePlaceError()
+
+    private fun getClosestWeather(weatherList: Collection<Weather>): Weather {
+        val nowMillis = System.currentTimeMillis()
+
+        return Collections.min(weatherList, { w1, w2 ->
+            val diff1 = Math.abs(w1.datetime.time - nowMillis)
+            val diff2 = Math.abs(w2.datetime.time - nowMillis)
+            diff1.compareTo(diff2)
+        })
+    }
 
 }

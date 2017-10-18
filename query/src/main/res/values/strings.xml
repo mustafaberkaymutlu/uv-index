@@ -6,6 +6,8 @@
     <string name="right_now">Right Now</string>
     <string name="uv_index_denominator">/11</string>
 
+    <string name="forecast_info_message">The time is displayed according to the local time of the queried location.</string>
+
     <string name="address_service_not_available">Service not available</string>
     <string name="address_service_invalid_coordinates">Invalid coordinates</string>
     <string name="address_service_no_address_found">No address found</string>
