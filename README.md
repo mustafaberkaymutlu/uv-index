@@ -24,7 +24,8 @@
 * [Google Places API](https://developers.google.com/places/android-api/autocomplete) for keyboard location input
 * Google Location API for receiving user's location
 
-<p><img width="400" height="712" src="./art/demo.gif"></p>
+## Demo
+<p><img src="./art/demo.gif"></p>
 
 ## Getting Started
 
