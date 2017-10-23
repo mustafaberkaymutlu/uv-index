@@ -9,7 +9,7 @@ import net.epictimes.uvindex.data.model.Weather
 import java.util.*
 
 
-class QueryPresenter constructor(private val weatherInteractor: WeatherInteractor) : MvpBasePresenter<QueryView>() {
+class QueryPresenter constructor(private val weatherInteractor: WeatherInteractor, private val now: Date) : MvpBasePresenter<QueryView>() {
 
     companion object {
         val FORECAST_HOUR = 24
@@ -64,14 +64,11 @@ class QueryPresenter constructor(private val weatherInteractor: WeatherInteracto
 
     fun getPlaceAutoCompleteFailed() = view.displayGetAutoCompletePlaceError()
 
-    private fun getClosestWeather(weatherList: Collection<Weather>): Weather {
-        val nowMillis = System.currentTimeMillis()
-
-        return Collections.min(weatherList, { w1, w2 ->
-            val diff1 = Math.abs(w1.datetime.time - nowMillis)
-            val diff2 = Math.abs(w2.datetime.time - nowMillis)
-            diff1.compareTo(diff2)
-        })
-    }
+    private fun getClosestWeather(weatherList: Collection<Weather>): Weather =
+            Collections.min(weatherList, { w1, w2 ->
+                val diff1 = Math.abs(w1.datetime.time - now.time)
+                val diff2 = Math.abs(w2.datetime.time - now.time)
+                diff1.compareTo(diff2)
+            })
 
 }

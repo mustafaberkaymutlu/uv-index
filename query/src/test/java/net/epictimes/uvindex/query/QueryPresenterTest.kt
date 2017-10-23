@@ -1,10 +1,9 @@
 package net.epictimes.uvindex.query
 
-import com.nhaarman.mockito_kotlin.argumentCaptor
-import com.nhaarman.mockito_kotlin.mock
-import com.nhaarman.mockito_kotlin.whenever
+import com.nhaarman.mockito_kotlin.*
 import net.epictimes.uvindex.data.interactor.WeatherInteractor
 import net.epictimes.uvindex.data.model.Weather
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.mockito.ArgumentMatchers.eq
@@ -32,7 +31,7 @@ class QueryPresenterTest {
 
     @Test
     fun givenEmptyWeatherList_shouldDisplayError() {
-        queryPresenter = QueryPresenter(weatherInteractor)
+        queryPresenter = QueryPresenter(weatherInteractor, Date())
 
         queryPresenter.attachView(queryView)
 
@@ -49,7 +48,7 @@ class QueryPresenterTest {
 
     @Test
     fun givenError_shouldDisplayError() {
-        queryPresenter = QueryPresenter(weatherInteractor)
+        queryPresenter = QueryPresenter(weatherInteractor, Date())
 
         queryPresenter.attachView(queryView)
 
@@ -65,13 +64,13 @@ class QueryPresenterTest {
     }
 
     @Test
-    fun givenValidWeatherForecast_shouldDisplayUvIndex() {
+    fun givenWeatherForecast_shouldDisplayUvIndex() {
         val weather = mock<Weather>()
         val weatherForecast = Array(24) { weather }.asList()
 
         whenever(weather.datetime).thenReturn(Date())
 
-        queryPresenter = QueryPresenter(weatherInteractor)
+        queryPresenter = QueryPresenter(weatherInteractor, Date())
 
         queryPresenter.attachView(queryView)
 
@@ -89,5 +88,32 @@ class QueryPresenterTest {
         verify(queryView, times(1)).displayUvIndexForecast(weatherForecast)
     }
 
+    @Test
+    fun givenWeatherForecast_shouldGetClosestDateCorrectly() {
+        val currentMillis = 2049L
+        val closestMillis = 2000L
+
+        val weatherForecast = (0..24).map({
+            val mock = mock<Weather>()
+            whenever(mock.datetime).thenReturn(Date(it * 100L))
+            mock
+        }).toList()
+
+        queryPresenter = QueryPresenter(weatherInteractor, Date(currentMillis))
+
+        queryPresenter.attachView(queryView)
+
+        queryPresenter.getForecastUvIndex(0.0, 0.0, null, null)
+
+        argumentCaptor<WeatherInteractor.GetForecastCallback>().apply {
+            verify(weatherInteractor, times(1)).getForecast(any(), any(),
+                    anyOrNull(), anyOrNull(), anyOrNull(), capture())
+            firstValue.onSuccessGetForecast(weatherForecast, "Europe/Istanbul")
+        }
+
+        verify(queryView, times(1)).displayUvIndex(check {
+            assertEquals(closestMillis, it.datetime.time)
+        })
+    }
 
 }
