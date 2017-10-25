@@ -51,7 +51,7 @@ class QueryViewState : RestorableViewState<QueryView> {
             addressState = it.getInt(KEY_ADDRESS_STATE)
             locationSearchState = it.getSerializable(KEY_STATE) as LocationSearchState
             currentUvIndex = it.getParcelable(KEY_CURRENT_UV_INDEX)
-            uvIndexForecast.addAll(it.getSerializable(KEY_UV_INDEX_FORECAST) as ArrayList<Weather>)
+            uvIndexForecast.addAll(it.getParcelableArrayList(KEY_UV_INDEX_FORECAST))
             timezone = it.getString(KEY_TIMEZONE)
         }
 
