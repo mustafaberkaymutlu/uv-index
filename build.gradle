@@ -10,7 +10,7 @@ buildscript {
             'buildTools': '26.0.2',
             'minSdk': 23,
             'targetSdk': 26,
-            'kotlin': '1.1.50',
+            'kotlin': '1.1.51',
 
             'versionCode' : versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild,
             'versionName' : "${versionMajor}.${versionMinor}.${versionPatch}",
@@ -88,7 +88,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.0-rc2'
+        classpath 'com.android.tools.build:gradle:3.0.0'
         classpath deps.kotlin.gradlePlugin
     }
 }
