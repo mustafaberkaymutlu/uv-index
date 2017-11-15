@@ -1,7 +1,10 @@
 package net.epictimes.uvindex
 
 import android.app.Application
+import com.crashlytics.android.Crashlytics
 import com.facebook.stetho.Stetho
+import com.google.android.instantapps.InstantApps
+import io.fabric.sdk.android.Fabric
 import net.epictimes.uvindex.base.BuildConfig
 import net.epictimes.uvindex.data.ApiModule
 import net.epictimes.uvindex.di.DaggerSingletonComponent
@@ -16,11 +19,18 @@ open class BaseApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
+        initCrashlytics()
+
         initTimber()
 
         Stetho.initializeWithDefaults(this)
 
         initDagger()
+    }
+
+    private fun initCrashlytics() {
+        Fabric.with(this, Crashlytics())
+        Crashlytics.setBool("InstantApp", InstantApps.isInstantApp(this))
     }
 
     open fun initTimber() {

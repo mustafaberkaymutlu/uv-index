@@ -1,6 +1,20 @@
+buildscript {
+    repositories {
+        maven { url 'https://maven.fabric.io/public' }
+    }
+    dependencies {
+        classpath deps.fabric.gradlePlugin
+    }
+}
+
 apply plugin: 'com.android.feature'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'io.fabric'
+
+repositories {
+    maven { url 'https://maven.fabric.io/public' }
+}
 
 android {
     compileSdkVersion versions.compileSdk
@@ -49,6 +63,8 @@ android {
     }
 }
 
+crashlytics { instantAppSupport true }
+
 dependencies {
     feature project(':query')
     feature project(":autocomplete")
@@ -84,4 +100,5 @@ dependencies {
     // Others
     api deps.timber
     implementation deps.stetho
+    implementation(deps.fabric.crashlytics) { transitive = true }
 }
