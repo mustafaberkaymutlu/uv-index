@@ -1,1 +1,1 @@
-include ':query', ':app', ':base', ':instantapp'
+include ':query', ':autocomplete', ':app', ':base', ':instantapp'

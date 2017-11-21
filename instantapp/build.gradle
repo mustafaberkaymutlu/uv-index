@@ -16,5 +16,6 @@ android {
 
 dependencies {
     implementation project(':query')
+    implementation project(':autocomplete')
     implementation project(':base')
 }

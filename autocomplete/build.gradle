@@ -1,17 +1,28 @@
 apply plugin: 'com.android.feature'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion versions.compileSdk
     buildToolsVersion versions.buildTools
-    baseFeature true
 
     defaultConfig {
         minSdkVersion versions.minSdk
         targetSdkVersion versions.targetSdk
         versionCode versions.versionCode
         versionName versions.versionName
+        vectorDrawables.useSupportLibrary = true
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    signingConfigs {
+        debugKey {
+            storePassword 'android'
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+            storeFile file('../key/debug.keystore')
+        }
     }
 
     buildTypes {
@@ -20,7 +31,9 @@ android {
             zipAlignEnabled false
             minifyEnabled false
             useProguard true
+            versionNameSuffix '-debug'
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debugKey
         }
 
         release {
@@ -29,6 +42,7 @@ android {
             minifyEnabled true
             useProguard true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debugKey
         }
     }
 
@@ -37,49 +51,31 @@ android {
 
         develop {
             dimension 'environment'
-
-            resValue 'string', 'google_places_api_key', "AIzaSyBe4QxDGWtZ-1SQ2hU1PArg26gM0LElNXE"
         }
 
         production {
             dimension 'environment'
+        }
+    }
 
-            resValue 'string', 'google_places_api_key', "AIzaSyBo2HYsR9n8PYO2xrRYrrlqyE3S3VfZjd0"
+    testOptions {
+        unitTests.all {
+            testLogging {
+                events "passed", "skipped", "failed", "standardOut", "standardError"
+                outputs.upToDateWhen { false }
+                showStandardStreams = true
+            }
         }
     }
 }
 
 dependencies {
-    feature project(':query')
-    feature project(":autocomplete")
-    application project(':app')
+    implementation project(':base')
 
-    api deps.kotlin.stdlib
-
-    api deps.instantApps
-
-    // Support
-    api deps.support.appCompat
-
-    // TODO Move Google Play Services out of base
-    // investigate "resource integer/google_play_services_version not found" error
-    api deps.googlePlayServices.location
-    api deps.googlePlayServices.places
+    implementation deps.support.constraintLayout
+    implementation deps.support.cardView
+    implementation deps.support.design
 
     // Dagger 2
-    api deps.dagger.runtime
     kapt deps.dagger.compiler
-
-    // Mosby
-    api deps.mosby.core
-    api deps.mosby.viewState
-
-    // Retrofit
-    api deps.retrofit.base
-    api deps.retrofit.gson
-    api deps.okHttpLogginInterceptor
-
-    // Others
-    api deps.timber
-    implementation deps.stetho
 }
