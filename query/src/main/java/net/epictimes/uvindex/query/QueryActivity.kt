@@ -33,7 +33,6 @@ import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import com.google.android.gms.location.places.ui.PlaceAutocomplete
 import com.google.android.instantapps.InstantApps
-import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_query.*
 import net.epictimes.uvindex.Constants
 import net.epictimes.uvindex.data.model.LatLng
@@ -84,7 +83,11 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
     override fun onNewViewStateInstance() = requestLocationUpdatesWithPermissionCheck()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        AndroidInjection.inject(this)
+        DaggerQueryComponent.builder()
+                .singletonComponent(singletonComponent)
+                .build()
+                .inject(this)
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_query)
         setSupportActionBar(toolbar)

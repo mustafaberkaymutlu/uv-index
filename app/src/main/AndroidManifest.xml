@@ -1,2 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="net.epictimes.uvindex.app" />
+    package="net.epictimes.uvindex">
+
+    <application android:name="net.epictimes.uvindex.BaseApplication" />
+
+</manifest>

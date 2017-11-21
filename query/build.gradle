@@ -70,8 +70,6 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
     implementation project(':base')
 
     implementation deps.support.constraintLayout
@@ -81,9 +79,6 @@ dependencies {
 
     // Dagger 2
     kapt deps.dagger.compiler
-
-    // Dagger.Android
-    kapt deps.daggerAndroid.compiler
 
     // Permissions Dispatcher
     implementation(deps.permissionsDispatcher.runtime) {

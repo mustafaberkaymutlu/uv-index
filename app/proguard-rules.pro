@@ -7,9 +7,6 @@
 -renamesourcefileattribute SourceFile
 
 
-# Dagger.Android
--dontwarn com.google.errorprone.annotations.**
-
 # Hide duplicate class note
 # https://stackoverflow.com/a/35742739/2708768
 -dontnote android.net.http.*

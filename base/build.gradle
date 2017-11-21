@@ -69,10 +69,6 @@ dependencies {
     api deps.dagger.runtime
     kapt deps.dagger.compiler
 
-    // Dagger.Android
-    api deps.daggerAndroid.runtime
-    kapt deps.daggerAndroid.compiler
-
     // Mosby
     api deps.mosby.core
     api deps.mosby.viewState

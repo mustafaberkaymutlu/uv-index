@@ -4,29 +4,27 @@
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
-    <application
-        android:name=".QueryApplication"
-        android:theme="@style/AppTheme">
+    <application android:name="net.epictimes.uvindex.BaseApplication">
 
-        <activity
-            android:name=".QueryActivity">
+        <activity android:name=".QueryActivity">
 
-            <intent-filter android:order="1">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <intent-filter
+                android:autoVerify="true"
+                android:order="1">
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.BROWSABLE" />
                 <category android:name="android.intent.category.DEFAULT" />
 
-                <data
-                    android:host="epictimes.net"
-                    android:path="/query"
-                    android:scheme="https" />
-            </intent-filter>
-
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
+                <data android:host="epictimes.net" />
+                <data android:pathPrefix="/query" />
+                <data android:scheme="https" />
+                <data android:scheme="http" />
             </intent-filter>
 
         </activity>
@@ -36,9 +34,12 @@
             android:exported="false" />
 
         <meta-data
+            android:name="default-url"
+            android:value="https://epictimes.net/query" />
+
+        <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_places_api_key" />
 
     </application>
-
 </manifest>

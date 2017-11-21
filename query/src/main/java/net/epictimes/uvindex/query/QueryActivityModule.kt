@@ -11,16 +11,16 @@ import java.util.*
 @Module
 class QueryActivityModule {
 
-    @ActivityScoped
+    @QueryFeatureScoped
     @Provides
     fun provideCurrentInteractor(services: Services): WeatherInteractor = NetworkWeatherInteractor(services)
 
-    @ActivityScoped
+    @QueryFeatureScoped
     @Provides
     fun provideQueryPresenter(weatherInteractor: WeatherInteractor): QueryPresenter =
             QueryPresenter(weatherInteractor, Date())
 
-    @ActivityScoped
+    @QueryFeatureScoped
     @Provides
     fun provideQueryViewState(): QueryViewState = QueryViewState()
 

@@ -8,7 +8,7 @@ import net.epictimes.uvindex.di.SingletonComponent
 import net.epictimes.uvindex.di.SingletonModule
 import timber.log.Timber
 
-abstract class BaseApplication : Application() {
+open class BaseApplication : Application() {
 
     lateinit var singletonComponent: SingletonComponent
 
