@@ -8,6 +8,7 @@ import android.content.Intent
 import android.content.IntentSender
 import android.graphics.Color
 import android.graphics.Typeface
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -356,7 +357,11 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
 
     override fun startPlacesAutoCompleteUi(requestCode: Int) {
         try {
-            val intent = PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN).build(this)
+            val intent = Intent(Intent.ACTION_VIEW,
+                    Uri.parse("https://epictimes.net/autocomplete/"))
+            intent.`package` = packageName
+            intent.addCategory(Intent.CATEGORY_BROWSABLE)
+
             startActivityForResult(intent, Constants.RequestCodes.PLACE_AUTO_COMPLETE)
         } catch (e: Exception) {
             // Kotlin does not support multi-catch yet.
