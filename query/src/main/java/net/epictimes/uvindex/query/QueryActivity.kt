@@ -378,7 +378,7 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
     }
 
     override fun displayUserAddressFetchError(errorMessage: String) {
-        val textColor = ContextCompat.getColor(this, net.epictimes.uvindex.R.color.accent)
+        val textColor = ContextCompat.getColor(this, net.epictimes.uvindex.base.R.color.accent)
 
         val spannedMessage = SpannableString(errorMessage)
         spannedMessage.setSpan(StyleSpan(Typeface.ITALIC), 0, errorMessage.length, 0)
@@ -419,7 +419,8 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
         val chartDesc = Description()
         with(chartDesc) {
             text = getString(R.string.chart_desc)
-            textColor = ContextCompat.getColor(this@QueryActivity, net.epictimes.uvindex.R.color.primary)
+            textColor = ContextCompat.getColor(this@QueryActivity,
+                    net.epictimes.uvindex.base.R.color.primary)
         }
 
         with(lineChart) {

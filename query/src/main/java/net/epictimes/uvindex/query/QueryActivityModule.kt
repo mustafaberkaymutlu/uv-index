@@ -5,7 +5,6 @@ import dagger.Provides
 import net.epictimes.uvindex.data.Services
 import net.epictimes.uvindex.data.interactor.NetworkWeatherInteractor
 import net.epictimes.uvindex.data.interactor.WeatherInteractor
-import net.epictimes.uvindex.di.ActivityScoped
 import java.util.*
 
 @Module
