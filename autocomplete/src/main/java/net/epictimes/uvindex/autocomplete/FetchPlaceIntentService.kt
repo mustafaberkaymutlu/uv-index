@@ -1,4 +1,4 @@
-package net.epictimes.uvindex.query
+package net.epictimes.uvindex.autocomplete
 
 import android.app.IntentService
 import android.content.Context
@@ -7,75 +7,74 @@ import android.location.Address
 import android.location.Geocoder
 import android.os.Bundle
 import android.os.ResultReceiver
-import net.epictimes.uvindex.data.model.LatLng
 import timber.log.Timber
 import java.io.IOException
 import java.util.*
 
 
-class FetchAddressIntentService : IntentService("FetchAddressIntentService") {
+class FetchPlaceIntentService : IntentService("FetchPlaceIntentService") {
 
     companion object {
-        private val MAX_RESULTS = 1
+        private val MAX_RESULTS = 20
 
-        private val PACKAGE_NAME = "net.epictimes.uvindex.query"
+        private val PACKAGE_NAME = "net.epictimes.uvindex.autocomplete"
         val KEY_RESULT_RECEIVER = PACKAGE_NAME + ".RESULT_RECEIVER"
-        val KEY_LOCATION = PACKAGE_NAME + ".LOCATION"
+        val KEY_PLACE = PACKAGE_NAME + ".PLACE"
         val KEY_MESSAGE = PACKAGE_NAME + ".MESSAGE"
+        val KEY_RESULT = PACKAGE_NAME + ".RESULT"
 
         fun startIntentService(context: Context,
                                resultReceiver: ResultReceiver,
-                               latLng: LatLng) {
-            val intent = Intent(context, FetchAddressIntentService::class.java)
+                               place: String) {
+            val intent = Intent(context, FetchPlaceIntentService::class.java)
             intent.putExtra(KEY_RESULT_RECEIVER, resultReceiver)
-            intent.putExtra(KEY_LOCATION, latLng)
+            intent.putExtra(KEY_PLACE, place)
             context.startService(intent)
         }
     }
 
     override fun onHandleIntent(intent: Intent) {
         val resultReceiver = intent.getParcelableExtra<ResultReceiver>(KEY_RESULT_RECEIVER)
-        val latLng = intent.getParcelableExtra<LatLng>(KEY_LOCATION)
+        val place = intent.getStringExtra(KEY_PLACE)
 
         val geocoder = Geocoder(this, Locale.getDefault())
 
         var errorMessage = ""
-        val addresses = mutableListOf<Address>()
+        val addresses = arrayListOf<Address>()
 
         try {
-            val results = geocoder.getFromLocation(latLng.latitude, latLng.longitude, MAX_RESULTS)
+            val results = geocoder.getFromLocationName(place, MAX_RESULTS)
             addresses.addAll(results)
         } catch (ioException: IOException) {
             // Catch network or other I/O problems.
             errorMessage = getString(R.string.address_service_not_available)
             Timber.e(errorMessage, ioException)
         } catch (illegalArgumentException: IllegalArgumentException) {
-            // Catch invalid latitude or longitude values.
-            errorMessage = getString(R.string.address_service_invalid_coordinates)
-            Timber.e("$errorMessage. Latitude = ${latLng.latitude}, Longitude = ${latLng.longitude}",
-                    illegalArgumentException)
+            // Catch invalid name values.
+            errorMessage = getString(R.string.place_service_invalid_place)
+            Timber.e("Place can not be null", illegalArgumentException)
         }
 
-        // Handle case where no address was found.
+        // Handle case where no place was found.
         if (addresses.isEmpty()) {
             if (errorMessage.isEmpty()) {
-                errorMessage = getString(R.string.address_service_no_address_found)
+                errorMessage = getString(R.string.address_service_no_place_found)
                 Timber.e(errorMessage)
             }
-            deliverResultToReceiver(resultReceiver, AddressFetchResult.FAIL, errorMessage)
+            deliverResultToReceiver(resultReceiver, AddressFetchResult.FAIL, errorMessage, addresses)
         } else {
             Timber.i(getString(R.string.address_service_address_found))
-            val address: Address = addresses.first()
-            deliverResultToReceiver(resultReceiver, AddressFetchResult.SUCCESS,
-                    "${address.adminArea}, ${address.countryName}")
+            deliverResultToReceiver(resultReceiver, AddressFetchResult.SUCCESS, getString(R.string.address_service_address_found), addresses)
         }
     }
 
     private fun deliverResultToReceiver(resultReceiver: ResultReceiver,
                                         fetchResult: AddressFetchResult,
-                                        message: String) {
+                                        message: String,
+                                        address: ArrayList<Address>) {
         val bundle = Bundle()
         bundle.putString(KEY_MESSAGE, message)
+        bundle.putParcelableArrayList(KEY_RESULT, address)
         resultReceiver.send(fetchResult.ordinal, bundle)
     }
 }

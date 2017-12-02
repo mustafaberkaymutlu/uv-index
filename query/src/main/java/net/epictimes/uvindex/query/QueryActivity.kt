@@ -32,7 +32,6 @@ import com.google.android.gms.common.GooglePlayServicesRepairableException
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
-import com.google.android.gms.location.places.ui.PlaceAutocomplete
 import com.google.android.instantapps.InstantApps
 import kotlinx.android.synthetic.main.activity_query.*
 import net.epictimes.uvindex.Constants
@@ -127,34 +126,7 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == Constants.RequestCodes.PLACE_AUTO_COMPLETE) {
-            when (resultCode) {
-                RESULT_OK -> {
-                    val place = PlaceAutocomplete.getPlace(this, data)
-
-                    with(viewState) {
-                        location = LatLng(place.latLng.latitude, place.latLng.longitude)
-                        locationSearchState = QueryViewState.LocationSearchState.Idle
-                    }
-
-                    presenter.userAddressReceived(FetchAddressIntentService.RESULT_SUCCESS, place.address.toString())
-                    presenter.getForecastUvIndex(place.latLng.latitude, place.latLng.longitude, null, null)
-
-                    Timber.i("Place search operation succeed with place: " + place.name)
-                }
-                PlaceAutocomplete.RESULT_ERROR -> {
-                    viewState.locationSearchState = QueryViewState.LocationSearchState.Idle
-                    val status = PlaceAutocomplete.getStatus(this, data)
-                    presenter.getPlaceAutoCompleteFailed()
-                    presenter.userAddressReceived(FetchAddressIntentService.RESULT_FAILURE,
-                            status.statusMessage ?: getString(R.string.location_unknown))
-                    Timber.i("Place search operation failed with message: ${status.statusMessage}")
-                }
-                RESULT_CANCELED -> {
-                    Timber.i("The user canceled the place search operation.")
-                }
-            }
-        } else if (requestCode == Constants.RequestCodes.UPDATE_LOCATION_SETTINGS) {
+        if (requestCode == Constants.RequestCodes.UPDATE_LOCATION_SETTINGS) {
             when (resultCode) {
                 RESULT_OK -> {
                     // Nothing to do. startLocationUpdates() gets called in onResume again.
@@ -355,14 +327,14 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
     override fun displayAboutUi() =
             Snackbar.make(coordinatorLayout, "Not implemented", Snackbar.LENGTH_LONG).show()
 
-    override fun startPlacesAutoCompleteUi(requestCode: Int) {
+    override fun startPlacesAutoCompleteUi() {
         try {
             val intent = Intent(Intent.ACTION_VIEW,
                     Uri.parse("https://epictimes.net/autocomplete/"))
             intent.`package` = packageName
             intent.addCategory(Intent.CATEGORY_BROWSABLE)
 
-            startActivityForResult(intent, Constants.RequestCodes.PLACE_AUTO_COMPLETE)
+            startActivity(intent)
         } catch (e: Exception) {
             // Kotlin does not support multi-catch yet.
             when (e) {
@@ -506,15 +478,15 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
         override fun onReceiveResult(resultCode: Int, resultData: Bundle) {
             super.onReceiveResult(resultCode, resultData)
 
-            // Display the address string or an error message sent from the intent service.
-            val result: String = resultData.getString(FetchAddressIntentService.KEY_RESULT)
+            val fetchResult = AddressFetchResult.values()[resultCode]
+            val message: String = resultData.getString(FetchAddressIntentService.KEY_MESSAGE)
 
             with(viewState) {
-                address = result
-                addressState = resultCode
+                address = message
+                addressState = fetchResult
             }
 
-            presenter.userAddressReceived(resultCode, result)
+            presenter.userAddressReceived(fetchResult, message)
         }
     }
 

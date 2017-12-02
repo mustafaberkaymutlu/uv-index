@@ -72,6 +72,8 @@ android {
 dependencies {
     implementation project(':base')
 
+    implementation deps.support.recyclerView
+
     // Dagger 2
     kapt deps.dagger.compiler
 }

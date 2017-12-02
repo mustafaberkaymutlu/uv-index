@@ -30,5 +30,5 @@ interface QueryView : MvpView {
 
     fun displayCantDetectLocationError()
 
-    fun startPlacesAutoCompleteUi(requestCode: Int)
+    fun startPlacesAutoCompleteUi()
 }
