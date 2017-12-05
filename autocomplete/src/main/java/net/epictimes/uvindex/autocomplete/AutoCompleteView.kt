@@ -9,6 +9,10 @@ interface AutoCompleteView : MvpView {
 
     fun startFetchingAddress(place: String)
 
+    fun goToQueryScreen()
+
+    fun setSelectedAddress(address: Address?)
+
     fun displayPlaceFetchError(errorMessage: String)
 
 }

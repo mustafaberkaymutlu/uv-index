@@ -8,6 +8,7 @@ import android.content.Intent
 import android.content.IntentSender
 import android.graphics.Color
 import android.graphics.Typeface
+import android.location.Address
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
@@ -137,6 +138,31 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
                     Timber.i("User chose not to make required location settings changes.")
                     viewState.locationSearchState = QueryViewState.LocationSearchState.Idle
                     presenter.userDidNotWantToChangeLocationSettings()
+                }
+            }
+        } else if (requestCode == Constants.RequestCodes.START_AUTOCOMPLETE) {
+            when (resultCode) {
+                RESULT_OK -> {
+                    val address = data?.getParcelableExtra<Address>(Constants.BundleKeys.ADDRESS)
+
+                    address?.let {
+                        with(viewState) {
+                            location = LatLng(it.latitude, it.longitude)
+                            locationSearchState = QueryViewState.LocationSearchState.Idle
+                        }
+
+                        val location = listOf<String?>(it.adminArea, it.countryName)
+                                .filterNot { it.isNullOrBlank() }
+                                .joinToString(separator = ", ")
+
+                        presenter.userAddressReceived(AddressFetchResult.SUCCESS, location)
+                        presenter.getForecastUvIndex(it.latitude, it.longitude, null, null)
+
+                        Timber.i("Place search operation succeed with place: %s", location)
+                    }
+                }
+                RESULT_CANCELED -> {
+                    Timber.i("The user canceled the place search operation.")
                 }
             }
         }
@@ -334,7 +360,7 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
             intent.`package` = packageName
             intent.addCategory(Intent.CATEGORY_BROWSABLE)
 
-            startActivity(intent)
+            startActivityForResult(intent, Constants.RequestCodes.START_AUTOCOMPLETE)
         } catch (e: Exception) {
             // Kotlin does not support multi-catch yet.
             when (e) {

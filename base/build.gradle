@@ -61,6 +61,8 @@ dependencies {
     // Support
     api deps.support.appCompat
     api deps.support.constraintLayout
+    api deps.support.design
+    api deps.support.cardView
 
     // TODO Move Google Play Services out of base
     // investigate "resource integer/google_play_services_version not found" error

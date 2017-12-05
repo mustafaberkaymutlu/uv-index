@@ -7,6 +7,7 @@ import android.view.ViewGroup
 
 class PlacesRecyclerView : RecyclerView.Adapter<PlaceViewHolder>() {
     private val addresses = mutableListOf<Address>()
+    var rowClickListener: ((address: Address) -> Unit)? = null
 
     fun setAddresses(newAddresses: List<Address>) {
         with(addresses) {
@@ -19,7 +20,13 @@ class PlacesRecyclerView : RecyclerView.Adapter<PlaceViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaceViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(PlaceViewHolder.LAYOUT_ID, parent, false)
-        return PlaceViewHolder(view)
+
+        val placeViewHolder = PlaceViewHolder(view)
+        placeViewHolder.clickListener = { pos ->
+            rowClickListener?.invoke(addresses[pos])
+        }
+
+        return placeViewHolder
     }
 
     override fun onBindViewHolder(holder: PlaceViewHolder, position: Int) {

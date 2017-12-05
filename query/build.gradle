@@ -72,8 +72,6 @@ android {
 dependencies {
     implementation project(':base')
 
-    implementation deps.support.cardView
-    implementation deps.support.design
     implementation deps.mpAndroidChart
 
     // Dagger 2

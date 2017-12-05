@@ -1,14 +1,17 @@
 package net.epictimes.uvindex.autocomplete
 
+import android.app.Activity
+import android.content.Intent
 import android.location.Address
 import android.os.Bundle
 import android.os.Handler
 import android.os.ResultReceiver
 import android.support.v7.widget.LinearLayoutManager
-import android.text.Editable
-import android.text.TextWatcher
+import android.support.v7.widget.SearchView
+import android.view.Menu
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_auto_complete.*
+import net.epictimes.uvindex.Constants
 import net.epictimes.uvindex.ui.BaseViewStateActivity
 import timber.log.Timber
 import javax.inject.Inject
@@ -43,27 +46,40 @@ class AutoCompleteActivity : BaseViewStateActivity<AutoCompleteView, AutoComplet
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_auto_complete)
+        setSupportActionBar(toolbar)
 
-        editTextPlace.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                presenter.userEnteredPlace(s.toString())
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
-            }
-
-        })
-
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         with(recyclerViewPlaces) {
             layoutManager = LinearLayoutManager(this@AutoCompleteActivity)
             adapter = placesAdapter
         }
+
+        toolbar.setNavigationOnClickListener { presenter.userClickedUp() }
+        placesAdapter.rowClickListener = { address -> presenter.userSelectedAddress(address) }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.autocomplete, menu)
+
+        val searchView = menu.findItem(R.id.action_search).actionView as SearchView
+
+        with(searchView) {
+            setIconifiedByDefault(false)
+            isFocusable = true
+            requestFocusFromTouch()
+
+            setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(s: String): Boolean = false
+
+                override fun onQueryTextChange(s: String): Boolean {
+                    presenter.userEnteredPlace(s)
+                    return true
+                }
+            })
+        }
+
+        return true
     }
 
     override fun displayAddresses(addresses: List<Address>) {
@@ -75,8 +91,28 @@ class AutoCompleteActivity : BaseViewStateActivity<AutoCompleteView, AutoComplet
         FetchPlaceIntentService.startIntentService(this, addressResultReceiver, place)
     }
 
+    override fun goToQueryScreen() {
+        finish()
+    }
+
+    override fun setSelectedAddress(address: Address?) {
+        val intent = Intent()
+
+        address?.let {
+            intent.putExtra(Constants.BundleKeys.ADDRESS, address)
+            setResult(RESULT_OK, intent)
+        } ?: run {
+            setResult(Activity.RESULT_CANCELED, intent)
+        }
+    }
+
     override fun displayPlaceFetchError(errorMessage: String) {
         Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onBackPressed() {
+        presenter.userClickedBack()
+        super.onBackPressed()
     }
 
     inner class AddressResultReceiver : ResultReceiver(Handler()) {
