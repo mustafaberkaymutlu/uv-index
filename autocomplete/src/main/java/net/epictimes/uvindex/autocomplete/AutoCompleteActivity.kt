@@ -52,7 +52,10 @@ class AutoCompleteActivity : BaseViewStateActivity<AutoCompleteView, AutoComplet
         setContentView(R.layout.activity_auto_complete)
         setSupportActionBar(toolbar)
 
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.let {
+            it.setDisplayHomeAsUpEnabled(true)
+            it.setDisplayShowTitleEnabled(false)
+        }
 
         with(recyclerViewPlaces) {
             layoutManager = LinearLayoutManager(this@AutoCompleteActivity)
@@ -75,6 +78,7 @@ class AutoCompleteActivity : BaseViewStateActivity<AutoCompleteView, AutoComplet
         with(searchView) {
             setIconifiedByDefault(false)
             isFocusable = true
+            maxWidth = Integer.MAX_VALUE
             requestFocusFromTouch()
 
             setOnQueryTextListener(object : SearchView.OnQueryTextListener {
