@@ -30,7 +30,7 @@ class AutoCompleteActivity : BaseViewStateActivity<AutoCompleteView, AutoComplet
     @Inject
     lateinit var autoCompleteViewState: AutoCompleteViewState
 
-    private val placesAdapter: PlacesRecyclerView by lazy { PlacesRecyclerView() }
+    private val placesAdapter: PlacesRecyclerViewAdapter by lazy { PlacesRecyclerViewAdapter() }
 
     private val addressResultReceiver: AutoCompleteActivity.AddressResultReceiver by lazy { AddressResultReceiver() }
 
@@ -91,6 +91,10 @@ class AutoCompleteActivity : BaseViewStateActivity<AutoCompleteView, AutoComplet
     override fun displayAddresses(addresses: List<Address>) {
         Timber.d("received addresses: " + addresses)
         placesAdapter.setAddresses(addresses)
+    }
+
+    override fun clearAddresses() {
+        placesAdapter.clearAddresses()
     }
 
     override fun startFetchingAddress(place: String, maxResults: Int) {

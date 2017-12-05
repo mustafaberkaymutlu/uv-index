@@ -7,6 +7,8 @@ interface AutoCompleteView : MvpView {
 
     fun displayAddresses(addresses: List<Address>)
 
+    fun clearAddresses()
+
     fun startFetchingAddress(place: String, maxResults: Int)
 
     fun goToQueryScreen()

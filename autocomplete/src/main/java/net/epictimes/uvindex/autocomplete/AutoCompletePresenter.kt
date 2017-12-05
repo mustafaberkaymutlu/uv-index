@@ -17,6 +17,7 @@ class AutoCompletePresenter : MvpBasePresenter<AutoCompleteView>() {
 
     fun userAddressFetchFailed(errorMessage: String) {
         if (isViewAttached) {
+            view.clearAddresses()
             view.displayPlaceFetchError(errorMessage)
         }
     }

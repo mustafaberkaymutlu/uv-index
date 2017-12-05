@@ -5,7 +5,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 
-class PlacesRecyclerView : RecyclerView.Adapter<PlaceViewHolder>() {
+class PlacesRecyclerViewAdapter : RecyclerView.Adapter<PlaceViewHolder>() {
     private val addresses = mutableListOf<Address>()
     var rowClickListener: ((address: Address) -> Unit)? = null
 
@@ -16,6 +16,12 @@ class PlacesRecyclerView : RecyclerView.Adapter<PlaceViewHolder>() {
         }
 
         notifyDataSetChanged()
+    }
+
+    fun clearAddresses() {
+        val previousSize = addresses.size
+        addresses.clear()
+        notifyItemRangeRemoved(0, previousSize)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaceViewHolder {
