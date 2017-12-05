@@ -3,6 +3,7 @@ package net.epictimes.uvindex.autocomplete
 import android.location.Address
 import android.os.Bundle
 import com.hannesdorfmann.mosby3.mvp.viewstate.RestorableViewState
+import net.epictimes.uvindex.service.AddressFetchResult
 
 class AutoCompleteViewState : RestorableViewState<AutoCompleteView> {
 
@@ -14,19 +15,19 @@ class AutoCompleteViewState : RestorableViewState<AutoCompleteView> {
 
     var addresses = ArrayList<Address>()
     var addressState: AddressFetchResult = AddressFetchResult.FAIL
-    var message: String = ""
+    var errorMessage: String? = null
 
     override fun saveInstanceState(out: Bundle) {
         out.putSerializable(KEY_ADDRESSES, addresses)
         out.putSerializable(KEY_ADDRESS_STATE, addressState)
-        out.putString(KEY_MESSAGE, message)
+        out.putString(KEY_MESSAGE, errorMessage)
     }
 
     override fun restoreInstanceState(`in`: Bundle?): RestorableViewState<AutoCompleteView> {
         `in`?.let {
             addresses.addAll(it.getParcelableArrayList(KEY_ADDRESSES))
             addressState = it.getSerializable(KEY_ADDRESS_STATE) as AddressFetchResult
-            message = it.getString(KEY_MESSAGE)
+            errorMessage = it.getString(KEY_MESSAGE)
         }
 
         return this
@@ -36,7 +37,9 @@ class AutoCompleteViewState : RestorableViewState<AutoCompleteView> {
         if (addressState == AddressFetchResult.SUCCESS) {
             view.displayAddresses(addresses)
         } else {
-            view.displayPlaceFetchError(message)
+            errorMessage?.let {
+                view.displayPlaceFetchError(it)
+            }
         }
 
     }

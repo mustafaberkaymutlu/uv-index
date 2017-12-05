@@ -1,4 +1,4 @@
-package net.epictimes.uvindex.query
+package net.epictimes.uvindex.service
 
 enum class AddressFetchResult {
     SUCCESS,

@@ -18,7 +18,7 @@ interface QueryView : MvpView {
 
     fun stopLocationUpdates(newState: QueryViewState.LocationSearchState)
 
-    fun startFetchingAddress(latLng: LatLng)
+    fun startFetchingAddress(latLng: LatLng, maxResults: Int)
 
     fun displayGetUvIndexError()
 

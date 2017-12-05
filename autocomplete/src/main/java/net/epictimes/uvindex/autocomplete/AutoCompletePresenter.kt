@@ -6,13 +6,18 @@ import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter
 class AutoCompletePresenter : MvpBasePresenter<AutoCompleteView>() {
 
     fun userEnteredPlace(place: String) {
-        view.startFetchingAddress(place)
+        view.startFetchingAddress(place, 20)
     }
 
-    fun userAddressReceived(addressFetchResult: AddressFetchResult, message: String, results: List<Address>) {
+    fun userAddressReceived(results: List<Address>) {
         if (isViewAttached) {
-            if (addressFetchResult == AddressFetchResult.SUCCESS) view.displayAddresses(results)
-            else view.displayPlaceFetchError(message)
+            view.displayAddresses(results)
+        }
+    }
+
+    fun userAddressFetchFailed(errorMessage: String) {
+        if (isViewAttached) {
+            view.displayPlaceFetchError(errorMessage)
         }
     }
 

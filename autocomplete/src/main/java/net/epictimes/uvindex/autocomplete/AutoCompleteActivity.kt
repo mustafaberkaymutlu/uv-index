@@ -12,6 +12,8 @@ import android.view.Menu
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_auto_complete.*
 import net.epictimes.uvindex.Constants
+import net.epictimes.uvindex.service.AddressFetchResult
+import net.epictimes.uvindex.service.FetchAddressIntentService
 import net.epictimes.uvindex.ui.BaseViewStateActivity
 import timber.log.Timber
 import javax.inject.Inject
@@ -87,8 +89,11 @@ class AutoCompleteActivity : BaseViewStateActivity<AutoCompleteView, AutoComplet
         placesAdapter.setAddresses(addresses)
     }
 
-    override fun startFetchingAddress(place: String) {
-        FetchPlaceIntentService.startIntentService(this, addressResultReceiver, place)
+    override fun startFetchingAddress(place: String, maxResults: Int) {
+        FetchAddressIntentService.startIntentService(context = this,
+                resultReceiver = addressResultReceiver,
+                locationName = place,
+                maxResults = maxResults)
     }
 
     override fun goToQueryScreen() {
@@ -120,16 +125,23 @@ class AutoCompleteActivity : BaseViewStateActivity<AutoCompleteView, AutoComplet
             super.onReceiveResult(resultCode, resultData)
 
             val fetchResult = AddressFetchResult.values()[resultCode]
-            val receivedMessage = resultData.getString(FetchPlaceIntentService.KEY_MESSAGE)
-            val receivedAddresses = resultData.getParcelableArrayList<Address>(FetchPlaceIntentService.KEY_RESULT)
+            val receivedErrorMessage: String? = resultData.getString(FetchAddressIntentService.KEY_ERROR_MESSAGE)
+            val receivedAddresses = resultData.getParcelableArrayList<Address>(FetchAddressIntentService.KEY_RESULT)
 
             with(viewState) {
                 addresses.addAll(receivedAddresses)
                 addressState = fetchResult
-                message = receivedMessage
+                errorMessage = receivedErrorMessage
             }
 
-            presenter.userAddressReceived(fetchResult, receivedMessage, receivedAddresses)
+            when (fetchResult) {
+                AddressFetchResult.SUCCESS -> {
+                    presenter.userAddressReceived(receivedAddresses)
+                }
+                AddressFetchResult.FAIL -> {
+                    presenter.userAddressFetchFailed(receivedErrorMessage!!)
+                }
+            }
         }
     }
 }

@@ -4,6 +4,7 @@ import android.os.Bundle
 import com.hannesdorfmann.mosby3.mvp.viewstate.RestorableViewState
 import net.epictimes.uvindex.data.model.LatLng
 import net.epictimes.uvindex.data.model.Weather
+import net.epictimes.uvindex.service.AddressFetchResult
 
 class QueryViewState : RestorableViewState<QueryView> {
 

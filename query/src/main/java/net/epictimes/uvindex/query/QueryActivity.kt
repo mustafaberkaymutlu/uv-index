@@ -38,6 +38,8 @@ import kotlinx.android.synthetic.main.activity_query.*
 import net.epictimes.uvindex.Constants
 import net.epictimes.uvindex.data.model.LatLng
 import net.epictimes.uvindex.data.model.Weather
+import net.epictimes.uvindex.service.AddressFetchResult
+import net.epictimes.uvindex.service.FetchAddressIntentService
 import net.epictimes.uvindex.ui.BaseViewStateActivity
 import net.epictimes.uvindex.util.getReadableHour
 import permissions.dispatcher.NeedsPermission
@@ -409,8 +411,11 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
                 }
     }
 
-    override fun startFetchingAddress(latLng: LatLng) {
-        FetchAddressIntentService.startIntentService(this, AddressResultReceiver(), latLng)
+    override fun startFetchingAddress(latLng: LatLng, maxResults: Int) {
+        FetchAddressIntentService.startIntentService(context = this,
+                resultReceiver = AddressResultReceiver(),
+                latLng = latLng,
+                maxResults = maxResults)
     }
 
     private fun styleLineChart() {
@@ -505,14 +510,26 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
             super.onReceiveResult(resultCode, resultData)
 
             val fetchResult = AddressFetchResult.values()[resultCode]
-            val message: String = resultData.getString(FetchAddressIntentService.KEY_MESSAGE)
+            val addresses = resultData.getParcelableArrayList<Address>(FetchAddressIntentService.KEY_RESULT)
+            val errorMessage: String? = resultData.getString(FetchAddressIntentService.KEY_ERROR_MESSAGE)
+
+            val result = addresses.first().let { address ->
+                (0..address.maxAddressLineIndex).joinToString(separator = "\n") { lineIndex -> address.getAddressLine(lineIndex) }
+            }
 
             with(viewState) {
-                address = message
+                address = result
                 addressState = fetchResult
             }
 
-            presenter.userAddressReceived(fetchResult, message)
+            when (fetchResult) {
+                AddressFetchResult.SUCCESS -> {
+                    presenter.userAddressReceived(fetchResult, result)
+                }
+                AddressFetchResult.FAIL -> {
+                    presenter.userAddressFetchFailed(errorMessage!!)
+                }
+            }
         }
     }
 

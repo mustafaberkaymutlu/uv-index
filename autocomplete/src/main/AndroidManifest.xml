@@ -21,9 +21,5 @@
             </intent-filter>
         </activity>
 
-        <service
-            android:name=".FetchPlaceIntentService"
-            android:exported="false" />
-
     </application>
 </manifest>
