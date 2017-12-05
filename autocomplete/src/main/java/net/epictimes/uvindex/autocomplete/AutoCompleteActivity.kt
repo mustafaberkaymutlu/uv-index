@@ -70,6 +70,8 @@ class AutoCompleteActivity : BaseViewStateActivity<AutoCompleteView, AutoComplet
 
         makeSearchEditTextColorWhite(searchView)
 
+        val handler = Handler()
+
         with(searchView) {
             setIconifiedByDefault(false)
             isFocusable = true
@@ -79,7 +81,12 @@ class AutoCompleteActivity : BaseViewStateActivity<AutoCompleteView, AutoComplet
                 override fun onQueryTextSubmit(s: String): Boolean = false
 
                 override fun onQueryTextChange(s: String): Boolean {
-                    presenter.userEnteredPlace(s)
+                    handler.removeCallbacksAndMessages(null)
+
+                    handler.postDelayed({
+                        presenter.userEnteredPlace(s)
+                    }, 500)
+
                     return true
                 }
             })
