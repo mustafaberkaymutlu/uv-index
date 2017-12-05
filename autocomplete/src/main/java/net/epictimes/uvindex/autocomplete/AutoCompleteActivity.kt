@@ -6,9 +6,11 @@ import android.location.Address
 import android.os.Bundle
 import android.os.Handler
 import android.os.ResultReceiver
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.SearchView
 import android.view.Menu
+import android.widget.EditText
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_auto_complete.*
 import net.epictimes.uvindex.Constants
@@ -66,6 +68,8 @@ class AutoCompleteActivity : BaseViewStateActivity<AutoCompleteView, AutoComplet
 
         val searchView = menu.findItem(R.id.action_search).actionView as SearchView
 
+        makeSearchEditTextColorWhite(searchView)
+
         with(searchView) {
             setIconifiedByDefault(false)
             isFocusable = true
@@ -118,6 +122,16 @@ class AutoCompleteActivity : BaseViewStateActivity<AutoCompleteView, AutoComplet
     override fun onBackPressed() {
         presenter.userClickedBack()
         super.onBackPressed()
+    }
+
+    private fun makeSearchEditTextColorWhite(searchView: SearchView) {
+        val searchEditText = searchView.findViewById<EditText>(android.support.v7.appcompat.R.id.search_src_text)
+        val colorWhite = ContextCompat.getColor(this, android.R.color.white)
+
+        with(searchEditText) {
+            setTextColor(colorWhite)
+            setHintTextColor(colorWhite)
+        }
     }
 
     inner class AddressResultReceiver : ResultReceiver(Handler()) {
