@@ -94,7 +94,7 @@ class FetchAddressIntentService : IntentService("FetchAddressIntentService") {
         } catch (ioException: IOException) {
             // Catch network or other I/O problems.
             errorMessage = getString(R.string.address_service_not_available)
-            Timber.e(errorMessage, ioException)
+            Timber.e(ioException, errorMessage)
         } catch (illegalArgumentException: IllegalArgumentException) {
             // Catch invalid latitude or longitude values.
             errorMessage = getString(R.string.address_service_invalid_input)
