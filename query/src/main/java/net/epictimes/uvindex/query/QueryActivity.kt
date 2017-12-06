@@ -8,6 +8,8 @@ import android.content.Intent
 import android.content.IntentSender
 import android.graphics.Color
 import android.graphics.Typeface
+import android.location.Address
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -31,13 +33,13 @@ import com.google.android.gms.common.GooglePlayServicesRepairableException
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
-import com.google.android.gms.location.places.ui.PlaceAutocomplete
 import com.google.android.instantapps.InstantApps
-import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_query.*
 import net.epictimes.uvindex.Constants
 import net.epictimes.uvindex.data.model.LatLng
 import net.epictimes.uvindex.data.model.Weather
+import net.epictimes.uvindex.service.AddressFetchResult
+import net.epictimes.uvindex.service.FetchAddressIntentService
 import net.epictimes.uvindex.ui.BaseViewStateActivity
 import net.epictimes.uvindex.util.getReadableHour
 import permissions.dispatcher.NeedsPermission
@@ -84,7 +86,11 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
     override fun onNewViewStateInstance() = requestLocationUpdatesWithPermissionCheck()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        AndroidInjection.inject(this)
+        DaggerQueryComponent.builder()
+                .singletonComponent(singletonComponent)
+                .build()
+                .inject(this)
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_query)
         setSupportActionBar(toolbar)
@@ -123,34 +129,7 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == Constants.RequestCodes.PLACE_AUTO_COMPLETE) {
-            when (resultCode) {
-                RESULT_OK -> {
-                    val place = PlaceAutocomplete.getPlace(this, data)
-
-                    with(viewState) {
-                        location = LatLng(place.latLng.latitude, place.latLng.longitude)
-                        locationSearchState = QueryViewState.LocationSearchState.Idle
-                    }
-
-                    presenter.userAddressReceived(FetchAddressIntentService.RESULT_SUCCESS, place.address.toString())
-                    presenter.getForecastUvIndex(place.latLng.latitude, place.latLng.longitude, null, null)
-
-                    Timber.i("Place search operation succeed with place: " + place.name)
-                }
-                PlaceAutocomplete.RESULT_ERROR -> {
-                    viewState.locationSearchState = QueryViewState.LocationSearchState.Idle
-                    val status = PlaceAutocomplete.getStatus(this, data)
-                    presenter.getPlaceAutoCompleteFailed()
-                    presenter.userAddressReceived(FetchAddressIntentService.RESULT_FAILURE,
-                            status.statusMessage ?: getString(R.string.location_unknown))
-                    Timber.i("Place search operation failed with message: ${status.statusMessage}")
-                }
-                RESULT_CANCELED -> {
-                    Timber.i("The user canceled the place search operation.")
-                }
-            }
-        } else if (requestCode == Constants.RequestCodes.UPDATE_LOCATION_SETTINGS) {
+        if (requestCode == Constants.RequestCodes.UPDATE_LOCATION_SETTINGS) {
             when (resultCode) {
                 RESULT_OK -> {
                     // Nothing to do. startLocationUpdates() gets called in onResume again.
@@ -161,6 +140,31 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
                     Timber.i("User chose not to make required location settings changes.")
                     viewState.locationSearchState = QueryViewState.LocationSearchState.Idle
                     presenter.userDidNotWantToChangeLocationSettings()
+                }
+            }
+        } else if (requestCode == Constants.RequestCodes.START_AUTOCOMPLETE) {
+            when (resultCode) {
+                RESULT_OK -> {
+                    val address = data?.getParcelableExtra<Address>(Constants.BundleKeys.ADDRESS)
+
+                    address?.let {
+                        with(viewState) {
+                            location = LatLng(it.latitude, it.longitude)
+                            locationSearchState = QueryViewState.LocationSearchState.Idle
+                        }
+
+                        val location = listOf<String?>(it.adminArea, it.countryName)
+                                .filterNot { it.isNullOrBlank() }
+                                .joinToString(separator = ", ")
+
+                        presenter.userAddressReceived(AddressFetchResult.SUCCESS, location)
+                        presenter.getForecastUvIndex(it.latitude, it.longitude, null, null)
+
+                        Timber.i("Place search operation succeed with place: %s", location)
+                    }
+                }
+                RESULT_CANCELED -> {
+                    Timber.i("The user canceled the place search operation.")
                 }
             }
         }
@@ -351,10 +355,14 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
     override fun displayAboutUi() =
             Snackbar.make(coordinatorLayout, "Not implemented", Snackbar.LENGTH_LONG).show()
 
-    override fun startPlacesAutoCompleteUi(requestCode: Int) {
+    override fun startPlacesAutoCompleteUi() {
         try {
-            val intent = PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN).build(this)
-            startActivityForResult(intent, Constants.RequestCodes.PLACE_AUTO_COMPLETE)
+            val intent = Intent(Intent.ACTION_VIEW,
+                    Uri.parse("https://epictimes.net/autocomplete/"))
+            intent.`package` = packageName
+            intent.addCategory(Intent.CATEGORY_BROWSABLE)
+
+            startActivityForResult(intent, Constants.RequestCodes.START_AUTOCOMPLETE)
         } catch (e: Exception) {
             // Kotlin does not support multi-catch yet.
             when (e) {
@@ -370,7 +378,7 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
     }
 
     override fun displayUserAddressFetchError(errorMessage: String) {
-        val textColor = ContextCompat.getColor(this, net.epictimes.uvindex.R.color.accent)
+        val textColor = ContextCompat.getColor(this, net.epictimes.uvindex.base.R.color.accent)
 
         val spannedMessage = SpannableString(errorMessage)
         spannedMessage.setSpan(StyleSpan(Typeface.ITALIC), 0, errorMessage.length, 0)
@@ -403,15 +411,19 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
                 }
     }
 
-    override fun startFetchingAddress(latLng: LatLng) {
-        FetchAddressIntentService.startIntentService(this, AddressResultReceiver(), latLng)
+    override fun startFetchingAddress(latLng: LatLng, maxResults: Int) {
+        FetchAddressIntentService.startIntentService(context = this,
+                resultReceiver = AddressResultReceiver(),
+                latLng = latLng,
+                maxResults = maxResults)
     }
 
     private fun styleLineChart() {
         val chartDesc = Description()
         with(chartDesc) {
             text = getString(R.string.chart_desc)
-            textColor = ContextCompat.getColor(this@QueryActivity, net.epictimes.uvindex.R.color.primary)
+            textColor = ContextCompat.getColor(this@QueryActivity,
+                    net.epictimes.uvindex.base.R.color.primary)
         }
 
         with(lineChart) {
@@ -497,15 +509,27 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
         override fun onReceiveResult(resultCode: Int, resultData: Bundle) {
             super.onReceiveResult(resultCode, resultData)
 
-            // Display the address string or an error message sent from the intent service.
-            val result: String = resultData.getString(FetchAddressIntentService.KEY_RESULT)
+            val fetchResult = AddressFetchResult.values()[resultCode]
+            val addresses = resultData.getParcelableArrayList<Address>(FetchAddressIntentService.KEY_RESULT)
+            val errorMessage: String? = resultData.getString(FetchAddressIntentService.KEY_ERROR_MESSAGE)
+
+            val result = addresses.first().let { address ->
+                (0..address.maxAddressLineIndex).joinToString(separator = "\n") { lineIndex -> address.getAddressLine(lineIndex) }
+            }
 
             with(viewState) {
                 address = result
-                addressState = resultCode
+                addressState = fetchResult
             }
 
-            presenter.userAddressReceived(resultCode, result)
+            when (fetchResult) {
+                AddressFetchResult.SUCCESS -> {
+                    presenter.userAddressReceived(fetchResult, result)
+                }
+                AddressFetchResult.FAIL -> {
+                    presenter.userAddressFetchFailed(errorMessage!!)
+                }
+            }
         }
     }
 

@@ -1,15 +1,28 @@
-apply plugin: 'com.android.application'
+apply plugin: 'com.android.feature'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion versions.compileSdk
     buildToolsVersion versions.buildTools
 
     defaultConfig {
-        applicationId "net.epictimes.uvindex"
         minSdkVersion versions.minSdk
         targetSdkVersion versions.targetSdk
         versionCode versions.versionCode
         versionName versions.versionName
+        vectorDrawables.useSupportLibrary = true
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    signingConfigs {
+        debugKey {
+            storePassword 'android'
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+            storeFile file('../key/debug.keystore')
+        }
     }
 
     buildTypes {
@@ -18,7 +31,9 @@ android {
             zipAlignEnabled false
             minifyEnabled false
             useProguard true
+            versionNameSuffix '-debug'
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debugKey
         }
 
         release {
@@ -27,6 +42,7 @@ android {
             minifyEnabled true
             useProguard true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debugKey
         }
     }
 
@@ -42,10 +58,22 @@ android {
         }
     }
 
+    testOptions {
+        unitTests.all {
+            testLogging {
+                events "passed", "skipped", "failed", "standardOut", "standardError"
+                outputs.upToDateWhen { false }
+                showStandardStreams = true
+            }
+        }
+    }
 }
 
 dependencies {
-    implementation project(':query')
-    implementation project(':autocomplete')
     implementation project(':base')
+
+    implementation deps.support.recyclerView
+
+    // Dagger 2
+    kapt deps.dagger.compiler
 }

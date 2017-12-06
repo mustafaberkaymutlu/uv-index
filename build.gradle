@@ -67,7 +67,6 @@ buildscript {
             ],
             'googlePlayServices': [
                     'location': "com.google.android.gms:play-services-location:${versions.googlePlayServices}",
-                    'places': "com.google.android.gms:play-services-places:${versions.googlePlayServices}",
             ],
             'test': [
                     'junit': "junit:junit:4.12",

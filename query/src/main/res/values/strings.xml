@@ -8,11 +8,6 @@
 
     <string name="forecast_info_message">The time is displayed according to the local time of the queried location.</string>
 
-    <string name="address_service_not_available">Service not available</string>
-    <string name="address_service_invalid_coordinates">Invalid coordinates</string>
-    <string name="address_service_no_address_found">No address found</string>
-    <string name="address_service_address_found">Address found</string>
-
     <string name="error_getting_uv_index">Getting UV index failed</string>
     <string name="error_can_not_detect_location">Can\'t detect location</string>
     <string name="error_getting_autocomplete_place">Getting location failed</string>

@@ -2,13 +2,14 @@ package net.epictimes.uvindex
 
 import android.app.Application
 import com.facebook.stetho.Stetho
+import net.epictimes.uvindex.base.BuildConfig
 import net.epictimes.uvindex.data.ApiModule
 import net.epictimes.uvindex.di.DaggerSingletonComponent
 import net.epictimes.uvindex.di.SingletonComponent
 import net.epictimes.uvindex.di.SingletonModule
 import timber.log.Timber
 
-abstract class BaseApplication : Application() {
+open class BaseApplication : Application() {
 
     lateinit var singletonComponent: SingletonComponent
 

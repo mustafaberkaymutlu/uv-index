@@ -51,6 +51,7 @@ android {
 
 dependencies {
     feature project(':query')
+    feature project(":autocomplete")
     application project(':app')
 
     api deps.kotlin.stdlib
@@ -59,19 +60,17 @@ dependencies {
 
     // Support
     api deps.support.appCompat
+    api deps.support.constraintLayout
+    api deps.support.design
+    api deps.support.cardView
 
     // TODO Move Google Play Services out of base
     // investigate "resource integer/google_play_services_version not found" error
     api deps.googlePlayServices.location
-    api deps.googlePlayServices.places
 
     // Dagger 2
     api deps.dagger.runtime
     kapt deps.dagger.compiler
-
-    // Dagger.Android
-    api deps.daggerAndroid.runtime
-    kapt deps.daggerAndroid.compiler
 
     // Mosby
     api deps.mosby.core

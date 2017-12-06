@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="net.epictimes.uvindex">
+    package="net.epictimes.uvindex.base">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -10,6 +10,10 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <service
+            android:name="net.epictimes.uvindex.service.FetchAddressIntentService"
+            android:exported="false" />
 
         <meta-data
             android:name="aia-compat-api-min-version"

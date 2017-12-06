@@ -1,0 +1,9 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "net.epictimes.uvindex",
+    "sha256_cert_fingerprints":
+    ["0C:EC:38:52:FB:E9:36:C7:2A:43:BB:AB:5D:F8:63:2F:AB:AB:A5:D2:B4:9D:89:55:53:1E:2E:0E:F1:79:4A:98"]
+  }
+}]
