@@ -71,6 +71,8 @@ class AutoCompleteActivity : BaseViewStateActivity<AutoCompleteView, AutoComplet
 
         val searchView = menu.findItem(R.id.action_search).actionView as SearchView
 
+        searchView.setQuery(viewState.searchQuery, false)
+
         makeSearchEditTextColorWhite(searchView)
 
         val handler = Handler()
@@ -85,6 +87,8 @@ class AutoCompleteActivity : BaseViewStateActivity<AutoCompleteView, AutoComplet
                 override fun onQueryTextSubmit(s: String): Boolean = false
 
                 override fun onQueryTextChange(s: String): Boolean {
+                    viewState.searchQuery = s
+
                     handler.removeCallbacksAndMessages(null)
 
                     handler.postDelayed({
