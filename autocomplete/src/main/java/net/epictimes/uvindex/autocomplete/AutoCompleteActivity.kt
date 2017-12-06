@@ -104,7 +104,7 @@ class AutoCompleteActivity : BaseViewStateActivity<AutoCompleteView, AutoComplet
     }
 
     override fun displayAddresses(addresses: List<Address>) {
-        Timber.d("received addresses: " + addresses)
+        Timber.d("received addresses: %s", addresses)
         placesAdapter.setAddresses(addresses)
     }
 
