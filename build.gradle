@@ -20,7 +20,7 @@ buildscript {
             'googlePlayServices': '11.6.0',
             'dagger': '2.13',
             'leakCanary': '1.5.1',
-            'mosby': '3.0.4',
+            'mosby': '3.1.0',
             'retrofit': '2.3.0',
             'permissionsDispatcher': '3.0.1'
     ]

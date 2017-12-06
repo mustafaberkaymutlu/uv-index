@@ -20,58 +20,58 @@ class QueryPresenter constructor(private val weatherInteractor: WeatherInteracto
         weatherInteractor.getForecast(latitude, longitude, language, units, FORECAST_HOUR,
                 object : WeatherInteractor.GetForecastCallback {
                     override fun onSuccessGetForecast(weatherForecast: List<Weather>, timezone: String) {
-                        if (isViewAttached) {
-                            if (weatherForecast.isEmpty()) {
-                                view.displayGetUvIndexError()
-                            } else {
-                                val sortedForecast = weatherForecast.sortedBy { it.datetime.time }
-                                val currentUvIndex = getClosestWeather(weatherForecast)
+                        if (weatherForecast.isEmpty()) {
+                            ifViewAttached { it.displayGetUvIndexError() }
+                        } else {
+                            val sortedForecast = weatherForecast.sortedBy { it.datetime.time }
+                            val currentUvIndex = getClosestWeather(weatherForecast)
 
-                                view.setToViewState(currentUvIndex, sortedForecast, timezone)
-                                view.displayUvIndex(currentUvIndex)
-                                view.displayUvIndexForecast(sortedForecast)
+                            ifViewAttached {
+                                it.setToViewState(currentUvIndex, sortedForecast, timezone)
+                                it.displayUvIndex(currentUvIndex)
+                                it.displayUvIndexForecast(sortedForecast)
                             }
                         }
                     }
 
                     override fun onFailGetForecast() {
-                        if (isViewAttached) {
-                            view.displayGetUvIndexError()
-                        }
+                        ifViewAttached { it.displayGetUvIndexError() }
                     }
                 })
     }
 
     fun onLocationReceived(latLng: LatLng) {
-        view.stopLocationUpdates(QueryViewState.LocationSearchState.Idle)
-        view.startFetchingAddress(latLng, 1)
+        ifViewAttached {
+            it.stopLocationUpdates(QueryViewState.LocationSearchState.Idle)
+            it.startFetchingAddress(latLng, 1)
+        }
+
         getForecastUvIndex(latLng.latitude, latLng.longitude, null, null)
     }
 
-    fun userClickedInstallButton() =
-            view.displayInstallPrompt(Constants.RequestCodes.INSTALL_FROM_QUERY_FEATURE,
-                    Constants.ReferrerCodes.FROM_QUERY_FEATURE)
+    fun userClickedInstallButton() = ifViewAttached {
+        it.displayInstallPrompt(Constants.RequestCodes.INSTALL_FROM_QUERY_FEATURE,
+                Constants.ReferrerCodes.FROM_QUERY_FEATURE)
+    }
 
-    fun userClickedAboutButton() = view.displayAboutUi()
+    fun userClickedAboutButton() = ifViewAttached { it.displayAboutUi() }
 
-    fun userClickedTextInputButton() = view.startPlacesAutoCompleteUi()
+    fun userClickedTextInputButton() = ifViewAttached { it.startPlacesAutoCompleteUi() }
 
-    fun userDidNotWantToChangeLocationSettings() = view.displayCantDetectLocationError()
+    fun userDidNotWantToChangeLocationSettings() = ifViewAttached { it.displayCantDetectLocationError() }
 
     fun userAddressReceived(addressFetchResult: AddressFetchResult, result: String) {
-        if (isViewAttached) {
-            if (addressFetchResult == AddressFetchResult.SUCCESS) view.displayUserAddress(result)
-            else view.displayUserAddressFetchError(result)
+        ifViewAttached {
+            if (addressFetchResult == AddressFetchResult.SUCCESS) it.displayUserAddress(result)
+            else it.displayUserAddressFetchError(result)
         }
     }
 
     fun userAddressFetchFailed(errorMessage: String) {
-        if (isViewAttached) {
-            view.displayUserAddressFetchError(errorMessage)
-        }
+        ifViewAttached { it.displayUserAddressFetchError(errorMessage) }
     }
 
-    fun getPlaceAutoCompleteFailed() = view.displayGetAutoCompletePlaceError()
+    fun getPlaceAutoCompleteFailed() = ifViewAttached { it.displayGetAutoCompletePlaceError() }
 
     private fun getClosestWeather(weatherList: Collection<Weather>): Weather =
             Collections.min(weatherList, { w1, w2 ->
