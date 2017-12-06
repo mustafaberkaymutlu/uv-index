@@ -19,6 +19,9 @@
             android:name="aia-compat-api-min-version"
             android:value="1" />
 
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="7e616bdbc7eee9ab211f5dbea00eba1be1307351" />
     </application>
 
 </manifest>

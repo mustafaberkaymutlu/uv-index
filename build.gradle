@@ -68,6 +68,10 @@ buildscript {
             'googlePlayServices': [
                     'location': "com.google.android.gms:play-services-location:${versions.googlePlayServices}",
             ],
+            'fabric':[
+                    "gradlePlugin": "io.fabric.tools:gradle:1.25.1",
+                    'crashlytics': 'com.crashlytics.sdk.android:crashlytics:2.8.0@aar'
+            ],
             'test': [
                     'junit': "junit:junit:4.12",
                     'mockito': "org.mockito:mockito-core:2.10.0",
@@ -77,7 +81,6 @@ buildscript {
             'instantApps': "com.google.android.instantapps:instantapps:1.1.0",
             'timber': 'com.jakewharton.timber:timber:4.6.0',
             'mpAndroidChart': "com.github.PhilJay:MPAndroidChart:v3.0.2",
-            'crashlytics': 'com.crashlytics.sdk.android:crashlytics:2.6.8@aar',
             'stetho': 'com.facebook.stetho:stetho-okhttp3:1.5.0',
     ]
 
