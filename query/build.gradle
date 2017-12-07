@@ -10,9 +10,13 @@ android {
     defaultConfig {
         minSdkVersion versions.minSdk
         targetSdkVersion versions.targetSdk
+
         versionCode versions.versionCode
         versionName versions.versionName
+
         vectorDrawables.useSupportLibrary = true
+        consumerProguardFiles 'proguard-rules.pro'
+
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
@@ -32,7 +36,6 @@ android {
             minifyEnabled false
             useProguard true
             versionNameSuffix '-debug'
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.debugKey
         }
 
@@ -41,7 +44,6 @@ android {
             zipAlignEnabled true
             minifyEnabled true
             useProguard true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.debugKey
         }
     }

@@ -24,8 +24,11 @@ android {
     defaultConfig {
         minSdkVersion versions.minSdk
         targetSdkVersion versions.targetSdk
+
         versionCode versions.versionCode
         versionName versions.versionName
+
+        consumerProguardFiles 'proguard-rules.pro'
     }
 
     buildTypes {
@@ -34,7 +37,6 @@ android {
             zipAlignEnabled false
             minifyEnabled false
             useProguard true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
 
         release {
@@ -42,7 +44,6 @@ android {
             zipAlignEnabled true
             minifyEnabled true
             useProguard true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 

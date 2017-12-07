@@ -20,8 +20,10 @@ android {
 
     defaultConfig {
         applicationId "net.epictimes.uvindex"
+
         minSdkVersion versions.minSdk
         targetSdkVersion versions.targetSdk
+
         versionCode versions.versionCode
         versionName versions.versionName
     }
