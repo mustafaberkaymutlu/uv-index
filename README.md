@@ -21,7 +21,8 @@
 * [Timber](https://github.com/JakeWharton/timber) for logging
 * [Stetho](https://github.com/facebook/stetho) for network inspection
 * [MPAndroidChart](https://github.com/PhilJay/MPAndroidChart) for line chart
-* [Google Places API](https://developers.google.com/places/android-api/autocomplete) for keyboard location input
+* [Geocoder](https://developer.android.com/reference/android/location/Geocoder.html) for getting address from coordinates or location name 
+* [Crashlytics](https://fabric.io/kits/android/crashlytics/install) for crash logging
 * Google Location API for receiving user's location
 
 ## Demo
@@ -45,7 +46,6 @@
 - Put your API key to the `data.Services.API_KEY` constant inside the `:base` module
 
 ## TODO
-* Add Crashlytics and enable `CrashReportingTree`
 * Move Google Play APIs from `:base` module to `:query` module
 
 ## License
