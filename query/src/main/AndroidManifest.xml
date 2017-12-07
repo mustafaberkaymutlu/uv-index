@@ -33,9 +33,5 @@
             android:name="default-url"
             android:value="https://epictimes.net/query" />
 
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_places_api_key" />
-
     </application>
 </manifest>

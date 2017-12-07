@@ -51,14 +51,10 @@ android {
 
         develop {
             dimension 'environment'
-
-            resValue 'string', 'google_places_api_key', "AIzaSyBe4QxDGWtZ-1SQ2hU1PArg26gM0LElNXE"
         }
 
         production {
             dimension 'environment'
-
-            resValue 'string', 'google_places_api_key', "AIzaSyBo2HYsR9n8PYO2xrRYrrlqyE3S3VfZjd0"
         }
     }
 }
