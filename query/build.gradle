@@ -22,29 +22,26 @@ android {
 
     signingConfigs {
         debugKey {
-            storePassword 'android'
-            keyAlias 'androiddebugkey'
-            keyPassword 'android'
-            storeFile file('../key/debug.keystore')
+            storePassword keys.debug.storePassword
+            keyAlias keys.debug.keyAlias
+            keyPassword keys.debug.keyPassword
+            storeFile keys.debug.storeFile
+        }
+        releaseKey {
+            storePassword keys.release.storePassword
+            keyAlias keys.release.keyAlias
+            keyPassword keys.release.keyPassword
+            storeFile keys.release.storeFile
         }
     }
 
     buildTypes {
         debug {
-            debuggable true
-            zipAlignEnabled false
-            minifyEnabled false
-            useProguard true
-            versionNameSuffix '-debug'
             signingConfig signingConfigs.debugKey
         }
 
         release {
-            debuggable false
-            zipAlignEnabled true
-            minifyEnabled true
-            useProguard true
-            signingConfig signingConfigs.debugKey
+            signingConfig signingConfigs.releaseKey
         }
     }
 

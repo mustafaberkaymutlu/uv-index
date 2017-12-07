@@ -28,6 +28,21 @@ android {
         versionName versions.versionName
     }
 
+    signingConfigs {
+        debugKey {
+            storePassword keys.debug.storePassword
+            keyAlias keys.debug.keyAlias
+            keyPassword keys.debug.keyPassword
+            storeFile keys.debug.storeFile
+        }
+        releaseKey {
+            storePassword keys.release.storePassword
+            keyAlias keys.release.keyAlias
+            keyPassword keys.release.keyPassword
+            storeFile keys.release.storeFile
+        }
+    }
+
     buildTypes {
         debug {
             debuggable true
@@ -35,6 +50,7 @@ android {
             minifyEnabled false
             useProguard true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debugKey
         }
 
         release {
@@ -43,6 +59,7 @@ android {
             minifyEnabled true
             useProguard true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.releaseKey
         }
     }
 

@@ -64,3 +64,5 @@ base/fabric.properties
 base/src/main/assets/crashlytics-build.properties
 base/src/main/res/values/com_crashlytics_export_strings.xml
 
+# Keys
+key/release.properties

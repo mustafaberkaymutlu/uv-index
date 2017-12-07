@@ -84,6 +84,37 @@ buildscript {
             'stetho': 'com.facebook.stetho:stetho-okhttp3:1.5.0',
     ]
 
+    ext.keys = [
+            'debug': [
+                    'storePassword' : 'android',
+                    'keyAlias' : 'androiddebugkey',
+                    'keyPassword' : 'android',
+                    'storeFile' : rootProject.file('key/debug.keystore')
+            ],
+            'release': [
+                    'propertiesFile': rootProject.file('key/release.properties'),
+                    'storeFile' : rootProject.file('key/release.keystore')
+            ]
+    ]
+
+    if (keys.release.propertiesFile.exists()) {
+        Properties keyProps = new Properties()
+        keyProps.load(new FileInputStream(keys.release.propertiesFile))
+
+        keys.release.storePassword = keyProps["storePass"]
+        keys.release.keyAlias = keyProps["alias"]
+        keys.release.keyPassword = keyProps["pass"]
+
+        println 'Release key information loaded from "key/release.properties".'
+    } else {
+        keys.release.storePassword = keys.debug.storePassword
+        keys.release.keyAlias = keys.debug.keyAlias
+        keys.release.keyPassword = keys.debug.keyPassword
+        keys.release.storeFile = keys.debug.storeFile
+
+        println 'Failed to load release key information from "key/release.properties". Using the DEBUG key.'
+    }
+
     repositories {
         google()
         jcenter()
