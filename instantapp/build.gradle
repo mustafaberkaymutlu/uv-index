@@ -6,7 +6,7 @@ android {
     buildToolsVersion versions.buildTools
 
     defaultConfig {
-        minSdkVersion versions.minSdk
+        minSdkVersion versions.minSdkInstant
         targetSdkVersion versions.targetSdk
         versionCode versions.versionCode
         versionName versions.versionName
