@@ -45,18 +45,6 @@ android {
         }
     }
 
-    productFlavors {
-        flavorDimensions 'environment'
-
-        develop {
-            dimension 'environment'
-        }
-
-        production {
-            dimension 'environment'
-        }
-    }
-
     testOptions {
         unitTests.all {
             testLogging {

@@ -55,18 +55,6 @@ android {
             signingConfig signingConfigs.releaseKey
         }
     }
-
-    productFlavors {
-        flavorDimensions 'environment'
-
-        develop {
-            dimension 'environment'
-        }
-
-        production {
-            dimension 'environment'
-        }
-    }
 }
 
 crashlytics { instantAppSupport true }

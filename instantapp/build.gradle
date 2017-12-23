@@ -1,7 +1,6 @@
 apply plugin: 'com.android.instantapp'
 
 android {
-
     compileSdkVersion versions.compileSdk
     buildToolsVersion versions.buildTools
 
@@ -14,20 +13,7 @@ android {
 
     buildTypes {
         debug {}
-
         release {}
-    }
-
-    productFlavors {
-        flavorDimensions 'environment'
-
-        develop {
-            dimension 'environment'
-        }
-
-        production {
-            dimension 'environment'
-        }
     }
 }
 
