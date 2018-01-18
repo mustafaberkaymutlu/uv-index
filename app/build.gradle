@@ -20,10 +20,27 @@ android {
 
     defaultConfig {
         applicationId "net.epictimes.uvindex"
+
         minSdkVersion versions.minSdk
         targetSdkVersion versions.targetSdk
+
         versionCode versions.versionCode
         versionName versions.versionName
+    }
+
+    signingConfigs {
+        debugKey {
+            storePassword keys.debug.storePassword
+            keyAlias keys.debug.keyAlias
+            keyPassword keys.debug.keyPassword
+            storeFile keys.debug.storeFile
+        }
+        releaseKey {
+            storePassword keys.release.storePassword
+            keyAlias keys.release.keyAlias
+            keyPassword keys.release.keyPassword
+            storeFile keys.release.storeFile
+        }
     }
 
     buildTypes {
@@ -33,6 +50,7 @@ android {
             minifyEnabled false
             useProguard true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debugKey
         }
 
         release {
@@ -41,21 +59,19 @@ android {
             minifyEnabled true
             useProguard true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.releaseKey
         }
     }
 
-    productFlavors {
-        flavorDimensions 'environment'
-
-        develop {
-            dimension 'environment'
-        }
-
-        production {
-            dimension 'environment'
+    testOptions {
+        unitTests.all {
+            testLogging {
+                events "passed", "skipped", "failed", "standardOut", "standardError"
+                outputs.upToDateWhen { false }
+                showStandardStreams = true
+            }
         }
     }
-
 }
 
 dependencies {

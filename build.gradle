@@ -8,7 +8,8 @@ buildscript {
     ext.versions = [
             'compileSdk': 26,
             'buildTools': '26.0.2',
-            'minSdk': 23,
+            'minSdk': 21,
+            'minSdkInstant' : 21,
             'targetSdk': 26,
             'kotlin': '1.2.0',
 
@@ -17,7 +18,7 @@ buildscript {
 
             'supportLibrary': '26.1.0',
             'constraintLayout': '1.0.2',
-            'googlePlayServices': '11.6.0',
+            'googlePlayServices': '11.8.0',
             'dagger': '2.13',
             'leakCanary': '1.5.1',
             'mosby': '3.1.0',
@@ -83,6 +84,37 @@ buildscript {
             'mpAndroidChart': "com.github.PhilJay:MPAndroidChart:v3.0.2",
             'stetho': 'com.facebook.stetho:stetho-okhttp3:1.5.0',
     ]
+
+    ext.keys = [
+            'debug': [
+                    'storePassword' : 'android',
+                    'keyAlias' : 'androiddebugkey',
+                    'keyPassword' : 'android',
+                    'storeFile' : rootProject.file('key/debug.keystore')
+            ],
+            'release': [
+                    'propertiesFile': rootProject.file('key/release.properties'),
+                    'storeFile' : rootProject.file('key/release.keystore')
+            ]
+    ]
+
+    if (keys.release.propertiesFile.exists()) {
+        Properties keyProps = new Properties()
+        keyProps.load(new FileInputStream(keys.release.propertiesFile))
+
+        keys.release.storePassword = keyProps["storePass"]
+        keys.release.keyAlias = keyProps["alias"]
+        keys.release.keyPassword = keyProps["pass"]
+
+        println 'Release key information loaded from "key/release.properties".'
+    } else {
+        keys.release.storePassword = keys.debug.storePassword
+        keys.release.keyAlias = keys.debug.keyAlias
+        keys.release.keyPassword = keys.debug.keyPassword
+        keys.release.storeFile = keys.debug.storeFile
+
+        println 'Failed to load release key information from "key/release.properties". Using the DEBUG key.'
+    }
 
     repositories {
         google()

@@ -10,51 +10,38 @@ android {
     defaultConfig {
         minSdkVersion versions.minSdk
         targetSdkVersion versions.targetSdk
+
         versionCode versions.versionCode
         versionName versions.versionName
+
         vectorDrawables.useSupportLibrary = true
+        consumerProguardFiles 'proguard-rules.pro'
+
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
     signingConfigs {
         debugKey {
-            storePassword 'android'
-            keyAlias 'androiddebugkey'
-            keyPassword 'android'
-            storeFile file('../key/debug.keystore')
+            storePassword keys.debug.storePassword
+            keyAlias keys.debug.keyAlias
+            keyPassword keys.debug.keyPassword
+            storeFile keys.debug.storeFile
+        }
+        releaseKey {
+            storePassword keys.release.storePassword
+            keyAlias keys.release.keyAlias
+            keyPassword keys.release.keyPassword
+            storeFile keys.release.storeFile
         }
     }
 
     buildTypes {
         debug {
-            debuggable true
-            zipAlignEnabled false
-            minifyEnabled false
-            useProguard true
-            versionNameSuffix '-debug'
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.debugKey
         }
 
         release {
-            debuggable false
-            zipAlignEnabled true
-            minifyEnabled true
-            useProguard true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.debugKey
-        }
-    }
-
-    productFlavors {
-        flavorDimensions 'environment'
-
-        develop {
-            dimension 'environment'
-        }
-
-        production {
-            dimension 'environment'
+            signingConfig signingConfigs.releaseKey
         }
     }
 

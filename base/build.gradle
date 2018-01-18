@@ -24,41 +24,35 @@ android {
     defaultConfig {
         minSdkVersion versions.minSdk
         targetSdkVersion versions.targetSdk
+
         versionCode versions.versionCode
         versionName versions.versionName
+
+        consumerProguardFiles 'proguard-rules.pro'
+    }
+
+    signingConfigs {
+        debugKey {
+            storePassword keys.debug.storePassword
+            keyAlias keys.debug.keyAlias
+            keyPassword keys.debug.keyPassword
+            storeFile keys.debug.storeFile
+        }
+        releaseKey {
+            storePassword keys.release.storePassword
+            keyAlias keys.release.keyAlias
+            keyPassword keys.release.keyPassword
+            storeFile keys.release.storeFile
+        }
     }
 
     buildTypes {
         debug {
-            debuggable true
-            zipAlignEnabled false
-            minifyEnabled false
-            useProguard true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debugKey
         }
 
         release {
-            debuggable false
-            zipAlignEnabled true
-            minifyEnabled true
-            useProguard true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
-
-    productFlavors {
-        flavorDimensions 'environment'
-
-        develop {
-            dimension 'environment'
-
-            resValue 'string', 'google_places_api_key', "AIzaSyBe4QxDGWtZ-1SQ2hU1PArg26gM0LElNXE"
-        }
-
-        production {
-            dimension 'environment'
-
-            resValue 'string', 'google_places_api_key', "AIzaSyBo2HYsR9n8PYO2xrRYrrlqyE3S3VfZjd0"
+            signingConfig signingConfigs.releaseKey
         }
     }
 }

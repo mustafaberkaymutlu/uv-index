@@ -22,6 +22,8 @@ class PlaceViewHolder(private val rootView: View) : RecyclerView.ViewHolder(root
     }
 
     override fun onClick(v: View?) {
-        clickListener?.invoke(adapterPosition)
+        if (adapterPosition != RecyclerView.NO_POSITION) {
+            clickListener?.invoke(adapterPosition)
+        }
     }
 }
