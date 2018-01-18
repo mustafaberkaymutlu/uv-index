@@ -17,7 +17,8 @@ class NetworkWeatherInteractor constructor(private val services: Services) : Wea
                                             response: Response<GetForecastResponse>?) {
                         val body = response?.body()
                         body?.weatherList?.let {
-                            getForecastCallback.onSuccessGetForecast(it, body.timezone)
+                            getForecastCallback.onSuccessGetForecast(it,
+                                    body.timezone, body.cityName, body.countryCode)
                         } ?: run {
                             getForecastCallback.onFailGetForecast()
                         }

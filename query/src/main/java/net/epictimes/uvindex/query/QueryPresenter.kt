@@ -6,7 +6,6 @@ import net.epictimes.uvindex.Constants
 import net.epictimes.uvindex.data.interactor.WeatherInteractor
 import net.epictimes.uvindex.data.model.LatLng
 import net.epictimes.uvindex.data.model.Weather
-import net.epictimes.uvindex.service.AddressFetchResult
 import java.util.*
 
 
@@ -19,17 +18,20 @@ class QueryPresenter constructor(private val weatherInteractor: WeatherInteracto
     fun getForecastUvIndex(latitude: Double, longitude: Double, language: String?, units: String?) {
         weatherInteractor.getForecast(latitude, longitude, language, units, FORECAST_HOUR,
                 object : WeatherInteractor.GetForecastCallback {
-                    override fun onSuccessGetForecast(weatherForecast: List<Weather>, timezone: String) {
+                    override fun onSuccessGetForecast(weatherForecast: List<Weather>, timezone: String, cityName: String, countryCode: String) {
                         if (weatherForecast.isEmpty()) {
                             ifViewAttached { it.displayGetUvIndexError() }
                         } else {
                             val sortedForecast = weatherForecast.sortedBy { it.datetime.time }
-                            val currentUvIndex = getClosestWeather(weatherForecast)
+                            val currentWeather = getClosestWeather(weatherForecast)
+
+                            val address = cityName + ", " + countryCode
 
                             ifViewAttached {
-                                it.setToViewState(currentUvIndex, sortedForecast, timezone)
-                                it.displayUvIndex(currentUvIndex)
+                                it.setToViewState(currentWeather, sortedForecast, timezone, address)
+                                it.displayUvIndex(currentWeather)
                                 it.displayUvIndexForecast(sortedForecast)
+                                it.displayUserAddress(address)
                             }
                         }
                     }
@@ -43,7 +45,6 @@ class QueryPresenter constructor(private val weatherInteractor: WeatherInteracto
     fun onLocationReceived(latLng: LatLng) {
         ifViewAttached {
             it.stopLocationUpdates(QueryViewState.LocationSearchState.Idle)
-            it.startFetchingAddress(latLng, 1)
         }
 
         getForecastUvIndex(latLng.latitude, latLng.longitude, null, null)
@@ -59,17 +60,6 @@ class QueryPresenter constructor(private val weatherInteractor: WeatherInteracto
     fun userClickedTextInputButton() = ifViewAttached { it.startPlacesAutoCompleteUi() }
 
     fun userDidNotWantToChangeLocationSettings() = ifViewAttached { it.displayCantDetectLocationError() }
-
-    fun userAddressReceived(addressFetchResult: AddressFetchResult, result: String) {
-        ifViewAttached {
-            if (addressFetchResult == AddressFetchResult.SUCCESS) it.displayUserAddress(result)
-            else it.displayUserAddressFetchError(result)
-        }
-    }
-
-    fun userAddressFetchFailed(errorMessage: String) {
-        ifViewAttached { it.displayUserAddressFetchError(errorMessage) }
-    }
 
     fun getPlaceAutoCompleteFailed() = ifViewAttached { it.displayGetAutoCompletePlaceError() }
 

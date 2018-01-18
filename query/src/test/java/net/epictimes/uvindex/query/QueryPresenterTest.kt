@@ -40,7 +40,7 @@ class QueryPresenterTest {
         argumentCaptor<WeatherInteractor.GetForecastCallback>().apply {
             verify(weatherInteractor).getForecast(eq(1.0), eq(2.0), eq(null), eq(null), eq(24),
                     capture())
-            firstValue.onSuccessGetForecast(emptyList(), "Europe/Istanbul")
+            firstValue.onSuccessGetForecast(emptyList(), "Europe/Istanbul", "Istanbul", "TR")
         }
 
         verify(queryView, times(1)).displayGetUvIndexError()
@@ -79,11 +79,11 @@ class QueryPresenterTest {
         argumentCaptor<WeatherInteractor.GetForecastCallback>().apply {
             verify(weatherInteractor).getForecast(eq(1.0), eq(2.0), eq(null), eq(null), eq(24),
                     capture())
-            firstValue.onSuccessGetForecast(weatherForecast, "Europe/Istanbul")
+            firstValue.onSuccessGetForecast(weatherForecast, "Europe/Istanbul", "Istanbul", "TR")
         }
 
         val currentUvIndex = weatherForecast.first()
-        verify(queryView, times(1)).setToViewState(currentUvIndex, weatherForecast, "Europe/Istanbul")
+        verify(queryView, times(1)).setToViewState(currentUvIndex, weatherForecast, "Europe/Istanbul", "Istanbul, TR")
         verify(queryView, times(1)).displayUvIndex(currentUvIndex)
         verify(queryView, times(1)).displayUvIndexForecast(weatherForecast)
     }
@@ -108,7 +108,7 @@ class QueryPresenterTest {
         argumentCaptor<WeatherInteractor.GetForecastCallback>().apply {
             verify(weatherInteractor, times(1)).getForecast(any(), any(),
                     anyOrNull(), anyOrNull(), anyOrNull(), capture())
-            firstValue.onSuccessGetForecast(weatherForecast, "Europe/Istanbul")
+            firstValue.onSuccessGetForecast(weatherForecast, "Europe/Istanbul", "Istanbul", "TR")
         }
 
         verify(queryView, times(1)).displayUvIndex(check {

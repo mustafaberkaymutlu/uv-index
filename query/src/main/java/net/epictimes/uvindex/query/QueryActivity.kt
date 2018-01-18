@@ -7,18 +7,13 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
 import android.graphics.Color
-import android.graphics.Typeface
 import android.location.Address
 import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
 import android.os.Looper
-import android.os.ResultReceiver
 import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
-import android.text.SpannableString
-import android.text.style.StyleSpan
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -38,8 +33,6 @@ import kotlinx.android.synthetic.main.activity_query.*
 import net.epictimes.uvindex.Constants
 import net.epictimes.uvindex.data.model.LatLng
 import net.epictimes.uvindex.data.model.Weather
-import net.epictimes.uvindex.service.AddressFetchResult
-import net.epictimes.uvindex.service.FetchAddressIntentService
 import net.epictimes.uvindex.ui.BaseViewStateActivity
 import net.epictimes.uvindex.util.getReadableHour
 import permissions.dispatcher.NeedsPermission
@@ -157,7 +150,6 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
                                 .filterNot { it.isNullOrBlank() }
                                 .joinToString(separator = ", ")
 
-                        presenter.userAddressReceived(AddressFetchResult.SUCCESS, location)
                         presenter.getForecastUvIndex(it.latitude, it.longitude, null, null)
 
                         Timber.i("Place search operation succeed with place: %s", location)
@@ -308,9 +300,10 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
                 .forEach { it.visibility = View.VISIBLE }
     }
 
-    override fun setToViewState(currentUvIndex: Weather, uvIndexForecast: List<Weather>, timezone: String) {
+    override fun setToViewState(currentUvIndex: Weather, uvIndexForecast: List<Weather>, timezone: String, address: String) {
         viewState.timezone = timezone
         viewState.currentUvIndex = currentUvIndex
+        viewState.address = address
 
         with(viewState.uvIndexForecast) {
             clear()
@@ -377,19 +370,6 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
         }
     }
 
-    override fun displayUserAddressFetchError(errorMessage: String) {
-        val textColor = ContextCompat.getColor(this, net.epictimes.uvindex.base.R.color.accent)
-
-        val spannedMessage = SpannableString(errorMessage)
-        spannedMessage.setSpan(StyleSpan(Typeface.ITALIC), 0, errorMessage.length, 0)
-
-        with(textViewLocation) {
-            text = spannedMessage
-            setTextColor(textColor)
-            setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
-        }
-    }
-
     override fun displayCantDetectLocationError() =
             Snackbar.make(coordinatorLayout, R.string.error_can_not_detect_location, Snackbar.LENGTH_LONG).show()
 
@@ -409,13 +389,6 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
                 .addOnCompleteListener {
                     viewState.locationSearchState = newState
                 }
-    }
-
-    override fun startFetchingAddress(latLng: LatLng, maxResults: Int) {
-        FetchAddressIntentService.startIntentService(context = this,
-                resultReceiver = AddressResultReceiver(),
-                latLng = latLng,
-                maxResults = maxResults)
     }
 
     private fun styleLineChart() {
@@ -501,34 +474,6 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
                 val latLng = LatLng(it.latitude, it.longitude)
                 viewState.location = latLng
                 presenter.onLocationReceived(latLng)
-            }
-        }
-    }
-
-    inner class AddressResultReceiver : ResultReceiver(Handler()) {
-        override fun onReceiveResult(resultCode: Int, resultData: Bundle) {
-            super.onReceiveResult(resultCode, resultData)
-
-            val fetchResult = AddressFetchResult.values()[resultCode]
-            val addresses = resultData.getParcelableArrayList<Address>(FetchAddressIntentService.KEY_RESULT)
-            val errorMessage: String? = resultData.getString(FetchAddressIntentService.KEY_ERROR_MESSAGE)
-
-            val result = addresses.first().let { address ->
-                (0..address.maxAddressLineIndex).joinToString(separator = "\n") { lineIndex -> address.getAddressLine(lineIndex) }
-            }
-
-            with(viewState) {
-                address = result
-                addressState = fetchResult
-            }
-
-            when (fetchResult) {
-                AddressFetchResult.SUCCESS -> {
-                    presenter.userAddressReceived(fetchResult, result)
-                }
-                AddressFetchResult.FAIL -> {
-                    presenter.userAddressFetchFailed(errorMessage!!)
-                }
             }
         }
     }
