@@ -12,7 +12,7 @@ import java.util.*
 class QueryPresenter constructor(private val weatherInteractor: WeatherInteractor, private val now: Date) : MvpBasePresenter<QueryView>() {
 
     companion object {
-        val FORECAST_HOUR = 24
+        const val FORECAST_HOUR = 24
     }
 
     fun getForecastUvIndex(latitude: Double, longitude: Double, language: String?, units: String?) {

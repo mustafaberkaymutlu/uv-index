@@ -7,10 +7,10 @@ import com.hannesdorfmann.mosby3.mvp.viewstate.RestorableViewState
 class AutoCompleteViewState : RestorableViewState<AutoCompleteView> {
 
     companion object {
-        val KEY_SEARCH_QUERY = "search_query"
-        val KEY_ADDRESSES = "addresses"
-        val KEY_ADDRESS_STATE = "addressState"
-        val KEY_MESSAGE = "message"
+        const val KEY_SEARCH_QUERY = "search_query"
+        const val KEY_ADDRESSES = "addresses"
+        const val KEY_ADDRESS_STATE = "addressState"
+        const val KEY_MESSAGE = "message"
     }
 
     var searchQuery: String? = null

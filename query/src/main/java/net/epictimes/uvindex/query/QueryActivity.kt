@@ -46,13 +46,13 @@ import javax.inject.Inject
 class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryViewState>(), QueryView {
 
     companion object {
-        private val LOCATION_INTERVAL: Long = 10000 // update interval in milliseconds
-        private val LOCATION_INTERVAL_FASTEST: Long = LOCATION_INTERVAL / 2
+        private const val LOCATION_INTERVAL: Long = 10000 // update interval in milliseconds
+        private const val LOCATION_INTERVAL_FASTEST: Long = LOCATION_INTERVAL / 2
 
-        private val LINE_CHART_ANIM_DURATION = 1500
+        private const val LINE_CHART_ANIM_DURATION = 1500
 
-        private val UV_INDEX_MIN = 0
-        private val UV_INDEX_MAX = 11
+        private const val UV_INDEX_MIN = 0
+        private const val UV_INDEX_MAX = 11
 
         fun newIntent(context: Context): Intent = Intent(context, QueryActivity::class.java)
     }

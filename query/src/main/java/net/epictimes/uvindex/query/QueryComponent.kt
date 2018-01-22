@@ -4,8 +4,8 @@ import dagger.Component
 import net.epictimes.uvindex.di.SingletonComponent
 
 @QueryFeatureScoped
-@Component(dependencies = arrayOf(SingletonComponent::class),
-        modules = arrayOf(QueryActivityModule::class))
+@Component(dependencies = [(SingletonComponent::class)],
+        modules = [(QueryActivityModule::class)])
 interface QueryComponent {
 
     fun inject(queryActivity: QueryActivity)

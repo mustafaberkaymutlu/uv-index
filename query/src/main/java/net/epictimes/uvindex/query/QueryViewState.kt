@@ -15,12 +15,12 @@ class QueryViewState : RestorableViewState<QueryView> {
     }
 
     companion object {
-        val KEY_LOCATION = "location"
-        val KEY_ADDRESS = "address"
-        val KEY_STATE = "locationSearchState"
-        val KEY_CURRENT_UV_INDEX = "currentUvIndex"
-        val KEY_UV_INDEX_FORECAST = "uvIndexForecast"
-        val KEY_TIMEZONE = "timezone"
+        const val KEY_LOCATION = "location"
+        const val KEY_ADDRESS = "address"
+        const val KEY_STATE = "locationSearchState"
+        const val KEY_CURRENT_UV_INDEX = "currentUvIndex"
+        const val KEY_UV_INDEX_FORECAST = "uvIndexForecast"
+        const val KEY_TIMEZONE = "timezone"
     }
 
     var location: LatLng? = null

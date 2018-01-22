@@ -17,14 +17,14 @@ import kotlin.collections.ArrayList
 class FetchAddressIntentService : IntentService("FetchAddressIntentService") {
 
     companion object {
-        private val PACKAGE_NAME = "net.epictimes.uvindex"
-        private val KEY_RESULT_RECEIVER = PACKAGE_NAME + ".RESULT_RECEIVER"
-        private val KEY_LOCATION_NAME = PACKAGE_NAME + ".LOCATION_NAME"
-        private val KEY_LOCALE = PACKAGE_NAME + ".LOCALE"
-        private val KEY_MAX_RESULTS = PACKAGE_NAME + ".MAX_RESULTS"
+        private const val PACKAGE_NAME = "net.epictimes.uvindex"
+        private const val KEY_RESULT_RECEIVER = PACKAGE_NAME + ".RESULT_RECEIVER"
+        private const val KEY_LOCATION_NAME = PACKAGE_NAME + ".LOCATION_NAME"
+        private const val KEY_LOCALE = PACKAGE_NAME + ".LOCALE"
+        private const val KEY_MAX_RESULTS = PACKAGE_NAME + ".MAX_RESULTS"
 
-        val KEY_ERROR_MESSAGE = PACKAGE_NAME + ".ERROR_MESSAGE"
-        val KEY_RESULT = PACKAGE_NAME + ".RESULT"
+        const val KEY_ERROR_MESSAGE = PACKAGE_NAME + ".ERROR_MESSAGE"
+        const val KEY_RESULT = PACKAGE_NAME + ".RESULT"
 
         fun startIntentService(context: Context,
                                resultReceiver: ResultReceiver,

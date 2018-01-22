@@ -17,7 +17,7 @@ import javax.inject.Singleton
 class ApiModule {
 
     companion object {
-        val API_DATE_FORMAT = "yyyy-MM-dd:HH"
+        const val API_DATE_FORMAT = "yyyy-MM-dd:HH"
     }
 
     @Singleton

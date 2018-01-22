@@ -8,7 +8,7 @@ import net.epictimes.uvindex.data.Services
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = arrayOf(SingletonModule::class, ApiModule::class))
+@Component(modules = [(SingletonModule::class), (ApiModule::class)])
 interface SingletonComponent {
 
     @Component.Builder

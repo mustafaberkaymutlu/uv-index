@@ -11,12 +11,12 @@
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary">
+        android:background="@color/primary">
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:layout_width="match_parent"
             android:layout_height="156dp"
-            app:contentScrim="?attr/colorPrimary"
+            app:contentScrim="@color/primary"
             app:expandedTitleTextAppearance="@style/TextAppearance.AppCompat.Title"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:titleEnabled="false">
@@ -24,7 +24,7 @@
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
+                android:layout_height="?android:attr/actionBarSize"
                 android:theme="@style/Toolbar"
                 app:layout_collapseMode="pin"
                 app:titleTextColor="@android:color/white" />

@@ -4,21 +4,21 @@ class Constants {
 
     class RequestCodes {
         companion object {
-            val INSTALL_FROM_QUERY_FEATURE = 1
-            val UPDATE_LOCATION_SETTINGS = 2
-            val START_AUTOCOMPLETE = 3
+            const val INSTALL_FROM_QUERY_FEATURE = 1
+            const val UPDATE_LOCATION_SETTINGS = 2
+            const val START_AUTOCOMPLETE = 3
         }
     }
 
     class ReferrerCodes {
         companion object {
-            val FROM_QUERY_FEATURE = "itself"
+            const val FROM_QUERY_FEATURE = "itself"
         }
     }
 
     class BundleKeys {
         companion object {
-            val ADDRESS = "address"
+            const val ADDRESS = "address"
         }
     }
 
