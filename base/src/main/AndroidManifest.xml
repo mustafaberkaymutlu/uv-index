@@ -11,10 +11,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <service
-            android:name="net.epictimes.uvindex.service.FetchAddressIntentService"
-            android:exported="false" />
-
         <meta-data
             android:name="aia-compat-api-min-version"
             android:value="1" />

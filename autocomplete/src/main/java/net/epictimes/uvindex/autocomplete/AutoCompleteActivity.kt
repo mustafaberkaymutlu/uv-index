@@ -14,8 +14,6 @@ import android.widget.EditText
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_auto_complete.*
 import net.epictimes.uvindex.Constants
-import net.epictimes.uvindex.service.AddressFetchResult
-import net.epictimes.uvindex.service.FetchAddressIntentService
 import net.epictimes.uvindex.ui.BaseViewStateActivity
 import timber.log.Timber
 import javax.inject.Inject

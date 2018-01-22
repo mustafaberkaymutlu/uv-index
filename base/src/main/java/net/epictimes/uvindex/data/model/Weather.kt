@@ -47,15 +47,6 @@ data class Weather(
         @SerializedName("ts")
         val lastObservationTimestamp: Int,
 
-        @SerializedName("country_code")
-        val countryCode: String,
-
-        @SerializedName("state_code")
-        val stateCode: String,
-
-        @SerializedName("city_name")
-        val cityName: String,
-
         // default to km
         @SerializedName("vis")
         val visibility: Double,
@@ -108,9 +99,6 @@ data class Weather(
             source.readDouble(),
             source.readString(),
             source.readInt(),
-            source.readString(),
-            source.readString(),
-            source.readString(),
             source.readDouble(),
             source.readInt(),
             source.readInt(),
@@ -138,9 +126,6 @@ data class Weather(
         writeDouble(seaLevelPressure)
         writeString(timezone)
         writeInt(lastObservationTimestamp)
-        writeString(countryCode)
-        writeString(stateCode)
-        writeString(cityName)
         writeDouble(visibility)
         writeInt(uvIndex)
         writeInt(solarElevationAngle)
