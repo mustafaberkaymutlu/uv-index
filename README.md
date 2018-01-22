@@ -19,7 +19,6 @@
 * [Retrofit](https://github.com/square/retrofit) for HTTP client
 * [PermissionsDispatcher](https://github.com/permissions-dispatcher/PermissionsDispatcher) for Runtime Permissions
 * [Timber](https://github.com/JakeWharton/timber) for logging
-* [Stetho](https://github.com/facebook/stetho) for network inspection
 * [MPAndroidChart](https://github.com/PhilJay/MPAndroidChart) for line chart
 * [Geocoder](https://developer.android.com/reference/android/location/Geocoder.html) for getting address from coordinates or location name 
 * [Crashlytics](https://fabric.io/kits/android/crashlytics/install) for crash logging

@@ -1,6 +1,5 @@
 package net.epictimes.uvindex.data
 
-import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module
@@ -39,11 +38,9 @@ class ApiModule {
     @Singleton
     @Provides
     fun provideOkHttpClient(defaultInterceptor: DefaultInterceptor,
-                            httpLoggingInterceptor: HttpLoggingInterceptor?,
-                            stethoInterceptor: StethoInterceptor?): OkHttpClient {
+                            httpLoggingInterceptor: HttpLoggingInterceptor?): OkHttpClient {
         val okHttpClientBuilder = OkHttpClient.Builder()
 
-        stethoInterceptor?.let { okHttpClientBuilder.addNetworkInterceptor(it) }
         httpLoggingInterceptor?.let {
             okHttpClientBuilder.addInterceptor(it)
             it.setLevel(HttpLoggingInterceptor.Level.BODY)
@@ -57,10 +54,6 @@ class ApiModule {
     @Singleton
     @Provides
     fun provideDefaultInterceptor(): DefaultInterceptor = DefaultInterceptor()
-
-    @Singleton
-    @Provides
-    fun provideStethoInterceptor(): StethoInterceptor? = if (BuildConfig.DEBUG) StethoInterceptor() else null
 
     @Singleton
     @Provides

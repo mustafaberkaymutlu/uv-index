@@ -2,7 +2,6 @@ package net.epictimes.uvindex
 
 import android.app.Application
 import com.crashlytics.android.Crashlytics
-import com.facebook.stetho.Stetho
 import com.google.android.instantapps.InstantApps
 import io.fabric.sdk.android.Fabric
 import net.epictimes.uvindex.base.BuildConfig
@@ -22,8 +21,6 @@ open class BaseApplication : Application() {
         initCrashlytics()
 
         initTimber()
-
-        Stetho.initializeWithDefaults(this)
 
         initDagger()
     }

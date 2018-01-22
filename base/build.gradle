@@ -93,6 +93,5 @@ dependencies {
 
     // Others
     api deps.timber
-    implementation deps.stetho
     implementation(deps.fabric.crashlytics) { transitive = true }
 }
