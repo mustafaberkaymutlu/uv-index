@@ -15,7 +15,6 @@ android {
         versionName versions.versionName
 
         vectorDrawables.useSupportLibrary = true
-        consumerProguardFiles 'proguard-rules.pro'
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }

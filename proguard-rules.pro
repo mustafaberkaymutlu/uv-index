@@ -15,6 +15,7 @@
 
 -dontwarn okio.**
 -dontwarn okhttp3.**
+-dontwarn javax.annotation.**
 
 # Retrofit:
 
@@ -30,3 +31,5 @@
 
 # MPAndroidChart
 -keep class com.github.mikephil.charting.** { *; }
+
+-keep class android.support.v7.widget.SearchView { *; }

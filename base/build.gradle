@@ -27,8 +27,6 @@ android {
 
         versionCode versions.versionCode
         versionName versions.versionName
-
-        consumerProguardFiles 'proguard-rules.pro'
     }
 
     signingConfigs {
@@ -52,6 +50,8 @@ android {
         }
 
         release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), '../proguard-rules.pro'
             signingConfig signingConfigs.releaseKey
         }
     }
