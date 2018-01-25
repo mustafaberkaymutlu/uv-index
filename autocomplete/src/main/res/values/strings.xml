@@ -2,4 +2,9 @@
 
     <string name="search_hint">Type a place</string>
 
+    <string name="address_service_not_available">Service not available</string>
+    <string name="address_service_invalid_input">Invalid input</string>
+    <string name="address_service_no_address_found">No address found</string>
+    <string name="address_service_address_found">Address found</string>
+
 </resources>

@@ -7,7 +7,6 @@ import android.location.Address
 import android.location.Geocoder
 import android.os.Bundle
 import android.os.ResultReceiver
-import net.epictimes.uvindex.base.R
 import timber.log.Timber
 import java.io.IOException
 import java.util.*

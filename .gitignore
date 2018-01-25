@@ -44,6 +44,7 @@ captures/
 .idea/gradle.xml
 .idea/dictionaries
 .idea/libraries
+/.idea/sonarlint/
 
 # Keystore files
 *.jks
