@@ -10,7 +10,7 @@ buildscript {
             'minSdk': 21,
             'minSdkInstant' : 21,
             'targetSdk': 27,
-            'kotlin': '1.2.21',
+            'kotlin': '1.2.40',
 
             'versionCode' : versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild,
             'versionName' : "${versionMajor}.${versionMinor}.${versionPatch}",
