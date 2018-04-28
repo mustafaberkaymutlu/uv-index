@@ -52,7 +52,7 @@ data class Weather(
         val visibility: Double,
 
         @SerializedName("uv")
-        val uvIndex: Int,
+        val uvIndex: Double,
 
         // degrees
         @SerializedName("elev_angle")
@@ -100,7 +100,7 @@ data class Weather(
             source.readString(),
             source.readInt(),
             source.readDouble(),
-            source.readInt(),
+            source.readDouble(),
             source.readInt(),
             source.readInt(),
             source.readSerializable() as Date,
@@ -127,7 +127,7 @@ data class Weather(
         writeString(timezone)
         writeInt(lastObservationTimestamp)
         writeDouble(visibility)
-        writeInt(uvIndex)
+        writeDouble(uvIndex)
         writeInt(solarElevationAngle)
         writeInt(solarHourAngle)
         writeSerializable(datetime)

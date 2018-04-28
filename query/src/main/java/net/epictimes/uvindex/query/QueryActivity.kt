@@ -27,7 +27,14 @@ import com.google.android.gms.common.GooglePlayServicesNotAvailableException
 import com.google.android.gms.common.GooglePlayServicesRepairableException
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.ResolvableApiException
-import com.google.android.gms.location.*
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.LocationSettingsRequest
+import com.google.android.gms.location.LocationSettingsStatusCodes
+import com.google.android.gms.location.SettingsClient
 import com.google.android.instantapps.InstantApps
 import kotlinx.android.synthetic.main.activity_query.*
 import net.epictimes.uvindex.Constants
@@ -254,13 +261,13 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
 
     override fun displayUvIndex(weather: Weather) {
         with(textViewUvIndex) {
-            text = weather.uvIndex.toString()
+            text = Math.round(weather.uvIndex).toInt().toString()
             visibility = View.VISIBLE
         }
 
         textViewUvIndexDenominator.visibility = View.VISIBLE
 
-        val cardBackgroundColor = chartColors[weather.uvIndex]
+        val cardBackgroundColor = chartColors[Math.round(weather.uvIndex).toInt()]
         cardViewCurrent.setCardBackgroundColor(cardBackgroundColor)
 
         val recommendedProtection: Int
@@ -283,7 +290,7 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
                 recommendedProtection = R.string.recommended_protection_8_11
                 info = R.string.info_8_11
             }
-            11 -> {
+            11.0 -> {
                 recommendedProtection = R.string.recommended_protection_extreme
                 info = R.string.info_extreme
             }
@@ -316,7 +323,7 @@ class QueryActivity : BaseViewStateActivity<QueryView, QueryPresenter, QueryView
 
         val sliderColors = arrayListOf<Int>()
 
-        uvIndexForecast.mapTo(sliderColors) { chartColors[it.uvIndex] }
+        uvIndexForecast.mapTo(sliderColors) { chartColors[Math.round(it.uvIndex).toInt()] }
 
         with(lineChart) {
             data = getForecastLineData(uvIndexForecast)
