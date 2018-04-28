@@ -18,7 +18,7 @@ buildscript {
             'supportLibrary': '26.1.0',
             'constraintLayout': '1.0.2',
             'googlePlayServices': '11.8.0',
-            'dagger': '2.13',
+            'dagger': '2.15',
             'leakCanary': '1.5.1',
             'mosby': '3.1.0',
             'retrofit': '2.3.0',
