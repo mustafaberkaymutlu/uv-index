@@ -27,19 +27,8 @@
 ## Demo
 <p><img src="./art/demo.gif"></p>
 
-## Getting Started
+## Getting Started with Development
 
-### Prerequisites
-- Android Studio 3.0
-- Android SDK 26
-- Build Tools 26.0.2
-
-### Getting Started with Development
-- Install prerequisites
-- Clone the repo
-- Start coding!
-
-### To Update the Weatherbit API Key
 - Sign up to [Weatherbit](https://www.weatherbit.io/) (they also have a free plan)
 - Get your API key
 - Put your API key to the `data.Services.API_KEY` constant inside the `:base` module

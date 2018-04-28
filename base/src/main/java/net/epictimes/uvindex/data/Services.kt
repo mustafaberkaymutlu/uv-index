@@ -7,7 +7,7 @@ import retrofit2.http.Query
 
 interface Services {
     companion object {
-        const val API_KEY = "816aa929f11845f9aed2198dc7b0f2f2"
+        const val API_KEY = "put-your-api-key-here"
         const val BASE_URL = "https://api.weatherbit.io/"
     }
 
