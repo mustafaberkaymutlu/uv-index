@@ -16,7 +16,6 @@ repositories {
 
 android {
     compileSdkVersion versions.compileSdk
-    buildToolsVersion versions.buildTools
 
     defaultConfig {
         applicationId "net.epictimes.uvindex"

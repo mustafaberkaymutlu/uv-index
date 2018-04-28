@@ -6,11 +6,10 @@ buildscript {
     def versionBuild = 0 // bump for dogfood builds, public betas, etc.
 
     ext.versions = [
-            'compileSdk': 26,
-            'buildTools': '26.0.2',
+            'compileSdk': 27,
             'minSdk': 21,
             'minSdkInstant' : 21,
-            'targetSdk': 26,
+            'targetSdk': 27,
             'kotlin': '1.2.21',
 
             'versionCode' : versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild,
@@ -122,7 +121,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.1'
+        classpath 'com.android.tools.build:gradle:3.1.2'
         classpath deps.kotlin.gradlePlugin
     }
 }
