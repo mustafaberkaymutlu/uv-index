@@ -8,6 +8,7 @@
       <module fileurl="file://$PROJECT_DIR$/base/base.iml" filepath="$PROJECT_DIR$/base/base.iml" />
       <module fileurl="file://$PROJECT_DIR$/instantapp/instantapp.iml" filepath="$PROJECT_DIR$/instantapp/instantapp.iml" />
       <module fileurl="file://$PROJECT_DIR$/query/query.iml" filepath="$PROJECT_DIR$/query/query.iml" />
+      <module fileurl="file://$PROJECT_DIR$/uv-index.iml" filepath="$PROJECT_DIR$/uv-index.iml" />
     </modules>
   </component>
 </project>
