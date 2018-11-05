@@ -1,50 +1,5 @@
 apply plugin: 'com.android.feature'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
-apply plugin: 'kotlin-android-extensions'
-
-android {
-    compileSdkVersion versions.compileSdk
-
-    defaultConfig {
-        minSdkVersion versions.minSdk
-        targetSdkVersion versions.targetSdk
-
-        versionCode versions.versionCode
-        versionName versions.versionName
-
-        vectorDrawables.useSupportLibrary = true
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-    }
-
-    signingConfigs {
-        debugKey {
-            storePassword keys.debug.storePassword
-            keyAlias keys.debug.keyAlias
-            keyPassword keys.debug.keyPassword
-            storeFile keys.debug.storeFile
-        }
-    }
-
-    buildTypes {
-        debug {
-            signingConfig signingConfigs.debugKey
-        }
-
-        release {}
-    }
-
-    testOptions {
-        unitTests.all {
-            testLogging {
-                events "passed", "skipped", "failed", "standardOut", "standardError"
-                outputs.upToDateWhen { false }
-                showStandardStreams = true
-            }
-        }
-    }
-}
+apply from: "../base-module.gradle"
 
 dependencies {
     implementation project(':base')

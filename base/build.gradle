@@ -8,41 +8,20 @@ buildscript {
 }
 
 apply plugin: 'com.android.feature'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
 apply plugin: 'io.fabric'
-apply plugin: "de.mannodermaus.android-junit5"
+apply from: "../base-module.gradle"
 
 repositories {
     maven { url 'https://maven.fabric.io/public' }
 }
 
 android {
-    compileSdkVersion versions.compileSdk
     baseFeature true
-
-    defaultConfig {
-        minSdkVersion versions.minSdk
-        targetSdkVersion versions.targetSdk
-
-        versionCode versions.versionCode
-        versionName versions.versionName
-    }
-
-    signingConfigs {
-        debugKey {
-            storePassword keys.debug.storePassword
-            keyAlias keys.debug.keyAlias
-            keyPassword keys.debug.keyPassword
-            storeFile keys.debug.storeFile
-        }
-    }
 
     buildTypes {
         debug {
-            signingConfig signingConfigs.debugKey
+            minifyEnabled false
         }
-
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), '../proguard-rules.pro'

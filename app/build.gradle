@@ -9,56 +9,10 @@ buildscript {
 
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
+apply from: "../base-module.gradle"
 
 repositories {
     maven { url 'https://maven.fabric.io/public' }
-}
-
-android {
-    compileSdkVersion versions.compileSdk
-
-    defaultConfig {
-        applicationId "net.epictimes.uvindex"
-
-        minSdkVersion versions.minSdk
-        targetSdkVersion versions.targetSdk
-
-        versionCode versions.versionCode
-        versionName versions.versionName
-    }
-
-    signingConfigs {
-        debugKey {
-            storePassword keys.debug.storePassword
-            keyAlias keys.debug.keyAlias
-            keyPassword keys.debug.keyPassword
-            storeFile keys.debug.storeFile
-        }
-    }
-
-    buildTypes {
-        debug {
-            debuggable true
-            minifyEnabled false
-            signingConfig signingConfigs.debugKey
-        }
-
-        release {
-            debuggable false
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), '../proguard-rules.pro'
-        }
-    }
-
-    testOptions {
-        unitTests.all {
-            testLogging {
-                events "passed", "skipped", "failed", "standardOut", "standardError"
-                outputs.upToDateWhen { false }
-                showStandardStreams = true
-            }
-        }
-    }
 }
 
 dependencies {
