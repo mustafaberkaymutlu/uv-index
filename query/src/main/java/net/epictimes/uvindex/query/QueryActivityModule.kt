@@ -5,7 +5,6 @@ import dagger.Provides
 import net.epictimes.uvindex.data.Services
 import net.epictimes.uvindex.data.interactor.NetworkWeatherInteractor
 import net.epictimes.uvindex.data.interactor.WeatherInteractor
-import java.util.*
 
 @Module
 class QueryActivityModule {
@@ -13,11 +12,6 @@ class QueryActivityModule {
     @QueryFeatureScoped
     @Provides
     fun provideCurrentInteractor(services: Services): WeatherInteractor = NetworkWeatherInteractor(services)
-
-    @QueryFeatureScoped
-    @Provides
-    fun provideQueryPresenter(weatherInteractor: WeatherInteractor): QueryPresenter =
-            QueryPresenter(weatherInteractor, Date())
 
     @QueryFeatureScoped
     @Provides

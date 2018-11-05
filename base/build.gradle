@@ -11,6 +11,7 @@ apply plugin: 'com.android.feature'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'io.fabric'
+apply plugin: "de.mannodermaus.android-junit5"
 
 repositories {
     maven { url 'https://maven.fabric.io/public' }

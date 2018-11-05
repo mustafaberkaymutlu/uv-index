@@ -6,10 +6,13 @@ import net.epictimes.uvindex.Constants
 import net.epictimes.uvindex.data.interactor.WeatherInteractor
 import net.epictimes.uvindex.data.model.LatLng
 import net.epictimes.uvindex.data.model.Weather
-import java.util.*
+import java.util.Collections
+import javax.inject.Inject
 
-
-class QueryPresenter constructor(private val weatherInteractor: WeatherInteractor, private val now: Date) : MvpBasePresenter<QueryView>() {
+class QueryPresenter @Inject constructor(
+    private val weatherInteractor: WeatherInteractor,
+    private val dateProvider: DateProvider
+): MvpBasePresenter<QueryView>() {
 
     companion object {
         const val FORECAST_HOUR = 24
@@ -18,14 +21,17 @@ class QueryPresenter constructor(private val weatherInteractor: WeatherInteracto
     fun getForecastUvIndex(latitude: Double, longitude: Double, language: String?, units: String?) {
         weatherInteractor.getForecast(latitude, longitude, language, units, FORECAST_HOUR,
                 object : WeatherInteractor.GetForecastCallback {
-                    override fun onSuccessGetForecast(weatherForecast: List<Weather>, timezone: String, cityName: String, countryCode: String) {
+                    override fun onSuccessGetForecast(weatherForecast: List<Weather>,
+                                                      timezone: String,
+                                                      cityName: String,
+                                                      countryCode: String) {
                         if (weatherForecast.isEmpty()) {
                             ifViewAttached { it.displayGetUvIndexError() }
                         } else {
                             val sortedForecast = weatherForecast.sortedBy { it.datetime.time }
                             val currentWeather = getClosestWeather(weatherForecast)
 
-                            val address = cityName + ", " + countryCode
+                            val address = "$cityName, $countryCode"
 
                             ifViewAttached {
                                 it.setToViewState(currentWeather, sortedForecast, timezone, address)
@@ -64,10 +70,11 @@ class QueryPresenter constructor(private val weatherInteractor: WeatherInteracto
     fun getPlaceAutoCompleteFailed() = ifViewAttached { it.displayGetAutoCompletePlaceError() }
 
     private fun getClosestWeather(weatherList: Collection<Weather>): Weather =
-            Collections.min(weatherList, { w1, w2 ->
-                val diff1 = Math.abs(w1.datetime.time - now.time)
-                val diff2 = Math.abs(w2.datetime.time - now.time)
+        Collections.min(weatherList) { w1, w2 ->
+            val now = dateProvider.now()
+            val diff1 = Math.abs(w1.datetime.time - now.time)
+            val diff2 = Math.abs(w2.datetime.time - now.time)
                 diff1.compareTo(diff2)
-            })
+        }
 
 }

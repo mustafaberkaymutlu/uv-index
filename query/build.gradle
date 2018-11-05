@@ -62,7 +62,8 @@ dependencies {
     kapt deps.permissionsDispatcher.compiler
 
     // Tests
-    testImplementation deps.test.junit
+    testImplementation deps.test.junitJupiterApi
+    testRuntimeOnly deps.test.junitJupiterEngine
     testImplementation deps.test.mockito
     testImplementation deps.test.mockitoKotlin
 }

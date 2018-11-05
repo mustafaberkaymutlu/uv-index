@@ -1,39 +1,39 @@
 package net.epictimes.uvindex.query
 
-import com.nhaarman.mockito_kotlin.*
+import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.anyOrNull
+import com.nhaarman.mockitokotlin2.argumentCaptor
+import com.nhaarman.mockitokotlin2.check
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.whenever
 import net.epictimes.uvindex.data.interactor.WeatherInteractor
 import net.epictimes.uvindex.data.model.Weather
-import org.junit.Assert.assertEquals
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.mockito.ArgumentMatchers.eq
-import org.mockito.Mock
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
-import org.mockito.MockitoAnnotations
-import java.util.*
-
+import java.util.Date
 
 class QueryPresenterTest {
 
-    private lateinit var queryPresenter: QueryPresenter
+    private val weatherInteractor: WeatherInteractor = mock()
 
-    @Mock
-    private lateinit var weatherInteractor: WeatherInteractor
+    private val dateProvider: DateProvider = mock()
 
-    @Mock
-    private lateinit var queryView: QueryView
+    private val queryView: QueryView = mock()
 
-    @Before
+    private val queryPresenter = QueryPresenter(weatherInteractor, dateProvider)
+
+    @BeforeEach
     fun setupMocksAndView() {
-        MockitoAnnotations.initMocks(this)
+        queryPresenter.attachView(queryView)
     }
 
     @Test
     fun givenEmptyWeatherList_shouldDisplayError() {
-        queryPresenter = QueryPresenter(weatherInteractor, Date())
-
-        queryPresenter.attachView(queryView)
+        whenever(dateProvider.now()).thenReturn(Date())
 
         queryPresenter.getForecastUvIndex(1.0, 2.0, null, null)
 
@@ -48,9 +48,7 @@ class QueryPresenterTest {
 
     @Test
     fun givenError_shouldDisplayError() {
-        queryPresenter = QueryPresenter(weatherInteractor, Date())
-
-        queryPresenter.attachView(queryView)
+        whenever(dateProvider.now()).thenReturn(Date())
 
         queryPresenter.getForecastUvIndex(1.0, 2.0, null, null)
 
@@ -69,10 +67,7 @@ class QueryPresenterTest {
         val weatherForecast = Array(24) { weather }.asList()
 
         whenever(weather.datetime).thenReturn(Date())
-
-        queryPresenter = QueryPresenter(weatherInteractor, Date())
-
-        queryPresenter.attachView(queryView)
+        whenever(dateProvider.now()).thenReturn(Date())
 
         queryPresenter.getForecastUvIndex(1.0, 2.0, null, null)
 
@@ -93,15 +88,13 @@ class QueryPresenterTest {
         val currentMillis = 2049L
         val closestMillis = 2000L
 
-        val weatherForecast = (0..24).map({
+        val weatherForecast = (0..24).map {
             val mock = mock<Weather>()
             whenever(mock.datetime).thenReturn(Date(it * 100L))
             mock
-        }).toList()
+        }.toList()
 
-        queryPresenter = QueryPresenter(weatherInteractor, Date(currentMillis))
-
-        queryPresenter.attachView(queryView)
+        whenever(dateProvider.now()).thenReturn(Date(currentMillis))
 
         queryPresenter.getForecastUvIndex(0.0, 0.0, null, null)
 
