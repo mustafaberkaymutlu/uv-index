@@ -6,16 +6,16 @@ buildscript {
     def versionBuild = 0 // bump for dogfood builds, public betas, etc.
 
     ext.versions = [
-            'compileSdk': 27,
+            'compileSdk': 28,
             'minSdk': 21,
             'minSdkInstant' : 21,
-            'targetSdk': 27,
+            'targetSdk': 28,
             'kotlin': '1.3.0',
 
             'versionCode' : versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild,
             'versionName' : "${versionMajor}.${versionMinor}.${versionPatch}",
 
-            'supportLibrary': '26.1.0',
+            'supportLibrary': '28.0.0',
             'constraintLayout': '1.0.2',
             'googlePlayServices': '15.0.0',
             'dagger': '2.15',
