@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/coordinatorLayout"
@@ -8,12 +9,12 @@
     android:fitsSystemWindows="true"
     tools:context=".QueryActivity">
 
-    <android.support.design.widget.AppBarLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/primary">
 
-        <android.support.design.widget.CollapsingToolbarLayout
+        <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_width="match_parent"
             android:layout_height="156dp"
             app:contentScrim="@color/primary"
@@ -21,19 +22,19 @@
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:titleEnabled="false">
 
-            <android.support.v7.widget.Toolbar
+            <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?android:attr/actionBarSize"
                 android:theme="@style/Toolbar"
                 app:layout_collapseMode="pin"
-                app:titleTextColor="@android:color/white" />
+                app:titleTextColor="@android:color/white"/>
 
-        </android.support.design.widget.CollapsingToolbarLayout>
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
 
-    </android.support.design.widget.AppBarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
 
-    <android.support.v4.widget.NestedScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:behavior_overlapTop="80dp"
@@ -45,7 +46,7 @@
             android:animateLayoutChanges="true"
             android:orientation="vertical">
 
-            <android.support.v7.widget.CardView
+            <androidx.cardview.widget.CardView
                 android:id="@+id/cardViewCurrent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -57,7 +58,7 @@
                 app:cardElevation="4dp"
                 app:contentPadding="8dp">
 
-                <android.support.constraint.ConstraintLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
@@ -67,10 +68,10 @@
                         android:layout_height="wrap_content"
                         android:maxEms="2"
                         android:textAppearance="@style/TextAppearance.AppCompat.Display2"
+                        android:visibility="gone"
                         app:layout_constraintBaseline_toBaselineOf="@+id/textViewLocation"
                         app:layout_constraintEnd_toStartOf="@+id/textViewUvIndexDenominator"
-                        tools:text="5"
-                        android:visibility="gone"/>
+                        tools:text="5"/>
 
                     <TextView
                         android:id="@+id/textViewUvIndexDenominator"
@@ -80,9 +81,9 @@
                         android:text="@string/uv_index_denominator"
                         android:textAppearance="@style/TextAppearance.AppCompat.Caption"
                         android:textSize="18sp"
+                        android:visibility="gone"
                         app:layout_constraintBaseline_toBaselineOf="@+id/textViewUvIndex"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        android:visibility="gone"/>
+                        app:layout_constraintEnd_toEndOf="parent"/>
 
                     <TextView
                         android:id="@+id/textViewLocation"
@@ -99,7 +100,7 @@
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textViewRightNowTitle"
-                        tools:text="Kadikoy, Turkey" />
+                        tools:text="Kadikoy, Turkey"/>
 
                     <TextView
                         android:id="@+id/textViewRightNowTitle"
@@ -112,7 +113,7 @@
                         app:layout_constraintEnd_toStartOf="@+id/textViewUvIndex"
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"/>
 
                     <TextView
                         android:id="@+id/textViewInfo"
@@ -129,13 +130,13 @@
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textViewLocation"
-                        tools:text="@string/info_0_3" />
+                        tools:text="@string/info_0_3"/>
 
-                </android.support.constraint.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
-            </android.support.v7.widget.CardView>
+            </androidx.cardview.widget.CardView>
 
-            <android.support.v7.widget.CardView
+            <androidx.cardview.widget.CardView
                 android:id="@+id/cardViewForecast"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -149,7 +150,7 @@
                 app:contentPadding="8dp"
                 tools:visibility="visible">
 
-                <android.support.constraint.ConstraintLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/linearLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -162,7 +163,7 @@
                         android:text="@string/forecast"
                         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"/>
 
                     <com.github.mikephil.charting.charts.LineChart
                         android:id="@+id/lineChart"
@@ -172,7 +173,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView" />
+                        app:layout_constraintTop_toBottomOf="@+id/textView"/>
 
                     <ImageButton
                         android:id="@+id/imageButtonForecastInfo"
@@ -183,12 +184,12 @@
                         app:layout_constraintBottom_toBottomOf="@+id/textView"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/textView"
-                        app:srcCompat="@drawable/ic_info_grey_24dp" />
-                </android.support.constraint.ConstraintLayout>
+                        app:srcCompat="@drawable/ic_info_grey_24dp"/>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
-            </android.support.v7.widget.CardView>
+            </androidx.cardview.widget.CardView>
 
-            <android.support.v7.widget.CardView
+            <androidx.cardview.widget.CardView
                 android:id="@+id/cardViewProtection"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -213,19 +214,19 @@
                         android:layout_marginEnd="8dp"
                         android:layout_marginStart="8dp"
                         android:text="@string/recommended_protection"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+                        android:textAppearance="@style/TextAppearance.AppCompat.Headline"/>
 
                     <TextView
                         android:id="@+id/textViewRecommendedProtection"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="8dp"
-                        tools:text="@string/recommended_protection_0_3" />
+                        tools:text="@string/recommended_protection_0_3"/>
                 </LinearLayout>
 
-            </android.support.v7.widget.CardView>
+            </androidx.cardview.widget.CardView>
 
-            <android.support.v7.widget.CardView
+            <androidx.cardview.widget.CardView
                 android:id="@+id/cardViewNotes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -251,19 +252,19 @@
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
                         android:text="@string/cautionary_notes_title"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+                        android:textAppearance="@style/TextAppearance.AppCompat.Headline"/>
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="8dp"
-                        android:text="@string/cautionary_notes" />
+                        android:text="@string/cautionary_notes"/>
                 </LinearLayout>
 
-            </android.support.v7.widget.CardView>
+            </androidx.cardview.widget.CardView>
 
         </LinearLayout>
 
-    </android.support.v4.widget.NestedScrollView>
+    </androidx.core.widget.NestedScrollView>
 
-</android.support.design.widget.CoordinatorLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

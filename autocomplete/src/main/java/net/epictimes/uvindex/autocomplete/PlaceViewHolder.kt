@@ -1,8 +1,8 @@
 package net.epictimes.uvindex.autocomplete
 
 import android.location.Address
-import android.support.v7.widget.RecyclerView
 import android.view.View
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.list_item_place.view.*
 
 class PlaceViewHolder(private val rootView: View) : RecyclerView.ViewHolder(rootView), View.OnClickListener {

@@ -6,9 +6,9 @@ import android.location.Address
 import android.os.Bundle
 import android.os.Handler
 import android.os.ResultReceiver
-import android.support.v4.content.ContextCompat
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.SearchView
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.appcompat.widget.SearchView
 import android.view.Menu
 import android.widget.EditText
 import android.widget.Toast
@@ -142,7 +142,7 @@ class AutoCompleteActivity : BaseViewStateActivity<AutoCompleteView, AutoComplet
     }
 
     private fun makeSearchEditTextColorWhite(searchView: SearchView) {
-        val searchEditText = searchView.findViewById<EditText>(android.support.v7.appcompat.R.id.search_src_text)
+        val searchEditText = searchView.findViewById<EditText>(androidx.appcompat.R.id.search_src_text)
         val colorWhite = ContextCompat.getColor(this, android.R.color.white)
 
         with(searchEditText) {
