@@ -78,7 +78,7 @@ buildscript {
             ],
             'okHttpLogginInterceptor': 'com.squareup.okhttp3:logging-interceptor:3.9.0',
             'instantApps': "com.google.android.instantapps:instantapps:1.1.0",
-            'timber': 'com.jakewharton.timber:timber:4.7.0',
+            'timber': 'com.jakewharton.timber:timber:4.7.1',
             'mpAndroidChart': "com.github.PhilJay:MPAndroidChart:v3.0.3",
             'stetho': 'com.facebook.stetho:stetho-okhttp3:1.5.0',
     ]
